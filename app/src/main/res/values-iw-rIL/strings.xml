@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DoIt</string>
+    <string name="menu_settings">הגדרות</string>
+    <string name="menu_home">בית</string>
+    <string name="menu_privacy_and_security">פרטיות ואבטחה</string>
+    <string name="menu_signout">התנתק</string>
+    <string name="welcome">שלום,</string>
+    <string name="menu_my_profile">הפרופיל שלי</string>
+    <string name="do_it">Do it!</string>
+</resources>

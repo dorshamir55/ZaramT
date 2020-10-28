@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation"
+    android:label="@string/do_it"
+    app:startDestination="@id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.doit.ui.HomeFragment"
+        android:label="@string/do_it"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/nav_my_profile"
+        android:name="com.example.doit.ui.MyProfileFragment"
+        android:label="@string/do_it"
+        tools:layout="@layout/fragment_my_profile" />
+</navigation>
