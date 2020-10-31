@@ -1,10 +1,12 @@
 package com.example.doit.viewmodel;
 
 import android.app.Application;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.doit.model.QuestionPostData;
 import com.example.doit.repository.IMainRepository;
@@ -30,5 +32,13 @@ public class MainViewModel extends AndroidViewModel implements IMainViewModel {
     @Override
     public void loadAds(Runnable onFinish) {
         mainRepository.loadAds(onFinish);
+    }
+
+    @Override
+    public void deletePost(QuestionPostData questionPostData) {
+        mainRepository.deletePost(questionPostData, () -> {
+            LocalBroadcastManager.getInstance(getApplication().getApplicationContext())
+                    .sendBroadcast(new Intent("com.project.ACTION_RELOAD"));
+        });
     }
 }

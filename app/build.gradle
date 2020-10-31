@@ -52,8 +52,8 @@ dependencies {
 
     // Declare the dependencies for any other desired Firebase products
     // For example, declare the dependencies for Firebase Authentication and Cloud Firestore
-    implementation 'com.google.firebase:firebase-auth'
-    implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.firebase:firebase-auth:20.0.0'
+    implementation 'com.google.firebase:firebase-firestore:22.0.0'
 
     // Material design
     //implementation 'com.google.android.material:material:1.2.1'
@@ -74,11 +74,10 @@ dependencies {
 
 
     //ROOM dependencies
-    def room_version = "2.2.5"
-    implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
-    implementation "androidx.room:room-rxjava2:$room_version"
-    testImplementation "androidx.room:room-testing:$room_version"
+    implementation "androidx.room:room-runtime:2.2.5"
+    annotationProcessor "androidx.room:room-compiler:2.2.5"
+    implementation "androidx.room:room-rxjava2:2.2.5"
+    testImplementation "androidx.room:room-testing:2.2.5"
 
     // recyclerview and cardview
     implementation 'androidx.cardview:cardview:1.0.0'

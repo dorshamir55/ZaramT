@@ -2,6 +2,7 @@ package com.example.doit.ui;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -78,6 +79,24 @@ public class HomeFragment extends Fragment {
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(adapter);
+
+        adapter.setRecyclerListener(new PostsRecyclerAdapter.PostsRecyclerListener() {
+            @Override
+            public void onItemClick(int position, View clickedView, QuestionPostData clickedPost) {
+                new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.delete_title)
+                        .setMessage(R.string.delete_message)
+                        .setIcon(R.drawable.doit_icon)
+                        .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
+                            viewModel.deletePost(clickedPost);
+                            adapter.getData().remove(position);
+                            adapter.notifyItemRemoved(position);
+                        })
+                        .setNegativeButton(getString(R.string.no), null)
+                        .create()
+                        .show();
+            }
+        });
 
 /*        adapter.setRecyclerListener(new AdsRecyclerAdapter.AdsRecyclerListener() {
             @Override

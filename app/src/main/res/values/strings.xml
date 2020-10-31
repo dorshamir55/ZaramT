@@ -21,4 +21,6 @@
     <string name="sign_out_message">Are you sure you want to sign out?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="delete_title">delete?</string>
+    <string name="delete_message">Are you sure you want to delete the post?</string>
 </resources>

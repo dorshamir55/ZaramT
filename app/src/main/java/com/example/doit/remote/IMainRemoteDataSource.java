@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface IMainRemoteDataSource {
     public void fetchQuestionsPosts(Date fromDate, Consumer<List<QuestionPostData>> consumer);
-    public void removeAd(String id, Runnable onFinish);
+    public void removePost(String id, Runnable onFinish);
 }

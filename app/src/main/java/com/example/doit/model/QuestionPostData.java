@@ -31,7 +31,7 @@ public class QuestionPostData {
     private Question question;
 
     @Embedded
-    private ArrayList<Answer> answers;
+    private ArrayList<Answer> answers = new ArrayList<>();
 
     @ServerTimestamp
     private Date updateDate;  // update (also created) date - from Firebase
@@ -96,11 +96,11 @@ public class QuestionPostData {
         this.updateDate = updateDate;
     }
 
-    public boolean isRemoved() {
+    public boolean getIsRemoved() {
         return isRemoved;
     }
 
-    public void setRemoved(boolean removed) {
-        isRemoved = removed;
+    public void setIsRemoved(boolean isRemoved) {
+        isRemoved = isRemoved;
     }
 }

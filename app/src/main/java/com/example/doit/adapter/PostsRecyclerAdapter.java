@@ -26,6 +26,10 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
         listData = data;
     }
 
+    public List<QuestionPostData> getData() {
+        return listData;
+    }
+
     public void setRecyclerListener(PostsRecyclerListener listener) {
         this.listener = listener;
     }
@@ -42,8 +46,8 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         assert listData != null;
         holder.nickname.setText("Cristiano Ronaldo");
-        holder.question.setText(listData.get(position).getQuestion().toString());
-        holder.answers.setText(listData.get(position).getAnswers().get(0).toString());
+        holder.question.setText(listData.get(position).getQuestion().getQuestionText());
+//        holder.answers.setText(listData.get(position).getAnswers().get(0).getAnswerText());
 
 //        if(listData.get(position).getImagesURL() != null) {
 //            Glide.with(holder.imageView.getContext())

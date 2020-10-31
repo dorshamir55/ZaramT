@@ -1,27 +1,31 @@
 package com.example.doit.model;
 
 public class Question {
-    private int questionID;
-    private String question;
+    private String questionID;
+    private String questionText;
 
-    public Question(int questionID, String question) {
-        this.questionID = questionID;
-        this.question = question;
+    public Question() {
+
     }
 
-    public int getQuestionID() {
+    public Question(String questionID, String questionText) {
+        this.questionID = questionID;
+        this.questionText = questionText;
+    }
+
+    public String getQuestionID() {
         return questionID;
     }
 
-    public void setQuestionID(int questionID) {
+    public void setQuestionID(String questionID) {
         this.questionID = questionID;
     }
 
-    public String getQuestion() {
-        return question;
+    public String getQuestionText() {
+        return questionText;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setQuestionText(String questionText) {
+        this.questionText = questionText;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.doit.remote;
 
+import com.example.doit.model.Answer;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.QuestionPostData;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,11 +34,15 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
 
         query.get()
                 .addOnCompleteListener(task -> {
-                    List<QuestionPostData> data = null;
+                    ArrayList<QuestionPostData> data = null;
                     if (task.isSuccessful()) {
                         data = new ArrayList<>();
                         for (DocumentSnapshot document : task.getResult().getDocuments()) {
+                            //ArrayList<Answer> answers = new ArrayList<>();
+                            ArrayList<Answer> answers = (ArrayList<Answer>) document.get("answers");
+                            //Log.d(TAG, list.toString());
                             data.add(document.toObject(QuestionPostData.class).withId(document.getId()));
+                            data.get(data.size()-1).setAnswers(answers);
                         }
                     } else {
                         task.getException().printStackTrace();
@@ -49,10 +54,10 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
     }
 
     @Override
-    public void removeAd(String id, Runnable onFinish) {
+    public void removePost(String id, Runnable onFinish) {
         Map<String, Object> data = new HashMap<>();
         data.put("updateDate", FieldValue.serverTimestamp());
-        data.put("removed", true);
+        data.put("isRemoved", true);
         db.collection(QuestionPostData.TABLE_NAME).document(id).set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

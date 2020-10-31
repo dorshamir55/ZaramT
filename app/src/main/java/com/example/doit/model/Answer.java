@@ -1,27 +1,31 @@
 package com.example.doit.model;
 
 public class Answer {
-    private int answerID;
-    private String answer;
+    private String answerID;
+    private String answerText;
 
-    public Answer(int answerID, String answer) {
-        this.answerID = answerID;
-        this.answer = answer;
+    public Answer() {
+
     }
 
-    public int getAnswerID() {
+    public Answer(String answerID, String answerText) {
+        this.answerID = answerID;
+        this.answerText = answerText;
+    }
+
+    public String getAnswerID() {
         return answerID;
     }
 
-    public void setAnswerID(int answerID) {
+    public void setAnswerID(String answerID) {
         this.answerID = answerID;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getAnswerText() {
+        return answerText;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setAnswerText(String answerText) {
+        this.answerText = answerText;
     }
 }

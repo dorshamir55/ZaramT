@@ -22,7 +22,7 @@ public interface AdDAO {
     public void insertAll(List<QuestionPostData> posts);
 
     @Delete
-    public void deleteAd(QuestionPostData post);
+    public void deletePost(QuestionPostData post);
 
     @Delete
     public void deleteAll(List<QuestionPostData> posts);

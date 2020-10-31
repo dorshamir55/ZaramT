@@ -9,5 +9,6 @@ import java.util.List;
 public interface IMainViewModel {
     public LiveData<List<QuestionPostData>> getPostsLiveData();
     public void loadAds(Runnable onFinish);
+    public void deletePost(QuestionPostData questionPostData);
 }
 

@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,10 +43,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Question question = new Question(1, "How are you?? :)");
-        ArrayList<Answer> answers = new ArrayList<>();
-        answers.add(new Answer(1, "I'm fine Thank you"));
-        postQuestion(new QuestionPostData("1", question,  answers, Calendar.getInstance().getTime(), false));
+//        Question question = new Question("2", "What is your favorite color?");
+//        ArrayList<Answer> answers = new ArrayList<>();
+//        answers.add(new Answer("5", "Red"));
+//        answers.add(new Answer("6", "Blue"));
+//        answers.add(new Answer("7", "Green"));
+//        answers.add(new Answer("8", "Yellow"));
+//        postQuestion(new QuestionPostData("1", question,  answers, Calendar.getInstance().getTime(), false));
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -114,9 +118,9 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void postQuestion(QuestionPostData adData) {
-        FirebaseFirestore.getInstance().collection("posts").document()
-                .set(adData)
+    private void postQuestion(QuestionPostData postData) {
+        FirebaseFirestore.getInstance().collection(QuestionPostData.TABLE_NAME)
+                .add(postData)
                 .addOnSuccessListener(docRef -> {
                     LocalBroadcastManager.getInstance(getApplicationContext())
                             .sendBroadcast(new Intent("com.project.ACTION_RELOAD"));
