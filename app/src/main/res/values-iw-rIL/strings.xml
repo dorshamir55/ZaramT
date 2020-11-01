@@ -25,4 +25,9 @@
     <string name="delete_message">האם את\\ה בטוח\\ה שאת\\ה רוצה למחוק את הפוסט?</string>
     <string name="delete_title">למחוק?</string>
     <string name="vote">" הצבע"</string>
+    <string name="home">בית</string>
+    <string name="search">חיפוש</string>
+    <string name="add">הוסף</string>
+    <string name="statistics">סטטיסטיקה</string>
+    <string name="profile">פרופיל</string>
 </resources>

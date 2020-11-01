@@ -22,7 +22,19 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/caveat_brush"
+                android:shadowColor="#FFFFFF"
+                android:text="@string/do_it"
+                android:textColor="@android:color/black"
+                android:textSize="30sp" />
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -35,6 +47,8 @@
         app:itemIconTint="@color/toolbarColor"
         app:itemTextColor="@color/toolbarColor"
         android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:menu="@menu/main_menu"
         tools:ignore="MissingConstraints"/>
 
