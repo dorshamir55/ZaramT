@@ -73,6 +73,8 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.5.3'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.5.3'
 
+    //Preference
+    implementation 'androidx.preference:preference:1.1.1'
 
     //ROOM dependencies
     implementation "androidx.room:room-runtime:2.2.5"
@@ -80,7 +82,10 @@ dependencies {
     implementation "androidx.room:room-rxjava2:2.2.5"
     testImplementation "androidx.room:room-testing:2.2.5"
 
-    // recyclerview and cardview
+    //Recyclerview and cardview
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    //Paper
+    implementation 'io.paperdb:paperdb:2.5'
 }

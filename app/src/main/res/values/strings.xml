@@ -35,16 +35,40 @@
     <string name="post">Post</string>
     <!-- TODO: Remove or change this placeholder text -->
 
+    <string-array name="language_list">
+        <item>@string/hebrew</item>
+        <item>@string/english</item>
+    </string-array>
+
+    <string-array name="language_values">
+        <item>he</item>
+        <item>en</item>
+    </string-array>
+
     <string-array name="category_list">
-        <item>@string/choose_category</item>
         <item>@string/cinema</item>
         <item>@string/events</item>
         <item>@string/munch</item>
-        <item>@string/relationships</item>
+        <item>@string/doing_home</item>
+        <item>@string/doing_out</item>
+        <item>@string/tv</item>
+        <item>@string/studies</item>
     </string-array>
 
     <string name="munch">Munch</string>
     <string name="relationships">Relationships</string>
     <string name="events">Events</string>
     <string name="cinema">Cinema</string>
+    <string name="doing_home">Doing home</string>
+    <string name="doing_out">Doing out</string>
+    <string name="studies">Studies</string>
+    <string name="tv">TV</string>
+    <string name="doing_alone">Doing alone</string>
+    <string name="shopping">Shopping</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="language">Language</string>
+    <string name="hebrew">עברית</string>
+    <string name="english">English</string>
+    <string name="choose_language">Choose language</string>
+    <string name="language_changed">Language was changed!</string>
 </resources>

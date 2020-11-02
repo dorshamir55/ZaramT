@@ -38,4 +38,15 @@
     <string name="relationships">זוגיות</string>
     <string name="events">אירועים</string>
     <string name="cinema">קולנוע</string>
+    <string name="doing_home">לעשות בבית</string>
+    <string name="doing_out">לעשות בחוץ</string>
+    <string name="studies">לימודים</string>
+    <string name="tv">טלוויזיה</string>
+    <string name="doing_alone">לעשות לבד</string>
+    <string name="shopping">קניות</string>
+    <string name="language">שפה</string>
+    <string name="hebrew">עברית</string>
+    <string name="english">English</string>
+    <string name="choose_language">בחר שפה</string>
+    <string name="language_changed">שפה שונתה!</string>
 </resources>

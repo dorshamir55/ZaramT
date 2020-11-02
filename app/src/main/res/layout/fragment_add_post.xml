@@ -7,8 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:orientation="vertical">
         <Spinner
             android:id="@+id/choose_category_spinner"
             android:layout_width="match_parent"
@@ -18,26 +17,29 @@
             android:layout_margin="15dp"
             android:entries="@array/category_list"/>
 
-        <Spinner
-            android:id="@+id/choose_question_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bubblegum_sans"
-            android:textStyle="bold"
-            android:layout_margin="15dp"/>
 
-        <Spinner
-            android:id="@+id/choose_answer_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bubblegum_sans"
-            android:textStyle="bold"
-            android:layout_margin="15dp"/>
+
+<!--        <Spinner-->
+<!--            android:id="@+id/choose_question_spinner"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:fontFamily="@font/bubblegum_sans"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_margin="15dp"/>-->
+
+<!--        <Spinner-->
+<!--            android:id="@+id/choose_answer_spinner"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:fontFamily="@font/bubblegum_sans"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_margin="15dp"/>-->
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/post"
+            android:layout_gravity="center"
             android:background="@drawable/button_style"/>
     </LinearLayout>
 

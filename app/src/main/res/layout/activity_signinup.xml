@@ -18,7 +18,19 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary" />
+            android:background="?attr/colorPrimary">
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/caveat_brush"
+            android:shadowColor="#FFFFFF"
+            android:text="@string/do_it"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:textSize="40sp" />
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 

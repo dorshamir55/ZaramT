@@ -5,41 +5,32 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.doit.R;
-import com.example.doit.model.Answer;
-import com.example.doit.model.Question;
 import com.example.doit.model.QuestionPostData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.type.DateTime;
 
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Locale;
 //import com.example.doit.service.MyFirebaseMessagingService;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            getWindow().getDecorView().setLayoutDirection(
+                    "עברית".equals(Locale.getDefault().getDisplayLanguage())
+                            ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR);
+        }
 
 //        Question question = new Question("2", "What is it your favorite color?");
 //        ArrayList<Answer> answers = new ArrayList<>();
@@ -69,11 +66,15 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//        getSupportActionBar().setHomeButtonEnabled(false);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        navigationView.getMenu().findItem(R.id.nav_settings).setOnMenuItemClickListener(menuItem -> {
+            drawer.closeDrawer(navigationView);
+            switchToSettings();
+            return false;
+        });
 
         navigationView.getMenu().findItem(R.id.nav_logout).setOnMenuItemClickListener(menuItem -> {
             logout();
@@ -169,6 +170,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void switchToAddPostFragment() {
         manager.beginTransaction().replace(R.id.nav_host_fragment, new AddPostFragment()).commit();
+    }
+
+    public void switchToStatisticsFragment() {
+        //manager.beginTransaction().replace(R.id.nav_host_fragment, new AddPostFragment()).commit();
+    }
+
+    private void switchToSettings() {
+        manager.beginTransaction().replace(R.id.nav_host_fragment, new SettingsFragment()).commit();
     }
 
     private void logout() {
