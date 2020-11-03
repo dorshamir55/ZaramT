@@ -1,5 +1,6 @@
 package com.example.doit.repository;
 
+import android.app.Activity;
 import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,6 +9,8 @@ import androidx.lifecycle.LiveData;
 
 import com.example.doit.db.AdDAO;
 import com.example.doit.db.AppDatabase;
+import com.example.doit.model.Consumer;
+import com.example.doit.model.NewQuestion;
 import com.example.doit.model.QuestionPostData;
 import com.example.doit.remote.IMainRemoteDataSource;
 import com.example.doit.remote.MainRemoteDataSource;
@@ -65,6 +68,11 @@ public class MainRepository implements IMainRepository{
     public void deletePost(QuestionPostData questionPostData, Runnable onFinish) {
         //doAsynch(()->adDAO.deleteAd(questionPostData));
         remoteDataSource.removePost(questionPostData.getId(), onFinish);
+    }
+
+    @Override
+    public void getListOfQuestions(Consumer<List<NewQuestion>> consumerList, String category) {
+        remoteDataSource.fetchAllQuestions(consumerList, category);
     }
 
     private void doAsynch(Runnable task) {

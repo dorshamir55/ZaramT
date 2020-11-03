@@ -8,6 +8,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.example.doit.model.Consumer;
+import com.example.doit.model.NewQuestion;
 import com.example.doit.model.QuestionPostData;
 import com.example.doit.repository.IMainRepository;
 import com.example.doit.repository.MainRepository;
@@ -21,7 +23,7 @@ public class MainViewModel extends AndroidViewModel implements IMainViewModel {
     public MainViewModel(@NonNull Application application) {
         super(application);
         mainRepository = new MainRepository(application);
-        questionPostLiveData =mainRepository.getPostsLiveData();
+        questionPostLiveData = mainRepository.getPostsLiveData();
     }
 
     @Override
@@ -40,5 +42,10 @@ public class MainViewModel extends AndroidViewModel implements IMainViewModel {
             LocalBroadcastManager.getInstance(getApplication().getApplicationContext())
                     .sendBroadcast(new Intent("com.project.ACTION_RELOAD"));
         });
+    }
+
+    @Override
+    public void getListOfQuestions(Consumer<List<NewQuestion>> consumerList, String category) {
+        mainRepository.getListOfQuestions(consumerList, category);
     }
 }

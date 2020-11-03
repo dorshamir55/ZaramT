@@ -1,7 +1,11 @@
 package com.example.doit.remote;
 
+import android.app.Activity;
+
 import com.example.doit.model.Answer;
 import com.example.doit.model.Consumer;
+import com.example.doit.model.LocalHelper;
+import com.example.doit.model.NewQuestion;
 import com.example.doit.model.Question;
 import com.example.doit.model.QuestionPostData;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,7 +31,6 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
 
     @Override
     public void fetchQuestionsPosts(Date fromDate, Consumer<List<QuestionPostData>> consumer) {
-
         Query query = db.collection(QuestionPostData.TABLE_NAME).orderBy("updateDate", Query.Direction.DESCENDING);
 
         if(fromDate != null)
@@ -66,6 +69,26 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
                         if(onFinish != null)
                             onFinish.run();
                     }
+                });
+    }
+
+    @Override
+    public void fetchAllQuestions(Consumer<List<NewQuestion>> consumerList, String category) {
+        Query query = db.collection(NewQuestion.TABLE_NAME);//.whereEqualTo("category", category);
+        query.get()
+                .addOnCompleteListener(task -> {
+                    List<NewQuestion> data = null;
+                    if (task.isSuccessful()) {
+                        data = new ArrayList<>();
+                        for (DocumentSnapshot document : task.getResult().getDocuments()) {
+                            data.add(document.toObject(NewQuestion.class).withId(document.getId()));
+                        }
+                    } else {
+                        task.getException().printStackTrace();
+                    }
+
+                    if(consumerList != null)
+                        consumerList.apply(data);
                 });
     }
 }

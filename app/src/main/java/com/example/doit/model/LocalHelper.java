@@ -20,13 +20,13 @@ import com.example.doit.ui.SettingsFragment;
 import java.util.Locale;
 
 public class LocalHelper {
-    private static Activity activity;
+    private Activity activity;
 
     public LocalHelper(Activity activity) {
         this.activity = activity;
     }
 
-    public static void saveLocale(String lang) {
+    public void saveLocale(String lang) {
         String langPref = "Language";
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
         SharedPreferences.Editor editor = prefs.edit();
@@ -34,10 +34,8 @@ public class LocalHelper {
         editor.commit();
     }
 
-    public static void loadLocale() {
-        String langPref = "Language";
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
-        String language = prefs.getString(langPref, "he");
+    public void loadLocale() {
+        String language = getLocale();
         if(language.equals("he"))
             activity.getWindow().getDecorView().setLayoutDirection(
                     language.equals("he") ?
@@ -46,7 +44,7 @@ public class LocalHelper {
         setLocale(language);
     }
 
-    public static void setLocale(String lang) {
+    public void setLocale(String lang) {
 
         Locale locale = new Locale(lang);
         Configuration config = new Configuration();
@@ -54,5 +52,11 @@ public class LocalHelper {
         Locale.setDefault(locale);
 
         activity.getResources().updateConfiguration(config, activity.getResources().getDisplayMetrics());
+    }
+
+    public String getLocale() {
+        String langPref = "Language";
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+        return prefs.getString(langPref, "he");
     }
 }

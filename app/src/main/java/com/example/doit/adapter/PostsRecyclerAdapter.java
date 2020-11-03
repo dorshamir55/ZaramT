@@ -80,13 +80,13 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
 
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.image_cell);
-            nickname = itemView.findViewById(R.id.nickname_cell);
+            imageView = itemView.findViewById(R.id.image_cell_post);
+            nickname = itemView.findViewById(R.id.nickname_cell_post);
             question = itemView.findViewById(R.id.question_cell);
-            answer1 = itemView.findViewById(R.id.answer1_cell);
-            answer2 = itemView.findViewById(R.id.answer2_cell);
-            answer3 = itemView.findViewById(R.id.answer3_cell);
-            answer4 = itemView.findViewById(R.id.answer4_cell);
+            answer1 = itemView.findViewById(R.id.answer1_cell_post);
+            answer2 = itemView.findViewById(R.id.answer2_cell_post);
+            answer3 = itemView.findViewById(R.id.answer3_cell_post);
+            answer4 = itemView.findViewById(R.id.answer4_cell_post);
 
             itemView.setOnClickListener(view -> {
                 if(listener != null) {
