@@ -38,7 +38,13 @@
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
-
+    <View
+        android:id="@+id/topBorderBottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/toolbarColor"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        tools:ignore="MissingConstraints" />
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -61,18 +67,9 @@
         app:defaultNavHost="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintBottom_toTopOf="@id/topBorderBottomNavigation"
         app:layout_constraintTop_toBottomOf="@id/appBar"
         app:navGraph="@navigation/app_navigation" />
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/bottomToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:layout_scrollFlags="scroll"
-        app:layout_constraintTop_toBottomOf="@id/nav_host_fragment"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
-        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
