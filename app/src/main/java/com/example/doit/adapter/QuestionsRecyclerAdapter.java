@@ -57,7 +57,6 @@ public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecy
     //Will be call for every item..
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         assert listData != null;
-        Toast.makeText(activity.getApplicationContext(), localHelper.getLocale(), Toast.LENGTH_SHORT).show();
         if(localHelper.getLocale().equals("he"))
             holder.question.setText(listData.get(position).getHe().getQuestionText());
         else if(localHelper.getLocale().equals("en"))

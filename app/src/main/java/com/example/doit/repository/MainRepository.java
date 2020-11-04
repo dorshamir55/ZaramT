@@ -71,8 +71,8 @@ public class MainRepository implements IMainRepository{
     }
 
     @Override
-    public void getListOfQuestions(Consumer<List<NewQuestion>> consumerList, String category) {
-        remoteDataSource.fetchAllQuestions(consumerList, category);
+    public void getListOfQuestions(Consumer<List<NewQuestion>> consumerList) {
+        remoteDataSource.fetchAllQuestions(consumerList);
     }
 
     private void doAsynch(Runnable task) {

@@ -12,5 +12,5 @@ import java.util.List;
 public interface IMainRemoteDataSource {
     public void fetchQuestionsPosts(Date fromDate, Consumer<List<QuestionPostData>> consumer);
     public void removePost(String id, Runnable onFinish);
-    public void fetchAllQuestions(Consumer<List<NewQuestion>> consumerList, String category);
+    public void fetchAllQuestions(Consumer<List<NewQuestion>> consumerList);
 }

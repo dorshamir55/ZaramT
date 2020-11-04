@@ -45,7 +45,7 @@ public class MainViewModel extends AndroidViewModel implements IMainViewModel {
     }
 
     @Override
-    public void getListOfQuestions(Consumer<List<NewQuestion>> consumerList, String category) {
-        mainRepository.getListOfQuestions(consumerList, category);
+    public void getListOfQuestions(Consumer<List<NewQuestion>> consumerList) {
+        mainRepository.getListOfQuestions(consumerList);
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ import com.example.doit.R;
 import com.example.doit.adapter.PostsRecyclerAdapter;
 import com.example.doit.adapter.QuestionsRecyclerAdapter;
 import com.example.doit.model.Consumer;
+import com.example.doit.model.LocalHelper;
 import com.example.doit.model.NewQuestion;
 import com.example.doit.model.Question;
 import com.example.doit.viewmodel.IMainViewModel;
@@ -37,9 +39,11 @@ import java.util.stream.Collectors;
 public class AddPostFragment extends Fragment {
     private IMainViewModel viewModel = null;
     private QuestionsRecyclerAdapter adapter;
+    private LocalHelper localHelper;
 
     private Spinner categoryS, questionsS;
     private ArrayAdapter categorySpinnerAdapter, questionsSpinnerAdapter;
+    private List<NewQuestion> currentQuestionsList, allQuestionsList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,21 @@ public class AddPostFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_post, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        localHelper = new LocalHelper(getActivity());
+        Consumer<List<NewQuestion>> consumerList = new Consumer<List<NewQuestion>>() {
+            @Override
+            public void apply(List<NewQuestion> questionsList) {
+                allQuestionsList = questionsList;
+                adapter.setData(allQuestionsList);
+                adapter.notifyDataSetChanged();
+            }
+        };
+        viewModel.getListOfQuestions(consumerList);
     }
 
     @Override
@@ -78,28 +97,20 @@ public class AddPostFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(adapter);
 
-//        viewModel.getQuestionsLiveData().observe(getViewLifecycleOwner(), questionsList -> {
-//            adapter.setData(questionsList);
-//            adapter.notifyDataSetChanged();
-//        });
-
         categoryS.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = parent.getItemAtPosition(position).toString();
-                Consumer<List<NewQuestion>> consumerList = new Consumer<List<NewQuestion>>() {
-                    @Override
-                    public void apply(List<NewQuestion> questionsList) {
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                            questionsList = questionsList.stream()
-//                                    .filter(question -> question.getEn().getCategory().equals(selectedItem))
-//                                    .collect(Collectors.toList());
-//                        }
-                        adapter.setData(questionsList);
-                        adapter.notifyDataSetChanged();
-                    }
-                };
-                viewModel.getListOfQuestions(consumerList, selectedItem);
+                if(position != 0)
+                    if(localHelper.getLocale().equals("en"))
+                        currentQuestionsList = allQuestionsList.stream().filter(question -> question.getEn().getCategory().equals(selectedItem)).collect(Collectors.toList());
+                    else
+                        currentQuestionsList = allQuestionsList.stream().filter(question -> question.getHe().getCategory().equals(selectedItem)).collect(Collectors.toList());
+                else
+                    currentQuestionsList = allQuestionsList;
+                adapter.setData(currentQuestionsList);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -107,14 +118,5 @@ public class AddPostFragment extends Fragment {
 
             }
         });
-
-//        Consumer<List<NewQuestion>> consumerList = new Consumer<List<NewQuestion>>() {
-//            @Override
-//            public void apply(List<NewQuestion> questionsList) {
-//                adapter.setData(questionsList);
-//                adapter.notifyDataSetChanged();
-//            }
-//        };
-//        viewModel.getListOfQuestions(consumerList);
     }
 }

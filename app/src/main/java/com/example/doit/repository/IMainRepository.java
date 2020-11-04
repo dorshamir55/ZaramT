@@ -12,5 +12,5 @@ public interface IMainRepository {
     public void loadAds(Runnable onFinish);
     public LiveData<List<QuestionPostData>> getPostsLiveData();
     public void deletePost(QuestionPostData questionPostData, Runnable onFinish);
-    public void getListOfQuestions(Consumer<List<NewQuestion>> consumerList, String category);
+    public void getListOfQuestions(Consumer<List<NewQuestion>> consumerList);
 }

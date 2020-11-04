@@ -73,8 +73,8 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
     }
 
     @Override
-    public void fetchAllQuestions(Consumer<List<NewQuestion>> consumerList, String category) {
-        Query query = db.collection(NewQuestion.TABLE_NAME);//.whereEqualTo("category", category);
+    public void fetchAllQuestions(Consumer<List<NewQuestion>> consumerList) {
+        Query query = db.collection(NewQuestion.TABLE_NAME);
         query.get()
                 .addOnCompleteListener(task -> {
                     List<NewQuestion> data = null;

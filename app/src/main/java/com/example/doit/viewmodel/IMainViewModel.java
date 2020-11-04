@@ -12,6 +12,6 @@ public interface IMainViewModel {
     public LiveData<List<QuestionPostData>> getPostsLiveData();
     public void loadAds(Runnable onFinish);
     public void deletePost(QuestionPostData questionPostData);
-    public void getListOfQuestions(Consumer<List<NewQuestion>> consumerList, String category);
+    public void getListOfQuestions(Consumer<List<NewQuestion>> consumerList);
 }
 
