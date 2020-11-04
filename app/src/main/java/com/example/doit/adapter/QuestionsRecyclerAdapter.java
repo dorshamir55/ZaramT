@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -19,12 +21,13 @@ import com.example.doit.model.LocalHelper;
 import com.example.doit.model.NewQuestion;
 import com.example.doit.model.QuestionPostData;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecyclerAdapter.RecyclerViewHolder> {
+public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecyclerAdapter.RecyclerViewHolder> implements Filterable {
 
     @Nullable
-    private List<NewQuestion> listData;
+    private List<NewQuestion> listData, listDataFull;
     private QuestionsRecyclerListener listener;
     private LocalHelper localHelper;
     private Activity activity;
@@ -36,6 +39,7 @@ public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecy
 
     public void setData(List<NewQuestion> data) {
         listData = data;
+        listDataFull = new ArrayList<NewQuestion>(data);
     }
 
     public List<NewQuestion> getData() {
@@ -57,7 +61,7 @@ public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecy
     //Will be call for every item..
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         assert listData != null;
-        
+
         if(localHelper.getLocale().equals("he"))
             holder.question.setText(listData.get(position).getHe().getQuestionText());
         else if(localHelper.getLocale().equals("en"))
@@ -98,4 +102,43 @@ public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecy
         void onItemClick(int position, View clickedView, NewQuestion clickedQuestion);
     }
 
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    private Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<NewQuestion> filterList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filterList.addAll(listData);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (NewQuestion newQuestion : listDataFull) {
+                    if (localHelper.getLocale().equals("en")) {
+                        if (newQuestion.getEn().getQuestionText().toLowerCase().contains(filterPattern)) {
+                            filterList.add(newQuestion);
+                        }
+                    } else if (localHelper.getLocale().equals("he")) {
+                        if (newQuestion.getHe().getQuestionText().toLowerCase().contains(filterPattern)) {
+                            filterList.add(newQuestion);
+                        }
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filterList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            listData.clear();
+            listData.addAll((List)results.values);
+            notifyDataSetChanged();
+        }
+    };
 }

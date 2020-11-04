@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.SearchView;
 import android.widget.Spinner;
 
 import com.bumptech.glide.request.transition.Transition;
@@ -47,10 +48,12 @@ public class AddPostFragment extends Fragment {
     private Spinner categoryS, questionsS;
     private ArrayAdapter categorySpinnerAdapter, questionsSpinnerAdapter;
     private List<NewQuestion> currentQuestionsList, allQuestionsList;
+    private SearchView searchView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         adapter = new QuestionsRecyclerAdapter(getActivity());
     }
 
@@ -112,8 +115,10 @@ public class AddPostFragment extends Fragment {
                         currentQuestionsList = allQuestionsList.stream().filter(question -> question.getHe().getCategory().equals(selectedItem)).collect(Collectors.toList());
                 else
                     currentQuestionsList = allQuestionsList;
-                adapter.setData(currentQuestionsList);
-                adapter.notifyDataSetChanged();
+                if(currentQuestionsList != null) {
+                    adapter.setData(currentQuestionsList);
+                    adapter.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -127,7 +132,42 @@ public class AddPostFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-//        getActivity().getMenuInflater().inflate(R.menu.search_menu, menu);
-//        MenuItem item = menu.findItem(R.id.search_bar);
+//        inflater.inflate(R.menu.search_menu, menu);
+//
+//        MenuItem searchItem = menu.findItem(R.id.action_search);
+//        SearchView searchView = (SearchView) searchItem.getActionView();
+//
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                adapter.getFilter().filter(newText);
+//                return  false;
+//            }
+//        });
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return  false;
+            }
+        });
     }
 }

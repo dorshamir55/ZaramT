@@ -18,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         manager.beginTransaction().add(R.id.nav_host_fragment, new HomeFragment()).commit();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(Color.WHITE);
+        //toolbar.setTitleTextColor(Color.BLACK);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.action_search:
+                        switchToHomeFragment();
 
                         break;
 
@@ -229,5 +231,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         auth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_menu, menu);
+        return true;
     }
 }

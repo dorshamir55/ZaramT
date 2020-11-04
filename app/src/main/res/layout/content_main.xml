@@ -22,6 +22,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll"
+            app:collapseIcon="@drawable/ic_search_black"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <TextView
