@@ -1,6 +1,8 @@
 package com.example.doit.model;
 
-public class QuestionLanguage {
+import java.io.Serializable;
+
+public class QuestionLanguage implements Serializable {
     private String category;
     private String questionText;
 

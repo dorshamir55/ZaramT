@@ -5,51 +5,60 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.AddPostFragment">
-        <Spinner
-            android:id="@+id/choose_category_spinner"
+        <FrameLayout
+            android:id="@+id/category_frame_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/bubblegum_sans"
-            android:textStyle="bold"
-            android:layout_margin="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:entries="@array/category_list"/>
+            android:background="@drawable/view_style"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            tools:ignore="MissingConstraints">
+                <Spinner
+                    android:id="@+id/choose_category_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bubblegum_sans"
+                    android:textStyle="bold"
+                    android:popupBackground="@drawable/view_style"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:entries="@array/category_list"/>
+        </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/questionsRecycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/choose_category_spinner" />
+            app:layout_constraintTop_toBottomOf="@id/category_frame_layout" />
 
 
-<!--        <Spinner-->
-<!--            android:id="@+id/choose_question_spinner"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:fontFamily="@font/bubblegum_sans"-->
-<!--            android:textStyle="bold"-->
-<!--            android:layout_margin="15dp"/>-->
+        <!--        <Spinner-->
+        <!--            android:id="@+id/choose_question_spinner"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:fontFamily="@font/bubblegum_sans"-->
+        <!--            android:textStyle="bold"-->
+        <!--            android:layout_margin="15dp"/>-->
 
-<!--        <Spinner-->
-<!--            android:id="@+id/choose_answer_spinner"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:fontFamily="@font/bubblegum_sans"-->
-<!--            android:textStyle="bold"-->
-<!--            android:layout_margin="15dp"/>-->
+        <!--        <Spinner-->
+        <!--            android:id="@+id/choose_answer_spinner"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:fontFamily="@font/bubblegum_sans"-->
+        <!--            android:textStyle="bold"-->
+        <!--            android:layout_margin="15dp"/>-->
 
-<!--        <Button-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@string/post"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:background="@drawable/button_style"/>-->
-<!--    </LinearLayout>-->
+        <!--        <Button-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="@string/post"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:background="@drawable/button_style"/>-->
+        <!--    </LinearLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

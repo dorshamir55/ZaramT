@@ -11,6 +11,5 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="elevation">0dp</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-
     </style>
 </resources>

@@ -1,16 +1,12 @@
 package com.example.doit.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,12 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.doit.R;
 import com.example.doit.model.LocalHelper;
 import com.example.doit.model.NewQuestion;
-import com.example.doit.model.QuestionPostData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecyclerAdapter.RecyclerViewHolder> implements Filterable {
+public class AnswersRecyclerAdapter extends RecyclerView.Adapter<AnswersRecyclerAdapter.RecyclerViewHolder> implements Filterable {
 
     @Nullable
     private List<NewQuestion> listData, listDataFull;
@@ -32,7 +27,7 @@ public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecy
     private LocalHelper localHelper;
     private Activity activity;
 
-    public QuestionsRecyclerAdapter(Activity activity) {
+    public AnswersRecyclerAdapter(Activity activity) {
         this.activity = activity;
         this.localHelper = new LocalHelper(activity);
     }

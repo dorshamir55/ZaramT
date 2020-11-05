@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         manager.beginTransaction().add(R.id.nav_host_fragment, new HomeFragment()).commit();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        //toolbar.setTitleTextColor(Color.BLACK);
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -237,6 +237,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem.setVisible(false);
         return true;
     }
 }

@@ -1,12 +1,17 @@
 package com.example.doit.ui;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,11 +49,13 @@ public class AddPostFragment extends Fragment {
     private IMainViewModel viewModel = null;
     private QuestionsRecyclerAdapter adapter;
     private LocalHelper localHelper;
+    private Toolbar toolbar;
 
     private Spinner categoryS, questionsS;
     private ArrayAdapter categorySpinnerAdapter, questionsSpinnerAdapter;
     private List<NewQuestion> currentQuestionsList, allQuestionsList;
     private SearchView searchView;
+    private MenuItem searchItem;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +72,12 @@ public class AddPostFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        searchItem.setVisible(false);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         localHelper = new LocalHelper(getActivity());
@@ -77,6 +90,8 @@ public class AddPostFragment extends Fragment {
             }
         };
         viewModel.getListOfQuestions(consumerList);
+
+        toolbar = getActivity().findViewById(R.id.toolbar);
     }
 
     @Override
@@ -103,21 +118,39 @@ public class AddPostFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(adapter);
 
+        adapter.setRecyclerListener(new QuestionsRecyclerAdapter.QuestionsRecyclerListener() {
+            @Override
+            public void onItemClick(int position, View clickedView, NewQuestion clickedQuestion) {
+                ChooseAnswersFragment chooseAnswerFragment = new ChooseAnswersFragment();
+                Bundle bundle = new Bundle();
+                //bundle.putString("questionID", clickedQuestion.getId());
+                bundle.putSerializable("question", clickedQuestion);
+                chooseAnswerFragment.setArguments(bundle);
+
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.nav_host_fragment, chooseAnswerFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+
         categoryS.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = parent.getItemAtPosition(position).toString();
-                if(position != 0)
-                    if(localHelper.getLocale().equals("en"))
-                        currentQuestionsList = allQuestionsList.stream().filter(question -> question.getEn().getCategory().equals(selectedItem)).collect(Collectors.toList());
+                if(allQuestionsList != null) {
+                    if (position != 0)
+                        if (localHelper.getLocale().equals("en"))
+                            currentQuestionsList = allQuestionsList.stream().filter(question -> question.getEn().getCategory().equals(selectedItem)).collect(Collectors.toList());
+                        else
+                            currentQuestionsList = allQuestionsList.stream().filter(question -> question.getHe().getCategory().equals(selectedItem)).collect(Collectors.toList());
                     else
-                        currentQuestionsList = allQuestionsList.stream().filter(question -> question.getHe().getCategory().equals(selectedItem)).collect(Collectors.toList());
-                else
-                    currentQuestionsList = allQuestionsList;
-                if(currentQuestionsList != null) {
+                        currentQuestionsList = new ArrayList<>(allQuestionsList);
+
                     adapter.setData(currentQuestionsList);
                     adapter.notifyDataSetChanged();
+                    searchView.setQuery("", false);
                 }
             }
 
@@ -132,30 +165,15 @@ public class AddPostFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-//        inflater.inflate(R.menu.search_menu, menu);
-//
-//        MenuItem searchItem = menu.findItem(R.id.action_search);
-//        SearchView searchView = (SearchView) searchItem.getActionView();
-//
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                adapter.getFilter().filter(newText);
-//                return  false;
-//            }
-//        });
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem = menu.findItem(R.id.action_search);
+        searchItem.setVisible(true);
         searchView = (SearchView) searchItem.getActionView();
+        //searchView.setBackgroundColor(getResources().getColor(R.color.toolbarColor));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
