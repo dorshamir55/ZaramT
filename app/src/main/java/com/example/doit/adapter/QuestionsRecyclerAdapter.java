@@ -38,8 +38,10 @@ public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecy
     }
 
     public void setData(List<NewQuestion> data) {
-        listData = new ArrayList<>(data);
-        listDataFull = new ArrayList<NewQuestion>(data);
+        if(data!=null) {
+            listData = new ArrayList<>(data);
+            listDataFull = new ArrayList<NewQuestion>(data);
+        }
     }
 
     public List<NewQuestion> getData() {

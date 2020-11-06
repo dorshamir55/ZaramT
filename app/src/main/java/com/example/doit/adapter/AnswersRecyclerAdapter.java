@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -14,16 +16,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doit.R;
 import com.example.doit.model.LocalHelper;
+import com.example.doit.model.NewAnswer;
 import com.example.doit.model.NewQuestion;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnswersRecyclerAdapter extends RecyclerView.Adapter<AnswersRecyclerAdapter.RecyclerViewHolder> implements Filterable {
+public class AnswersRecyclerAdapter extends RecyclerView.Adapter<AnswersRecyclerAdapter.RecyclerViewHolder> {
+
 
     @Nullable
-    private List<NewQuestion> listData, listDataFull;
-    private QuestionsRecyclerListener listener;
+    private List<NewAnswer> listData;
+    private AnswersRecyclerListener listener;
     private LocalHelper localHelper;
     private Activity activity;
 
@@ -32,23 +36,23 @@ public class AnswersRecyclerAdapter extends RecyclerView.Adapter<AnswersRecycler
         this.localHelper = new LocalHelper(activity);
     }
 
-    public void setData(List<NewQuestion> data) {
-        listData = new ArrayList<>(data);
-        listDataFull = new ArrayList<NewQuestion>(data);
+    public void setData(List<NewAnswer> data) {
+        if(data!=null)
+            listData = new ArrayList<>(data);
     }
 
-    public List<NewQuestion> getData() {
+    public List<NewAnswer> getData() {
         return listData;
     }
 
-    public void setRecyclerListener(QuestionsRecyclerListener listener) {
+    public void setRecyclerListener(AnswersRecyclerListener listener) {
         this.listener = listener;
     }
 
     @NonNull
     @Override
     public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.question_card_content, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.answer_card_content, parent, false);
         return new RecyclerViewHolder(view);
     }
 
@@ -58,9 +62,9 @@ public class AnswersRecyclerAdapter extends RecyclerView.Adapter<AnswersRecycler
         assert listData != null;
 
         if(localHelper.getLocale().equals("he"))
-            holder.question.setText(listData.get(position).getHe().getQuestionText());
+            holder.answer.setText(listData.get(position).getHe().getAnswerText());
         else if(localHelper.getLocale().equals("en"))
-            holder.question.setText(listData.get(position).getEn().getQuestionText());
+            holder.answer.setText(listData.get(position).getEn().getAnswerText());
 //        if(listData.get(position).getImagesURL() != null) {
 //            Glide.with(holder.imageView.getContext())
 //                    .load(listData.get(position).getImagesURL().get(0))
@@ -78,64 +82,29 @@ public class AnswersRecyclerAdapter extends RecyclerView.Adapter<AnswersRecycler
 
     class RecyclerViewHolder extends RecyclerView.ViewHolder
     {
-        private TextView question;
+        TextView answer;
+        CheckBox checkBox;
 
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
-            question = itemView.findViewById(R.id.question_cell_question);
+            answer = itemView.findViewById(R.id.answer_cell_answer);
+            checkBox = itemView.findViewById(R.id.answer_checkBox);
 
-            itemView.setOnClickListener(view -> {
-                if(listener != null) {
-                    assert listData != null;
-                    listener.onItemClick(getAdapterPosition(), view, listData.get(getAdapterPosition()));
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(listener != null) {
+                        assert listData != null;
+                        listener.onCheckChange(getAdapterPosition(), isChecked, buttonView, listData.get(getAdapterPosition()));
+                    }
                 }
             });
         }
     }
 
-    public static interface QuestionsRecyclerListener {
-        void onItemClick(int position, View clickedView, NewQuestion clickedQuestion);
+    public static interface AnswersRecyclerListener {
+        //void onItemClick(int position, View clickedView, NewAnswer clickedAnswer);
+        void onCheckChange(int position, boolean isChecked,CompoundButton buttonView, NewAnswer clickedAnswer);
     }
 
-    @Override
-    public Filter getFilter() {
-        return filter;
-    }
-
-    private Filter filter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<NewQuestion> filterList = new ArrayList<>();
-            if (constraint == null || constraint.length() == 0) {
-                filterList.addAll(listData);
-            } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-
-                for (NewQuestion newQuestion : listDataFull) {
-                    if (localHelper.getLocale().equals("en")) {
-                        if (newQuestion.getEn().getQuestionText().toLowerCase().contains(filterPattern)) {
-                            filterList.add(newQuestion);
-                        }
-                    } else if (localHelper.getLocale().equals("he")) {
-                        if (newQuestion.getHe().getQuestionText().toLowerCase().contains(filterPattern)) {
-                            filterList.add(newQuestion);
-                        }
-                    }
-                }
-            }
-
-            FilterResults results = new FilterResults();
-            results.values = filterList;
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            if(listData != null){
-                listData.clear();
-                listData.addAll((List)results.values);
-                notifyDataSetChanged();
-            }
-        }
-    };
 }

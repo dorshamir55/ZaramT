@@ -8,7 +8,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -49,10 +48,9 @@ public class AddPostFragment extends Fragment {
     private IMainViewModel viewModel = null;
     private QuestionsRecyclerAdapter adapter;
     private LocalHelper localHelper;
-    private Toolbar toolbar;
 
-    private Spinner categoryS, questionsS;
-    private ArrayAdapter categorySpinnerAdapter, questionsSpinnerAdapter;
+    private Spinner categoryS;
+    private ArrayAdapter categorySpinnerAdapter;
     private List<NewQuestion> currentQuestionsList, allQuestionsList;
     private SearchView searchView;
     private MenuItem searchItem;
@@ -90,8 +88,6 @@ public class AddPostFragment extends Fragment {
             }
         };
         viewModel.getListOfQuestions(consumerList);
-
-        toolbar = getActivity().findViewById(R.id.toolbar);
     }
 
     @Override
@@ -101,7 +97,6 @@ public class AddPostFragment extends Fragment {
         viewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
 
         categoryS = view.findViewById(R.id.choose_category_spinner);
-        //questionsS = view.findViewById(R.id.choose_question_spinner);
 
         String[] categoryArray = getResources().getStringArray(R.array.category_list);
         List<String> categoryList = new ArrayList<>(Arrays.asList(categoryArray));
@@ -173,7 +168,6 @@ public class AddPostFragment extends Fragment {
         searchItem = menu.findItem(R.id.action_search);
         searchItem.setVisible(true);
         searchView = (SearchView) searchItem.getActionView();
-        //searchView.setBackgroundColor(getResources().getColor(R.color.toolbarColor));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

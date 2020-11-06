@@ -71,6 +71,6 @@
     <string name="english">English</string>
     <string name="choose_language">Choose language</string>
     <string name="language_changed">Language was changed!</string>
+    <string name="max_answers_message">You can\'t choose over 4 answers</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
