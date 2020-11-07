@@ -8,8 +8,9 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import java.io.Serializable;
 
+
 @IgnoreExtraProperties  // For Firebase deserialization
-public class Answer implements Serializable {
+public class AnswerFireStore implements Serializable {
     public static final String TABLE_NAME = "answers";
 
     @NotNull
@@ -19,22 +20,22 @@ public class Answer implements Serializable {
     @Embedded
     private AnswerLanguage he;
 
-    public Answer() {
+    public AnswerFireStore() {
 
     }
 
-    public Answer(AnswerLanguage en, AnswerLanguage he) {
+    public AnswerFireStore(AnswerLanguage en, AnswerLanguage he) {
         this.en = en;
         this.he = he;
     }
 
-    public Answer(String id, AnswerLanguage en, AnswerLanguage he) {
+    public AnswerFireStore(String id, AnswerLanguage en, AnswerLanguage he) {
         this.id = id;
         this.en = en;
         this.he = he;
     }
 
-    public <T extends Answer> T withId(String id) {
+    public <T extends AnswerFireStore> T withId(String id) {
         this.id = id;
         return (T)this;
     }

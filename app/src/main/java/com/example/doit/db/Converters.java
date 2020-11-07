@@ -2,7 +2,7 @@ package com.example.doit.db;
 
 import androidx.room.TypeConverter;
 
-import com.example.doit.model.Answer;
+import com.example.doit.model.AnswerFireStore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -53,17 +53,17 @@ public class Converters
     }
 
     @TypeConverter
-    public static List<Answer> stringToAnswers(String json) {
+    public static List<AnswerFireStore> stringToAnswers(String json) {
         Gson gson = new Gson();
-        Type type = new TypeToken<List<Answer>>() {}.getType();
-        List<Answer> measurements = gson.fromJson(json, type);
+        Type type = new TypeToken<List<AnswerFireStore>>() {}.getType();
+        List<AnswerFireStore> measurements = gson.fromJson(json, type);
         return measurements;
     }
 
     @TypeConverter
-    public static String answersToString(List<Answer> list) {
+    public static String answersToString(List<AnswerFireStore> list) {
         Gson gson = new Gson();
-        Type type = new TypeToken<List<Answer>>() {}.getType();
+        Type type = new TypeToken<List<AnswerFireStore>>() {}.getType();
         String json = gson.toJson(list, type);
         return json;
     }

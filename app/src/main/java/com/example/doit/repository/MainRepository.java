@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.doit.db.AdDAO;
 import com.example.doit.db.AppDatabase;
-import com.example.doit.model.Answer;
+import com.example.doit.model.AnswerFireStore;
 import com.example.doit.model.AnswerInQuestion;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.QuestionFireStore;
@@ -77,7 +77,7 @@ public class MainRepository implements IMainRepository{
     }
 
     @Override
-    public void getListOfAnswers(Consumer<List<Answer>> consumerList, List<AnswerInQuestion> answerInQuestions) {
+    public void getListOfAnswers(Consumer<List<AnswerFireStore>> consumerList, List<AnswerInQuestion> answerInQuestions) {
         remoteDataSource.fetchAnswers(consumerList, answerInQuestions);
     }
 

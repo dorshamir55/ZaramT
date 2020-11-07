@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import com.example.doit.R;
 import com.example.doit.adapter.AnswersRecyclerAdapter;
-import com.example.doit.model.Answer;
+import com.example.doit.model.AnswerFireStore;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.LocalHelper;
 import com.example.doit.model.AnswerInQuestion;
@@ -42,7 +42,7 @@ public class ChooseAnswersFragment extends Fragment {
     private LocalHelper localHelper;
 
     private List<AnswerInQuestion> answersIDList;
-    private List<Answer> checkedAnswersList;
+    private List<AnswerFireStore> checkedAnswersList;
     private QuestionFireStore question;
     private TextView questionTextView;
     private CheckBox answerCheckBox;
@@ -91,9 +91,9 @@ public class ChooseAnswersFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(adapter);
 
-        Consumer<List<Answer>> consumerList = new Consumer<List<Answer>>() {
+        Consumer<List<AnswerFireStore>> consumerList = new Consumer<List<AnswerFireStore>>() {
             @Override
-            public void apply(List<Answer> answerList) {
+            public void apply(List<AnswerFireStore> answerList) {
                 adapter.setData(answerList);
                 adapter.notifyDataSetChanged();
             }
@@ -113,7 +113,7 @@ public class ChooseAnswersFragment extends Fragment {
 //                bundleToService.putSerializable("question", question);
 //                bundleToService.putParcelable("answers", (Parcelable) checkedAnswersList);
                 intent.putExtra("question", question);
-                intent.putExtra("answers", (ArrayList<Answer>)checkedAnswersList);
+                intent.putExtra("answers", (ArrayList<AnswerFireStore>)checkedAnswersList);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                     getActivity().startForegroundService(intent);
@@ -126,7 +126,7 @@ public class ChooseAnswersFragment extends Fragment {
 
         adapter.setRecyclerListener(new AnswersRecyclerAdapter.AnswersRecyclerListener() {
             @Override
-            public void onCheckChange(int position, boolean isChecked, CompoundButton buttonView, Answer clickedAnswer) {
+            public void onCheckChange(int position, boolean isChecked, CompoundButton buttonView, AnswerFireStore clickedAnswer) {
                 View view = (View) buttonView.getParent();
                 if(isChecked) {
                     if(amountOfAnswers>=MAX_ANSWERS) {

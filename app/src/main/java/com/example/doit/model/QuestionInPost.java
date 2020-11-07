@@ -4,10 +4,10 @@ import androidx.room.Embedded;
 
 import com.esotericsoftware.kryo.NotNull;
 import com.google.firebase.firestore.IgnoreExtraProperties;
-import com.google.gson.annotations.SerializedName;
 
 @IgnoreExtraProperties  // For Firebase deserialization
-public class Question {
+public class QuestionInPost {
+
     @NotNull
     private String questionID;
     @Embedded(prefix = "english_")
@@ -15,11 +15,11 @@ public class Question {
     @Embedded(prefix = "hebrew_")
     private QuestionLanguage he;
 
-    public Question() {
+    public QuestionInPost() {
 
     }
 
-    public Question(String questionID, QuestionLanguage en, QuestionLanguage he) {
+    public QuestionInPost(String questionID, QuestionLanguage en, QuestionLanguage he) {
         this.questionID = questionID;
         this.en = en;
         this.he = he;

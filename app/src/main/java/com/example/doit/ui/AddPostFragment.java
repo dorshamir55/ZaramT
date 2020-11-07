@@ -116,7 +116,7 @@ public class AddPostFragment extends Fragment {
                 chooseAnswerFragment.setArguments(bundle);
 
                 FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment, chooseAnswerFragment, "ChooseAnswersFragment").commit();
+                fragmentTransaction.replace(R.id.nav_host_fragment, chooseAnswerFragment).commit();
 //                fragmentTransaction.addToBackStack(null);
 //                fragmentTransaction.commit();
             }

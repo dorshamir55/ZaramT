@@ -29,9 +29,9 @@ public class QuestionPostData {
     private String postedUserId; // User document id which is also the authentication id.
 
     @Embedded
-    private Question question;
-    
-    private List<Answer> answers;
+    private QuestionInPost question;
+
+    private List<AnswerFireStore> answers;
 
     @ServerTimestamp
     private Date updateDate;  // update (also created) date - from Firebase
@@ -41,7 +41,7 @@ public class QuestionPostData {
     public QuestionPostData() {
     }
 
-    public QuestionPostData(String postedUserId, Question question, List<Answer> answers) {
+    public QuestionPostData(String postedUserId, QuestionInPost question, List<AnswerFireStore> answers) {
         this.postedUserId = postedUserId;
         this.question = question;
         this.answers = answers;
@@ -71,19 +71,19 @@ public class QuestionPostData {
         this.postedUserId = postedUserId;
     }
 
-    public Question getQuestion() {
+    public QuestionInPost getQuestion() {
         return question;
     }
 
-    public void setQuestion(Question question) {
+    public void setQuestion(QuestionInPost question) {
         this.question = question;
     }
 
-    public List<Answer> getAnswers() {
+    public List<AnswerFireStore> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(List<Answer> answers) {
+    public void setAnswers(List<AnswerFireStore> answers) {
         this.answers = answers;
     }
 

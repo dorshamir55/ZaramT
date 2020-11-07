@@ -16,9 +16,9 @@ import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.doit.R;
-import com.example.doit.model.Answer;
+import com.example.doit.model.AnswerFireStore;
 import com.example.doit.model.QuestionFireStore;
-import com.example.doit.model.Question;
+import com.example.doit.model.QuestionInPost;
 import com.example.doit.model.QuestionPostData;
 import com.example.doit.ui.OpeningScreenActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -47,11 +47,11 @@ public class UploadPostService extends Service
 
         QuestionFireStore oldQuestion = (QuestionFireStore) intent.getSerializableExtra("question");
 //        Toast.makeText(getApplicationContext(), oldQuestion.getId(), Toast.LENGTH_SHORT).show();
-        Question question = new Question(oldQuestion.getId(), oldQuestion.getEn(), oldQuestion.getHe());
-        List<Answer> oldAnswersList = (List<Answer>) intent.getSerializableExtra("answers");
-        List<Answer> answersList = new ArrayList<>();
-        for(Answer answer : oldAnswersList){
-            answersList.add(new Answer(answer.getAnswerID(), answer.getEn(), answer.getHe()));
+        QuestionInPost question = new QuestionInPost(oldQuestion.getId(), oldQuestion.getEn(), oldQuestion.getHe());
+        List<AnswerFireStore> oldAnswersList = (List<AnswerFireStore>) intent.getSerializableExtra("answers");
+        List<AnswerFireStore> answersList = new ArrayList<>();
+        for(AnswerFireStore answer : oldAnswersList){
+            answersList.add(new AnswerFireStore(answer.getAnswerID(), answer.getEn(), answer.getHe()));
         }
 
         final QuestionPostData data = new QuestionPostData("123", question, answersList);

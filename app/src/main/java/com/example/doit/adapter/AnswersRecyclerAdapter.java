@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doit.R;
-import com.example.doit.model.Answer;
+import com.example.doit.model.AnswerFireStore;
 import com.example.doit.model.LocalHelper;
 import com.example.doit.model.AnswerInQuestion;
 
@@ -24,7 +24,7 @@ public class AnswersRecyclerAdapter extends RecyclerView.Adapter<AnswersRecycler
 
 
     @Nullable
-    private List<Answer> listData;
+    private List<AnswerFireStore> listData;
     private AnswersRecyclerListener listener;
     private LocalHelper localHelper;
     private Activity activity;
@@ -34,12 +34,12 @@ public class AnswersRecyclerAdapter extends RecyclerView.Adapter<AnswersRecycler
         this.localHelper = new LocalHelper(activity);
     }
 
-    public void setData(List<Answer> data) {
+    public void setData(List<AnswerFireStore> data) {
         if(data!=null)
             listData = new ArrayList<>(data);
     }
 
-    public List<Answer> getData() {
+    public List<AnswerFireStore> getData() {
         return listData;
     }
 
@@ -102,7 +102,7 @@ public class AnswersRecyclerAdapter extends RecyclerView.Adapter<AnswersRecycler
 
     public static interface AnswersRecyclerListener {
         //void onItemClick(int position, View clickedView, NewAnswer clickedAnswer);
-        void onCheckChange(int position, boolean isChecked,CompoundButton buttonView, Answer clickedAnswer);
+        void onCheckChange(int position, boolean isChecked,CompoundButton buttonView, AnswerFireStore clickedAnswer);
     }
 
 }

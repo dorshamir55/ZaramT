@@ -1,6 +1,6 @@
 package com.example.doit.remote;
 
-import com.example.doit.model.Answer;
+import com.example.doit.model.AnswerFireStore;
 import com.example.doit.model.AnswerInQuestion;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.QuestionFireStore;
@@ -90,11 +90,11 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
     }
 
     @Override
-    public void fetchAnswers(Consumer<List<Answer>> consumerList, List<AnswerInQuestion> answerInQuestions) {
-        Query query = db.collection(Answer.TABLE_NAME);
+    public void fetchAnswers(Consumer<List<AnswerFireStore>> consumerList, List<AnswerInQuestion> answerInQuestions) {
+        Query query = db.collection(AnswerFireStore.TABLE_NAME);
         query.get()
                 .addOnCompleteListener(task -> {
-                    List<Answer> data = null;
+                    List<AnswerFireStore> data = null;
                     if (task.isSuccessful()) {
                         data = new ArrayList<>();
                         List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
@@ -102,7 +102,7 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
                             for (AnswerInQuestion answer : answerInQuestions) {
                                 for (DocumentSnapshot document : task.getResult().getDocuments())
                                     if (document.getId().equals(answer.getAnswerID()))
-                                        data.add(document.toObject(Answer.class).withId(document.getId()));
+                                        data.add(document.toObject(AnswerFireStore.class).withId(document.getId()));
                             }
                         }
                     } else {
