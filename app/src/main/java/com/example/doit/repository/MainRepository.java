@@ -49,10 +49,11 @@ public class MainRepository implements IMainRepository{
                             result.remove(i);
                             //Delete from FireStore if needed.
                         }
-                        else if(result.get(i).isVoted())
+                        else if(result.get(i).isVoted()) {
                             result.get(i).setVoted(false);
                             adDAO.deletePost(result.get(i));
-                        //Delete from Room & Insert later the updated.
+                            //Delete from Room & Insert later the updated.
+                        }
                     }
                     //insert remaining elements..
                     adDAO.insertAll(result);
