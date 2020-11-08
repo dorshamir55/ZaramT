@@ -1,6 +1,8 @@
 package com.example.doit.adapter;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,23 +13,25 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doit.R;
 import com.example.doit.model.AnswerInPost;
-import com.example.doit.model.BarChartHelper;
+import com.example.doit.model.PercentFormatter;
+import com.example.doit.model.PieChartHelper;
 import com.example.doit.model.LocalHelper;
 import com.example.doit.model.QuestionPostData;
-import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -71,6 +75,7 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
         return new RecyclerViewHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     //Will be call for every item..
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
@@ -118,33 +123,55 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
         return false;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void showResults(RecyclerViewHolder holder, int position) {
+        int i=0;
         holder.answersAndVote.setVisibility(View.GONE);
-//        BarChartHelper barChartHelper = new BarChartHelper(listData.get(position).getAnswers());
-        List<BarEntry> barEntries = new ArrayList<>();
+        PieChartHelper pieChartHelper = new PieChartHelper(listData.get(position).getAnswers());
+        List<PieEntry> pieEntries = new ArrayList<>();
+
         for(AnswerInPost answerInPost : listData.get(position).getAnswers()){
-//            int i=0;
-//            if(localHelper.getLocale().equals("en"))
-                barEntries.add(new BarEntry(1.2f, 100f));
-//            barEntries.add(new BarEntry(answerInPost.getEn().getAnswerText(), barChartHelper.getVotePercentages().get(i)));
+            if(localHelper.getLocale().equals("en"))
+                pieEntries.add(new PieEntry(pieChartHelper.getVotePercentages().get(i), answerInPost.getEn().getAnswerText()));
+            else if(localHelper.getLocale().equals("he"))
+                pieEntries.add(new PieEntry(pieChartHelper.getVotePercentages().get(i), answerInPost.getHe().getAnswerText()));
+            i++;
         }
-        BarDataSet barDataSet = new BarDataSet(barEntries, "answers");
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
-        BarData barData = new BarData(barDataSet);
-        barData.setBarWidth(0.9f);
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
+        int[] pieColors = new int[4];
+        pieColors[0] = activity.getResources().getColor(R.color.toolbarColor2);
+        pieColors[1] = activity.getResources().getColor(R.color.toolbarColor);
+        pieColors[2] = activity.getResources().getColor(R.color.toolbarColorLight);
+        pieColors[3] = activity.getResources().getColor(R.color.toolbarColorVeryLight);
+//        pieDataSet.setColors(ColorTemplate.createColors(pieColors));
+        pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
 
-        holder.barChart.setVisibility(View.VISIBLE);
+        PieData pieData = new PieData(pieDataSet);
+        pieData.setValueFormatter(new PercentFormatter());
 
-        holder.barChart.animateY(5000);
-        holder.barChart.setData(barData);
-        holder.barChart.setFitBars(true);
+        holder.pieChart.setData(pieData);
+        holder.pieChart.setUsePercentValues(true);
+        holder.pieChart.setVisibility(View.VISIBLE);
+        holder.pieChart.animateXY(5000,5000);
+        holder.pieChart.setEntryLabelColor(Color.BLACK);
+        holder.pieChart.setEntryLabelTextSize(8.5f);
+        holder.pieChart.setRotationAngle(45);
+
+        Legend legend = holder.pieChart.getLegend();
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        if(localHelper.getLocale().equals("en"))
+            legend.setDirection(Legend.LegendDirection.LEFT_TO_RIGHT);
+        else if(localHelper.getLocale().equals("he"))
+            legend.setDirection(Legend.LegendDirection.RIGHT_TO_LEFT);
+        legend.setWordWrapEnabled(true);
 
         Description description = new Description();
-        description.setText("Vote percentages");
-        holder.barChart.setDescription(description);
-//        holder.barChart.notifyDataSetChanged();
-//        holder.barChart.invalidate();
+        String descriptionString = activity.getResources().getString(R.string.voted) + pieChartHelper.getSumOfVotes();
+        description.setText(descriptionString);
+        holder.pieChart.setDescription(description);
+//        holder.pieChart.notifyDataSetChanged();
+        holder.pieChart.invalidate();
     }
 
     private boolean alreadyVoted(int position) {
@@ -163,7 +190,7 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
     class RecyclerViewHolder extends RecyclerView.ViewHolder
     {
         private LinearLayout answersAndVote;
-        private BarChart barChart;
+        private PieChart pieChart;
         private ImageView imageNickName, imageOptions;
         private TextView nickname;
         private TextView question;
@@ -174,7 +201,7 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
 
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
-            barChart = itemView.findViewById(R.id.barChar);
+            pieChart = itemView.findViewById(R.id.barChar);
             answersAndVote = itemView.findViewById(R.id.answers_and_vote_layout);
             imageNickName = itemView.findViewById(R.id.image_nickname_cell_post);
             imageOptions = itemView.findViewById(R.id.options_image_cell_post);

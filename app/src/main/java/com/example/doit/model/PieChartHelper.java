@@ -3,12 +3,12 @@ package com.example.doit.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BarChartHelper {
+public class PieChartHelper {
     private int sumOfVotes;
-    private List<Double> votePercentages;
+    private List<Float> votePercentages;
     private List<AnswerInPost> answersInPost;
 
-    public BarChartHelper(List<AnswerInPost> answersInPost) {
+    public PieChartHelper(List<AnswerInPost> answersInPost) {
         this.answersInPost = answersInPost;
         calculateSumOfVotesOfAnswers();
         calculateVoteAveragesOfAnswers();
@@ -23,16 +23,16 @@ public class BarChartHelper {
         int i=0;
         votePercentages = new ArrayList<>();
         for(AnswerInPost answerInPost : answersInPost) {
-            votePercentages.add((double) (answerInPost.getVotedUserIdList().size()/sumOfVotes*100));
+            votePercentages.add(Float.valueOf (answerInPost.getVotedUserIdList().size()/sumOfVotes*100));
             i++;
         }
     }
 
-    public List<Double> getVotePercentages() {
+    public List<Float> getVotePercentages() {
         return votePercentages;
     }
 
-    public void setVotePercentages(List<Double> voteAverages) {
+    public void setVotePercentages(List<Float> voteAverages) {
         this.votePercentages = voteAverages;
     }
 
@@ -42,5 +42,13 @@ public class BarChartHelper {
 
     public void setAnswersInPost(List<AnswerInPost> answersInPost) {
         this.answersInPost = answersInPost;
+    }
+
+    public int getSumOfVotes() {
+        return sumOfVotes;
+    }
+
+    public void setSumOfVotes(int sumOfVotes) {
+        this.sumOfVotes = sumOfVotes;
     }
 }

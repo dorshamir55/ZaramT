@@ -57,4 +57,5 @@
     <string name="posting_message">פעולה זו עשויה להימשך מספר שניות.</string>
     <string name="posting_title">מעלה...</string>
     <string name="delete">מחק</string>
+    <string name="voted">"הצביעו: "</string>
 </resources>

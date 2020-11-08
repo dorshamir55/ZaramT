@@ -79,5 +79,6 @@
     <string name="posting_title">Posting...</string>
     <string name="posting_message">This may take a few seconds.</string>
     <string name="delete">Delete</string>
+    <string name="voted">Voted:</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
