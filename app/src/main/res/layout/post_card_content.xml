@@ -139,6 +139,19 @@
                 android:text="@string/vote"
                 android:layout_gravity="bottom|end"/>
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/barChart_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/barChar"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_margin="10dp"
+                android:visibility="gone"/>
+
+        </LinearLayout>
     </LinearLayout>
     <View
         android:layout_width="match_parent"

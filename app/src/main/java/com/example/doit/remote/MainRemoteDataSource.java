@@ -121,9 +121,12 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
     }
 
     @Override
-    public void updateVotes(String id, List<AnswerInPost> answersInPost, int votedPosition, Runnable onFinish) {
+    public void updateVotes(String id, String currentUserId, List<AnswerInPost> answersInPost, int votedPosition, Runnable onFinish) {
         Map<String, Object> data = new HashMap<>();
-        answersInPost.get(votedPosition).setVotes(answersInPost.get(votedPosition).getVotes()+1);
+//        answersInPost.get(votedPosition).setVotes(answersInPost.get(votedPosition).getVotes()+1);
+        List<String> votedList = answersInPost.get(votedPosition).getVotedUserIdList();
+        votedList.add(currentUserId);
+        answersInPost.get(votedPosition).setVotedUserIdList(votedList);
         data.put("updateDate", FieldValue.serverTimestamp());
         data.put("voted", true);
         data.put("answers", answersInPost);

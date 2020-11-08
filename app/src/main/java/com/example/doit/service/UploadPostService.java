@@ -22,6 +22,8 @@ import com.example.doit.model.QuestionFireStore;
 import com.example.doit.model.QuestionInPost;
 import com.example.doit.model.QuestionPostData;
 import com.example.doit.ui.OpeningScreenActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -30,11 +32,14 @@ import java.util.List;
 public class UploadPostService extends Service
 {
     private static final int ID = 1;
-
+    private FirebaseAuth auth;
+    private FirebaseUser currentUser;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        auth = FirebaseAuth.getInstance();
+        currentUser = auth.getCurrentUser();
     }
 
     @Override
@@ -52,10 +57,10 @@ public class UploadPostService extends Service
         List<AnswerFireStore> oldAnswersList = (List<AnswerFireStore>) intent.getSerializableExtra("answers");
         List<AnswerInPost> answersList = new ArrayList<>();
         for(AnswerFireStore answer : oldAnswersList){
-            answersList.add(new AnswerInPost(answer.getAnswerID(), answer.getEn(), answer.getHe()));
+            answersList.add(new AnswerInPost(answer.getAnswerID(), answer.getEn(), answer.getHe(), new ArrayList<>()));
         }
 
-        final QuestionPostData data = new QuestionPostData("123", question, answersList);
+        final QuestionPostData data = new QuestionPostData(currentUser.getUid(), question, answersList);
         postQuestion(data);
         return Service.START_NOT_STICKY;
     }

@@ -11,12 +11,6 @@ public class UserData
     private String nickname;
     private String email;
 
-
-    public UserData(String nickname, String email, String imageURL) {
-        this.nickname = nickname;
-        this.email = email;
-    }
-
     public UserData(String nickname, String email) {
         this.nickname = nickname;
         this.email = email;

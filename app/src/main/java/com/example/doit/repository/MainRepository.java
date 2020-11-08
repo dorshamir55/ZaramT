@@ -50,7 +50,7 @@ public class MainRepository implements IMainRepository{
                             //Delete from FireStore if needed.
                         }
                         else if(result.get(i).isVoted()) {
-                            result.get(i).setVoted(false);
+//                            result.get(i).setVoted(false);
                             adDAO.deletePost(result.get(i));
                             //Delete from Room & Insert later the updated.
                         }
@@ -88,8 +88,8 @@ public class MainRepository implements IMainRepository{
     }
 
     @Override
-    public void voteOnPost(String id, List<AnswerInPost> answersInPost, int votedPosition, Runnable onFinish) {
-        remoteDataSource.updateVotes(id, answersInPost, votedPosition, onFinish);
+    public void voteOnPost(String id ,String currentUserId, List<AnswerInPost> answersInPost, int votedPosition, Runnable onFinish) {
+        remoteDataSource.updateVotes(id, currentUserId, answersInPost, votedPosition, onFinish);
     }
 
     private void doAsynch(Runnable task) {

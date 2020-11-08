@@ -35,12 +35,15 @@ import com.example.doit.model.QuestionPostData;
 import com.example.doit.viewmodel.IMainViewModel;
 import com.example.doit.viewmodel.MainViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-
+    private FirebaseAuth auth;
+    private FirebaseUser currentUser;
     private IMainViewModel viewModel = null;
     private SwipeRefreshLayout swipeContainer;
     private PostsRecyclerAdapter adapter;// = new PostsRecyclerAdapter(getActivity());
@@ -51,6 +54,8 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        auth = FirebaseAuth.getInstance();
+        currentUser = auth.getCurrentUser();
         adapter = new PostsRecyclerAdapter(getActivity());
 
         reloadAdsReceiver = new BroadcastReceiver() {
@@ -145,7 +150,7 @@ public class HomeFragment extends Fragment {
 
     private void vote(QuestionPostData clickedPost, int answerVoted){
         //clickedPost.getAnswers().get(answerPosition).setVotes(clickedPost.getAnswers().get(answerPosition).getVotes() + 1);
-        viewModel.voteOnPost(clickedPost.getId(), clickedPost.getAnswers(), answerVoted);
+        viewModel.voteOnPost(clickedPost.getId(), currentUser.getUid(), clickedPost.getAnswers(), answerVoted);
     }
 
     private void deletePost(int position, QuestionPostData clickedPost){
