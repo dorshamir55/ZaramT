@@ -123,7 +123,6 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
     @Override
     public void updateVotes(String id, String currentUserId, List<AnswerInPost> answersInPost, int votedPosition, Runnable onFinish) {
         Map<String, Object> data = new HashMap<>();
-//        answersInPost.get(votedPosition).setVotes(answersInPost.get(votedPosition).getVotes()+1);
         List<String> votedList = answersInPost.get(votedPosition).getVotedUserIdList();
         votedList.add(currentUserId);
         answersInPost.get(votedPosition).setVotedUserIdList(votedList);
@@ -136,6 +135,25 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
                     public void onSuccess(Void aVoid) {
                         if(onFinish != null)
                             onFinish.run();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void changeUpdatedToFalse(String id) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("voted", false);
+        db.collection(QuestionPostData.TABLE_NAME).document(id).set(data, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

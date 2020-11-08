@@ -1,10 +1,12 @@
 package com.example.doit.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PieChartHelper {
-    private int sumOfVotes;
+    private int sumOfVotes = 0;
     private List<Float> votePercentages;
     private List<AnswerInPost> answersInPost;
 
@@ -20,11 +22,13 @@ public class PieChartHelper {
     }
 
     private void calculateVoteAveragesOfAnswers() {
-        int i=0;
         votePercentages = new ArrayList<>();
         for(AnswerInPost answerInPost : answersInPost) {
-            votePercentages.add(Float.valueOf (answerInPost.getVotedUserIdList().size()/sumOfVotes*100));
-            i++;
+            if(sumOfVotes == 0)
+                votePercentages.add(Float.valueOf(0));
+            else
+                votePercentages.add(Float.valueOf (answerInPost.getVotedUserIdList().size()*100/sumOfVotes));
+//            Log.d("TAG", votePercentages.get(votePercentages.size()-1).toString());
         }
     }
 

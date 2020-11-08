@@ -51,6 +51,7 @@ public class MainRepository implements IMainRepository{
                         }
                         else if(result.get(i).isVoted()) {
 //                            result.get(i).setVoted(false);
+                            remoteDataSource.changeUpdatedToFalse(result.get(i).getId());
                             adDAO.deletePost(result.get(i));
                             //Delete from Room & Insert later the updated.
                         }

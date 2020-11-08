@@ -80,8 +80,8 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
     //Will be call for every item..
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         assert listData != null;
-        holder.nickname.setText(currentUser.getDisplayName());
-        holder.nickname.setText("Lionel Messi");
+        holder.nickname.setText(listData.get(position).getPostedUserId());
+//        holder.nickname.setText("Lionel Messi");
         if(localHelper.getLocale().equals("en")) {
             holder.question.setText(listData.get(position).getQuestion().getEn().getQuestionText());
             if(!alreadyVoted(position) && !isItMyPost(position)) {
@@ -119,8 +119,8 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
     }
 
     private boolean isItMyPost(int position) {
-//        return listData.get(position).getPostedUserId().equals(currentUser.getUid());
-        return false;
+        return listData.get(position).getPostedUserId().equals(currentUser.getUid());
+//        return false;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
