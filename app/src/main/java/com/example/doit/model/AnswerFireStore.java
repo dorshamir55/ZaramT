@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 
 @IgnoreExtraProperties  // For Firebase deserialization
-public class AnswerFireStore implements Serializable {
+public class AnswerFireStore implements Serializable, LanguageConverter {
     public static final String TABLE_NAME = "answers";
 
     @NotNull
@@ -40,6 +40,18 @@ public class AnswerFireStore implements Serializable {
         return (T)this;
     }
 
+    @Override
+    public String getTextByLanguage(String language) {
+        switch (language){
+            case "en":
+                return getEn().getAnswerText();
+            case "he":
+                return getHe().getAnswerText();
+            default:
+                return getEn().getAnswerText();
+        }
+    }
+
     @Exclude
     public String getAnswerID() {
         return id;
@@ -64,5 +76,6 @@ public class AnswerFireStore implements Serializable {
     public void setHe(AnswerLanguage he) {
         this.he = he;
     }
+
 }
 

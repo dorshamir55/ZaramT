@@ -80,5 +80,19 @@
     <string name="posting_message">This may take a few seconds.</string>
     <string name="delete">Delete</string>
     <string name="voted">Voted:</string>
+    <string name="choose_timer">How long is the post open?</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
     <!-- TODO: Remove or change this placeholder text -->
+
+    <string-array name="hours_list">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>@string/tv</item>
+        <item>@string/studies</item>
+    </string-array>
+    <string name="not_enough_time_message">Please fill in the message time!</string>
 </resources>

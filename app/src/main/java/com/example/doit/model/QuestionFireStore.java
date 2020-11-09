@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @IgnoreExtraProperties  // For Firebase deserialization
-public class QuestionFireStore implements Serializable {
+public class QuestionFireStore implements Serializable, LanguageConverter {
     public static final String TABLE_NAME = "questions";
 
     @NotNull
@@ -30,6 +30,18 @@ public class QuestionFireStore implements Serializable {
     public <T extends QuestionFireStore> T withId(String id) {
         this.id = id;
         return (T)this;
+    }
+
+    @Override
+    public String getTextByLanguage(String language) {
+        switch (language){
+            case "en":
+                return getEn().getQuestionText();
+            case "he":
+                return getHe().getQuestionText();
+            default:
+                return getEn().getQuestionText();
+        }
     }
 
     @Exclude

@@ -29,6 +29,7 @@ import com.example.doit.model.QuestionPostData;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -42,16 +43,19 @@ import java.util.List;
 public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdapter.RecyclerViewHolder> {
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
+    private double NO_VOTES = 0.0;
 
     @Nullable
     private List<QuestionPostData> listData;
     private PostsRecyclerListener listener;
     private LocalHelper localHelper;
     private Activity activity;
+    private String currentLanguage;
 
     public PostsRecyclerAdapter(Activity activity) {
         this.activity = activity;
         this.localHelper = new LocalHelper(activity);
+        this.currentLanguage = localHelper.getLocale();
         this.auth = FirebaseAuth.getInstance();
         this.currentUser = auth.getCurrentUser();
     }
@@ -82,32 +86,15 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
         assert listData != null;
         holder.nickname.setText(listData.get(position).getPostedUserId());
 //        holder.nickname.setText("Lionel Messi");
-        if(localHelper.getLocale().equals("en")) {
-            holder.question.setText(listData.get(position).getQuestion().getEn().getQuestionText());
-            if(!alreadyVoted(position) && !isItMyPost(position)) {
-                holder.answer1.setText(listData.get(position).getAnswers().get(0).getEn().getAnswerText());
-                holder.answer2.setText(listData.get(position).getAnswers().get(1).getEn().getAnswerText());
-                holder.answer3.setText(listData.get(position).getAnswers().get(2).getEn().getAnswerText());
-                holder.answer4.setText(listData.get(position).getAnswers().get(3).getEn().getAnswerText());
-            }
-            else{
-                //Show statistics
-                showResults(holder, position);
-            }
-        }
-        else if(localHelper.getLocale().equals("he")){
-            holder.question.setText(listData.get(position).getQuestion().getHe().getQuestionText());
-            if(!alreadyVoted(position) && !isItMyPost(position)) {
-                holder.answer1.setText(listData.get(position).getAnswers().get(0).getHe().getAnswerText());
-                holder.answer2.setText(listData.get(position).getAnswers().get(1).getHe().getAnswerText());
-                holder.answer3.setText(listData.get(position).getAnswers().get(2).getHe().getAnswerText());
-                holder.answer4.setText(listData.get(position).getAnswers().get(3).getHe().getAnswerText());
-            }
-            else{
-                //Show statistics
-                showResults(holder, position);
-            }
-        }
+        holder.question.setText(listData.get(position).getQuestion().getTextByLanguage(currentLanguage));
+        holder.answer1.setText(listData.get(position).getAnswers().get(0).getTextByLanguage(currentLanguage));
+        holder.answer2.setText(listData.get(position).getAnswers().get(1).getTextByLanguage(currentLanguage));
+        holder.answer3.setText(listData.get(position).getAnswers().get(2).getTextByLanguage(currentLanguage));
+        holder.answer4.setText(listData.get(position).getAnswers().get(3).getTextByLanguage(currentLanguage));
+
+        //Show statistics
+        showResults(holder, position);
+
 
 //        if(listData.get(position).getImagesURL() != null) {
 //            Glide.with(holder.imageView.getContext())
@@ -131,10 +118,10 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
         List<PieEntry> pieEntries = new ArrayList<>();
 
         for(AnswerInPost answerInPost : listData.get(position).getAnswers()){
-            if(localHelper.getLocale().equals("en"))
-                pieEntries.add(new PieEntry(pieChartHelper.getVotePercentages().get(i), answerInPost.getEn().getAnswerText()));
-            else if(localHelper.getLocale().equals("he"))
-                pieEntries.add(new PieEntry(pieChartHelper.getVotePercentages().get(i), answerInPost.getHe().getAnswerText()));
+
+            pieEntries.add(new PieEntry(pieChartHelper.getVotePercentages().get(i),
+                    pieChartHelper.getVotePercentages().get(i) != (float) NO_VOTES ?
+                            answerInPost.getTextByLanguage(currentLanguage) : ""));
             i++;
         }
 
@@ -159,10 +146,26 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
         holder.pieChart.setRotationAngle(45);
 
         Legend legend = holder.pieChart.getLegend();
+        List<LegendEntry> entries = new ArrayList<>();
+        ArrayList<PieEntry> yValues = new ArrayList<>();
+        i=0;
+        for(AnswerInPost answerInPost : listData.get(position).getAnswers()) {
+            yValues.add(new PieEntry(pieChartHelper.getVotePercentages().get(i), answerInPost.getTextByLanguage(currentLanguage)));
+            i++;
+        }
+
+        for (int j = 0; j < 4; j++) {
+            LegendEntry entry = new LegendEntry();
+            entry.formColor = ColorTemplate.MATERIAL_COLORS[j];
+            entry.label = yValues.get(j).getLabel() ;
+            entries.add(entry);
+        }
+        legend.setCustom(entries);
+
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        if(localHelper.getLocale().equals("en"))
+        if(currentLanguage.equals("en"))
             legend.setDirection(Legend.LegendDirection.LEFT_TO_RIGHT);
-        else if(localHelper.getLocale().equals("he"))
+        else if(currentLanguage.equals("he"))
             legend.setDirection(Legend.LegendDirection.RIGHT_TO_LEFT);
         legend.setWordWrapEnabled(true);
 

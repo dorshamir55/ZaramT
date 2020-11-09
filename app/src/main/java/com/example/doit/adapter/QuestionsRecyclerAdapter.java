@@ -26,10 +26,12 @@ public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecy
     private QuestionsRecyclerListener listener;
     private LocalHelper localHelper;
     private Activity activity;
+    private String currentLanguage;
 
     public QuestionsRecyclerAdapter(Activity activity) {
         this.activity = activity;
         this.localHelper = new LocalHelper(activity);
+        this.currentLanguage = localHelper.getLocale();
     }
 
     public void setData(List<QuestionFireStore> data) {
@@ -59,10 +61,8 @@ public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecy
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         assert listData != null;
 
-        if(localHelper.getLocale().equals("he"))
-            holder.question.setText(listData.get(position).getHe().getQuestionText());
-        else if(localHelper.getLocale().equals("en"))
-            holder.question.setText(listData.get(position).getEn().getQuestionText());
+
+        holder.question.setText(listData.get(position).getTextByLanguage(currentLanguage));
 //        if(listData.get(position).getImagesURL() != null) {
 //            Glide.with(holder.imageView.getContext())
 //                    .load(listData.get(position).getImagesURL().get(0))
@@ -114,14 +114,8 @@ public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecy
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
                 for (QuestionFireStore questionFireStore : listDataFull) {
-                    if (localHelper.getLocale().equals("en")) {
-                        if (questionFireStore.getEn().getQuestionText().toLowerCase().contains(filterPattern)) {
-                            filterList.add(questionFireStore);
-                        }
-                    } else if (localHelper.getLocale().equals("he")) {
-                        if (questionFireStore.getHe().getQuestionText().toLowerCase().contains(filterPattern)) {
-                            filterList.add(questionFireStore);
-                        }
+                    if (questionFireStore.getTextByLanguage(currentLanguage).toLowerCase().contains(filterPattern)) {
+                        filterList.add(questionFireStore);
                     }
                 }
             }

@@ -5,23 +5,22 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.AddPostFragment">
+
         <FrameLayout
             android:id="@+id/category_frame_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/view_style"
+            android:background="@drawable/button_style"
             android:padding="10dp"
             android:layout_margin="10dp"
-            tools:ignore="MissingConstraints">
+            app:layout_constraintTop_toBottomOf="@id/choose_timer_frame_layout"
+            tools:ignore="NotSibling">
                 <Spinner
                     android:id="@+id/choose_category_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/bubblegum_sans"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:entries="@array/category_list"/>
         </FrameLayout>
 

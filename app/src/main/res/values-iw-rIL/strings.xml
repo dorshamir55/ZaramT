@@ -58,4 +58,8 @@
     <string name="posting_title">מעלה...</string>
     <string name="delete">מחק</string>
     <string name="voted">"הצביעו: "</string>
+    <string name="choose_timer">כמה זמן הפוסט פתוח?</string>
+    <string name="hours">שעות</string>
+    <string name="minutes">דקות</string>
+    <string name="not_enough_time_message">אנא מלא את זמן ההודעה!</string>
 </resources>

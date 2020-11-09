@@ -28,10 +28,12 @@ public class AnswersRecyclerAdapter extends RecyclerView.Adapter<AnswersRecycler
     private AnswersRecyclerListener listener;
     private LocalHelper localHelper;
     private Activity activity;
+    private String currentLanguage;
 
     public AnswersRecyclerAdapter(Activity activity) {
         this.activity = activity;
         this.localHelper = new LocalHelper(activity);
+        this.currentLanguage = localHelper.getLocale();
     }
 
     public void setData(List<AnswerFireStore> data) {
@@ -59,10 +61,7 @@ public class AnswersRecyclerAdapter extends RecyclerView.Adapter<AnswersRecycler
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         assert listData != null;
 
-        if(localHelper.getLocale().equals("he"))
-            holder.answer.setText(listData.get(position).getHe().getAnswerText());
-        else if(localHelper.getLocale().equals("en"))
-            holder.answer.setText(listData.get(position).getEn().getAnswerText());
+        holder.answer.setText(listData.get(position).getTextByLanguage(currentLanguage));
 //        if(listData.get(position).getImagesURL() != null) {
 //            Glide.with(holder.imageView.getContext())
 //                    .load(listData.get(position).getImagesURL().get(0))

@@ -39,6 +39,9 @@ public class PercentFormatter extends ValueFormatter implements IValueFormatter 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public String getFormattedValue(float value) {
-        return mFormat.format(value) + " %";
+        if(value==0.0)
+            return "";
+        else
+            return mFormat.format(value) + " %";
     }
 }
