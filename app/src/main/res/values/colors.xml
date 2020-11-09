@@ -7,4 +7,5 @@
     <color name="toolbarColor2">#B5A201</color>
     <color name="toolbarColorLight">#CFC459</color>
     <color name="toolbarColorVeryLight">#F4ECA1</color>
+    <color name="lightGrey">#DCDCDC</color>
 </resources>
