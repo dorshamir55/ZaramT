@@ -35,6 +35,6 @@ public class OpeningScreenActivity extends AppCompatActivity {
             else
                 startActivity(new Intent(OpeningScreenActivity.this, SignInUpActivity.class));
             finish();
-        }, 2000);
+        }, 1500);
     }
 }

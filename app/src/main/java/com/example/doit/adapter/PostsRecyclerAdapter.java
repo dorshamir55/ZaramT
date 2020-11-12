@@ -38,6 +38,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdapter.RecyclerViewHolder> {
@@ -88,12 +89,16 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
 
         pieChartHelper = new PieChartHelper(listData.get(position).getAnswers());
 
-        holder.nickname.setText(listData.get(position).getPostedUserId());
-//        holder.nickname.setText("Lionel Messi");
+//        long time = listData.get(position).getUpdateDate().getTime();
+//        Date date = new Date(time);
+//        holder.nickname.setText(date.toString());
+        holder.nickname.setText(String.valueOf(listData.get(position).getUpdateDate()));
+//        holder.nickname.setText(currentUser.getDisplayName());
         holder.question.setText(listData.get(position).getQuestion().getTextByLanguage(currentLanguage));
 
         if(pieChartHelper.getSumOfVotes() == 0 && isItMyPost(position)){
             holder.answersAndVote.setVisibility(View.GONE);
+            holder.pieChart.setVisibility(View.GONE);
             holder.noVotes.setVisibility(View.VISIBLE);
         }
         else if(!alreadyVoted(position) && !isItMyPost(position)) {

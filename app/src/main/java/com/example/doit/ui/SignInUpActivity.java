@@ -75,7 +75,8 @@ public class SignInUpActivity extends AppCompatActivity
                     if (task.isSuccessful()) {
                         addUserToDB(new UserData(nickname, email).withId(auth.getCurrentUser().getUid()));
                         Toast.makeText(this, auth.getCurrentUser().getUid(), Toast.LENGTH_SHORT).show();
-                        auth.getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().build());
+                        auth.getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder()
+                                .setDisplayName(nickname).build());
                     } else {
                         // If sign in fails, display a message to the user.
                         Toast.makeText(SignInUpActivity.this, getString(R.string.signup_failed)

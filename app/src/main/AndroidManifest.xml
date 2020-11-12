@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/doit_icon"
@@ -16,9 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="Instantiatable">
-        <activity android:name=".ui.SignInUpActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.OpeningScreenActivity"
+        <activity android:name=".ui.SignInActivity"></activity>
+        <activity
+            android:name=".ui.SignInUpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.OpeningScreenActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,7 +31,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".service.UploadPostService"

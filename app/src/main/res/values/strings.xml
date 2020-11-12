@@ -96,4 +96,6 @@
     </string-array>
     <string name="not_enough_time_message">Please fill in the message time!</string>
     <string name="no_votes">There are no votes yet</string>
+    <string name="continue_with_facebook">Continue with Facebook</string>
+    <string name="continue_with_google">Continue with Google</string>
 </resources>

@@ -8,4 +8,5 @@
     <color name="toolbarColorLight">#CFC459</color>
     <color name="toolbarColorVeryLight">#F4ECA1</color>
     <color name="lightGrey">#808080</color>
+    <color name="Grey">#5E5E5E</color>
 </resources>
