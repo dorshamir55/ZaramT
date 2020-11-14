@@ -136,7 +136,7 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
             Toast.makeText(activity, "EXPIRED", Toast.LENGTH_SHORT).show();
         }
 
-        holder.nickname.setText(currentUser.getDisplayName());
+        holder.nickname.setText(currentUser.getEmail());
         holder.question.setText(listData.get(position).getQuestion().getTextByLanguage(currentLanguage));
 
         if(pieChartHelper.getSumOfVotes() == 0 && isItMyPost(position)){
