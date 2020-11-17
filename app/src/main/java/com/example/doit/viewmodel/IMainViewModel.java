@@ -18,5 +18,6 @@ public interface IMainViewModel {
     public void getListOfQuestions(Consumer<List<QuestionFireStore>> consumerList);
     public void getListOfAnswers(Consumer<List<AnswerFireStore>> consumerList, List<AnswerInQuestion> answerInQuestions);
     public void voteOnPost(String id, String currentUserId, List<AnswerInPost> answersInPost, int votedPosition);
+    public void postTimeEnd(String id);
 }
 

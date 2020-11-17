@@ -64,4 +64,12 @@ public class MainViewModel extends AndroidViewModel implements IMainViewModel {
                     .sendBroadcast(new Intent("com.project.ACTION_RELOAD"));
         });
     }
+
+    @Override
+    public void postTimeEnd(String id) {
+        mainRepository.postTimeEnd(id, () -> {
+            LocalBroadcastManager.getInstance(getApplication().getApplicationContext())
+                    .sendBroadcast(new Intent("com.project.ACTION_RELOAD"));
+        });
+    }
 }

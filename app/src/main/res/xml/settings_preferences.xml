@@ -11,7 +11,7 @@
             android:dialogTitle="@string/choose_language"
             android:entries="@array/language_list"
             android:entryValues="@array/language_values"
-            android:defaultValue="he"
+            android:defaultValue="en"
             app:useSimpleSummaryProvider="true"/>
 
     </PreferenceCategory>

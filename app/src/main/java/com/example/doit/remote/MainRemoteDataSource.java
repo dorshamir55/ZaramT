@@ -146,6 +146,27 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
     }
 
     @Override
+    public void endingPostDate(String id, Runnable onFinish) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("updateDate", FieldValue.serverTimestamp());
+        data.put("postTimeOver", true);
+        db.collection(QuestionPostData.TABLE_NAME).document(id).set(data, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        if(onFinish != null)
+                            onFinish.run();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+    }
+
+    @Override
     public void changeUpdatedToFalse(String id) {
         Map<String, Object> data = new HashMap<>();
         data.put("voted", false);

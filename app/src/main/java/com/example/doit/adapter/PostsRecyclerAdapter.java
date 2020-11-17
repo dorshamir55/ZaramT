@@ -24,6 +24,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doit.R;
@@ -32,6 +35,8 @@ import com.example.doit.model.PercentFormatter;
 import com.example.doit.model.PieChartHelper;
 import com.example.doit.model.LocalHelper;
 import com.example.doit.model.QuestionPostData;
+import com.example.doit.viewmodel.IMainViewModel;
+import com.example.doit.viewmodel.MainViewModel;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -111,11 +116,12 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
 //        String date = hours+":"+minutes+":"+seconds;
 //        holder.nickname.setText(date);
 //        holder.nickname.setText(listData.get(position).getEndingPostDate().toString());
+
         holder.webView.requestFocus();
         holder.webView.getSettings().setJavaScriptEnabled(true);
         holder.webView.getSettings().setGeolocationEnabled(true);
         WebAppInterface webAppInterface = new WebAppInterface(activity);
-        webAppInterface.storeText("working");
+        webAppInterface.storeText("working", "123");
         holder.webView.addJavascriptInterface(webAppInterface, "Android");
 
         String postEnding = listData.get(position).getEndingPostDate().toString();
@@ -124,10 +130,14 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
         minutesText = activity.getResources().getString(R.string.minutes);
         secondsText = activity.getResources().getString(R.string.seconds);
         closed = activity.getResources().getString(R.string.closed);
-        String script = "<!DOCTYPE HTML><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"<style></style></head><body><p id=\"demo\" style=\"margin:0px; font-size:50%;\"></p><script>function saveFunction(text) {   Android.storeText(text);   }</script><script> var countDownDate = new Date(\""+postEnding+"\").getTime();var x = setInterval(function() {  var now = new Date().getTime();  var distance = countDownDate - now;  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));  var seconds = Math.floor((distance % (1000 * 60)) / 1000);  document.getElementById(\"demo\").innerHTML = hours + \" "+hoursText+" \"  + minutes + \" "+minutesText+" \" + seconds + \" "+secondsText+" \";  if (distance < 0) {    clearInterval(x);    document.getElementById(\"demo\").innerHTML = \""+closed+"\";    saveFunction(\""+closed+"\");  }}, 1000);</script></body></html>";
-        holder.webView.loadData(script,"text/html", "UTF-8");
-
-
+        if(listData.get(position).isPostTimeOver()){
+            String script = "<!DOCTYPE HTML><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"<style></style></head><body><p id=\"demo\" style=\"margin:0px; font-size:50%;\"></p><script>document.getElementById(\"demo\").innerHTML = \""+closed+"\" </script></body></html>";
+            holder.webView.loadData(script, "text/html", "UTF-8");
+        }
+        else {
+            String script = "<!DOCTYPE HTML><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"<style></style></head><body><p id=\"demo\" style=\"margin:0px; font-size:50%;\"></p><script>function saveFunction(text) {   Android.storeText(text,\"" + listData.get(position).getId() + "\");   }</script><script> var countDownDate = new Date(\"" + postEnding + "\").getTime();var x = setInterval(function() {  var now = new Date().getTime();  var distance = countDownDate - now;  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));  var seconds = Math.floor((distance % (1000 * 60)) / 1000);  document.getElementById(\"demo\").innerHTML = hours + \" " + hoursText + " \"  + minutes + \" " + minutesText + " \" + seconds + \" " + secondsText + " \";  if (distance < 0) {    clearInterval(x);    document.getElementById(\"demo\").innerHTML = \"" + closed + "\";    saveFunction(\"" + closed + "\");  }}, 1000);</script></body></html>";
+            holder.webView.loadData(script, "text/html", "UTF-8");
+        }
 //        timeRef.addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(DataSnapshot dataSnapshot) {
@@ -141,19 +151,28 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
 //            }
 //        });
 
-//        if(holder.webView.equals("EXPIRED")){
-//            Toast.makeText(activity, "EXPIRED", Toast.LENGTH_SHORT).show();
-//        }
-
-        holder.nickname.setText(currentUser.getEmail());
+        holder.nickname.setText(listData.get(position).getPostedUserId());
         holder.question.setText(listData.get(position).getQuestion().getTextByLanguage(currentLanguage));
 
-        if(pieChartHelper.getSumOfVotes() == 0 && isItMyPost(position)){
+        if(listData.get(position).isPostTimeOver()){
+            if(pieChartHelper.getSumOfVotes() == 0) {
+                holder.answersAndVote.setVisibility(View.GONE);
+                holder.pieChart.setVisibility(View.GONE);
+                holder.noVotes.setVisibility(View.VISIBLE);
+            }
+            else{
+                showResults(holder, position);
+            }
+        }
+        else if(pieChartHelper.getSumOfVotes() == 0 && isItMyPost(position)){
             holder.answersAndVote.setVisibility(View.GONE);
             holder.pieChart.setVisibility(View.GONE);
             holder.noVotes.setVisibility(View.VISIBLE);
         }
         else if(!alreadyVoted(position) && !isItMyPost(position)) {
+            holder.answersAndVote.setVisibility(View.VISIBLE);
+            holder.pieChart.setVisibility(View.GONE);
+            holder.noVotes.setVisibility(View.GONE);
             holder.answer1.setText(listData.get(position).getAnswers().get(0).getTextByLanguage(currentLanguage));
             holder.answer2.setText(listData.get(position).getAnswers().get(1).getTextByLanguage(currentLanguage));
             holder.answer3.setText(listData.get(position).getAnswers().get(2).getTextByLanguage(currentLanguage));
@@ -182,6 +201,8 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
     private void showResults(RecyclerViewHolder holder, int position) {
         int i=0;
         holder.answersAndVote.setVisibility(View.GONE);
+        holder.noVotes.setVisibility(View.GONE);
+
         List<PieEntry> pieEntries = new ArrayList<>();
 
         for(AnswerInPost answerInPost : listData.get(position).getAnswers()){
@@ -349,13 +370,15 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
         }
 
         @JavascriptInterface
-        public void storeText(String text)
+        public void storeText(String text, String id)
         {
             String closed = activity.getResources().getString(R.string.closed);
             this.data=text;
             if(data.equals(closed)){
                 //TODO: Post time is over...
-                Toast.makeText(activity, text, Toast.LENGTH_LONG).show();
+                IMainViewModel viewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(MainViewModel.class);
+                viewModel.postTimeEnd(id);
+//                Toast.makeText(activity, text, Toast.LENGTH_LONG).show();
             }
         }
     }

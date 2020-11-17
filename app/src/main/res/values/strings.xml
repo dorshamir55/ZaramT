@@ -36,13 +36,13 @@
     <!-- TODO: Remove or change this placeholder text -->
 
     <string-array name="language_list">
-        <item>@string/hebrew</item>
         <item>@string/english</item>
+        <item>@string/hebrew</item>
     </string-array>
 
     <string-array name="language_values">
-        <item>he</item>
         <item>en</item>
+        <item>he</item>
     </string-array>
 
     <string-array name="category_list">

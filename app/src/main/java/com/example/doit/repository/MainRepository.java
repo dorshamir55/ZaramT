@@ -51,8 +51,12 @@ public class MainRepository implements IMainRepository{
                         }
                         else if(result.get(i).isVoted()) {
                             remoteDataSource.changeUpdatedToFalse(result.get(i).getId());
+                            result.get(i).setVoted(false);
                             adDAO.deletePost(result.get(i));
                             //Delete from Room & Insert later the updated.
+                        }
+                        else if(result.get(i).isPostTimeOver()){
+                            //adDAO.deletePost(result.get(i));
                         }
                     }
                     //insert remaining elements..
@@ -90,6 +94,11 @@ public class MainRepository implements IMainRepository{
     @Override
     public void voteOnPost(String id ,String currentUserId, List<AnswerInPost> answersInPost, int votedPosition, Runnable onFinish) {
         remoteDataSource.updateVotes(id, currentUserId, answersInPost, votedPosition, onFinish);
+    }
+
+    @Override
+    public void postTimeEnd(String id, Runnable onFinish) {
+        remoteDataSource.endingPostDate(id, onFinish);
     }
 
     private void doAsynch(Runnable task) {

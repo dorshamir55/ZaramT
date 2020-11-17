@@ -34,6 +34,9 @@ public class QuestionPostData {
     private List<AnswerInPost> answers;
 
     @ServerTimestamp
+    private Date startDate;  // update (also created) date - from Firebase
+
+    @ServerTimestamp
     private Date updateDate;  // update (also created) date - from Firebase
 
     private Date endingPostDate;  // ending post date
@@ -94,6 +97,14 @@ public class QuestionPostData {
 
     public void setAnswers(List<AnswerInPost> answers) {
         this.answers = answers;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     public Date getUpdateDate() {
