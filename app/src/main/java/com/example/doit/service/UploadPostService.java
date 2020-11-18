@@ -1,5 +1,6 @@
 package com.example.doit.service;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -12,8 +13,12 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.doit.R;
@@ -23,12 +28,19 @@ import com.example.doit.model.QuestionFireStore;
 import com.example.doit.model.QuestionInPost;
 import com.example.doit.model.QuestionPostData;
 import com.example.doit.model.UserData;
+import com.example.doit.ui.MainActivity;
 import com.example.doit.ui.OpeningScreenActivity;
+import com.example.doit.viewmodel.IMainViewModel;
+import com.example.doit.viewmodel.MainViewModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,12 +52,14 @@ import java.util.Map;
 public class UploadPostService extends Service
 {
     private static final int ID = 1;
+    private FirebaseFirestore db;
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
     }
@@ -60,7 +74,6 @@ public class UploadPostService extends Service
         startForeground(ID, createNotification());
 
         QuestionFireStore oldQuestion = (QuestionFireStore) intent.getSerializableExtra("question");
-//        Toast.makeText(getApplicationContext(), oldQuestion.getId(), Toast.LENGTH_SHORT).show();
         QuestionInPost question = new QuestionInPost(oldQuestion.getId(), oldQuestion.getEn(), oldQuestion.getHe());
         List<AnswerFireStore> oldAnswersList = (List<AnswerFireStore>) intent.getSerializableExtra("answers");
         List<AnswerInPost> answersList = new ArrayList<>();
@@ -91,6 +104,9 @@ public class UploadPostService extends Service
                 .addOnSuccessListener(docRef -> {
                     LocalBroadcastManager.getInstance(getApplicationContext())
                             .sendBroadcast(new Intent("com.project.ACTION_RELOAD"));
+
+                    incrementQuestionChoice(questionPostData.getQuestion().getQuestionID());
+
 //                    final FirebaseDatabase database = FirebaseDatabase.getInstance();
 //                    DatabaseReference ref = database.getReference("server/saving-data/fireblog");
 //                    DatabaseReference timeRef = ref.child("time_left_posts");
@@ -104,6 +120,23 @@ public class UploadPostService extends Service
                 .addOnFailureListener(ex -> {
                     ex.printStackTrace();
                     showMessageAndFinish(getResources().getString(R.string.post_question_fail));
+                });
+    }
+
+    private void incrementQuestionChoice(String questionID) {
+        FirebaseFirestore.getInstance().collection(QuestionFireStore.TABLE_NAME).document(questionID)
+                .update("amountOfChoices", FieldValue.increment(1))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
                 });
     }
 
@@ -138,8 +171,8 @@ public class UploadPostService extends Service
         notificationBuilder.setAutoCancel(false)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setSmallIcon(R.drawable.doit_icon)
-                .setContentTitle(getString(R.string.posting_title))
-                .setContentText(getString(R.string.posting_message))
+                .setContentTitle(getResources().getString(R.string.posting_title))
+                .setContentText(getResources().getString(R.string.posting_message))
                 .setContentIntent(pi);
 
         return notificationBuilder.build();

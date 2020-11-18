@@ -97,8 +97,13 @@ public class MainRepository implements IMainRepository{
     }
 
     @Override
-    public void postTimeEnd(String id, Runnable onFinish) {
+    public void stopPosting(String id, Runnable onFinish) {
         remoteDataSource.endingPostDate(id, onFinish);
+    }
+
+    @Override
+    public void incrementAnswerWins(List<String> winners) {
+        remoteDataSource.incrementAnswerWins(winners);
     }
 
     private void doAsynch(Runnable task) {

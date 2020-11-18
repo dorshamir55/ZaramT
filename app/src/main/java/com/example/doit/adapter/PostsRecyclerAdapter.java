@@ -121,7 +121,7 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
         holder.webView.getSettings().setJavaScriptEnabled(true);
         holder.webView.getSettings().setGeolocationEnabled(true);
         WebAppInterface webAppInterface = new WebAppInterface(activity);
-        webAppInterface.storeText("working", "123");
+        webAppInterface.storeText("working", "123", listData.get(position));
         holder.webView.addJavascriptInterface(webAppInterface, "Android");
 
         String postEnding = listData.get(position).getEndingPostDate().toString();
@@ -135,7 +135,7 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
             holder.webView.loadData(script, "text/html", "UTF-8");
         }
         else {
-            String script = "<!DOCTYPE HTML><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"<style></style></head><body><p id=\"demo\" style=\"margin:0px; font-size:50%;\"></p><script>function saveFunction(text) {   Android.storeText(text,\"" + listData.get(position).getId() + "\");   }</script><script> var countDownDate = new Date(\"" + postEnding + "\").getTime();var x = setInterval(function() {  var now = new Date().getTime();  var distance = countDownDate - now;  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));  var seconds = Math.floor((distance % (1000 * 60)) / 1000);  document.getElementById(\"demo\").innerHTML = hours + \" " + hoursText + " \"  + minutes + \" " + minutesText + " \" + seconds + \" " + secondsText + " \";  if (distance < 0) {    clearInterval(x);    document.getElementById(\"demo\").innerHTML = \"" + closed + "\";    saveFunction(\"" + closed + "\");  }}, 1000);</script></body></html>";
+            String script = "<!DOCTYPE HTML><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"<style></style></head><body><p id=\"demo\" style=\"margin:0px; font-size:50%;\"></p><script>function saveFunction(text) {   Android.storeText(text,\"" + listData.get(position).getId() + "\",\""+listData.get(position)+"\");   }</script><script> var countDownDate = new Date(\"" + postEnding + "\").getTime();var x = setInterval(function() {  var now = new Date().getTime();  var distance = countDownDate - now;  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));  var seconds = Math.floor((distance % (1000 * 60)) / 1000);  document.getElementById(\"demo\").innerHTML = hours + \" " + hoursText + " \"  + minutes + \" " + minutesText + " \" + seconds + \" " + secondsText + " \";  if (distance < 0) {    clearInterval(x);    document.getElementById(\"demo\").innerHTML = \"" + closed + "\";    saveFunction(\"" + closed + "\");  }}, 1000);</script></body></html>";
             holder.webView.loadData(script, "text/html", "UTF-8");
         }
 //        timeRef.addValueEventListener(new ValueEventListener() {
@@ -370,14 +370,18 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
         }
 
         @JavascriptInterface
-        public void storeText(String text, String id)
+        public void storeText(String text, String id, QuestionPostData questionPostData)
         {
             String closed = activity.getResources().getString(R.string.closed);
             this.data=text;
             if(data.equals(closed)){
                 //TODO: Post time is over...
                 IMainViewModel viewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(MainViewModel.class);
-                viewModel.postTimeEnd(id);
+
+                viewModel.stopPosting(id);
+
+                List<String> winners = questionPostData.calculateWinningAnswerID();
+                viewModel.incrementAnswerWins(winners);
 //                Toast.makeText(activity, text, Toast.LENGTH_LONG).show();
             }
         }

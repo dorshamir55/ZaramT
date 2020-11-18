@@ -184,4 +184,24 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
                     }
                 });
     }
+
+    @Override
+    public void incrementAnswerWins(List<String> winners) {
+        for(String winnerID : winners){
+            FirebaseFirestore.getInstance().collection(QuestionFireStore.TABLE_NAME).document(winnerID)
+                    .update("amountOfWins", FieldValue.increment(1))
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+        }
+    }
 }

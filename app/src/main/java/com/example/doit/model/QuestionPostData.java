@@ -146,4 +146,21 @@ public class QuestionPostData {
     public void setPostTimeOver(boolean postTimeOver) {
         isPostTimeOver = postTimeOver;
     }
+
+    public List<String> calculateWinningAnswerID() {
+        List<String> winners = new ArrayList<>();
+        int max = 0;
+        for(AnswerInPost answerInPost : answers){
+            if(max < answerInPost.getVotedUserIdList().size()){
+                max = answerInPost.getVotedUserIdList().size();
+                winners.clear();
+                winners.add(answerInPost.getAnswerID());
+            }
+            if(max == answerInPost.getVotedUserIdList().size()){
+                winners.add(answerInPost.getAnswerID());
+            }
+        }
+
+        return winners;
+    }
 }

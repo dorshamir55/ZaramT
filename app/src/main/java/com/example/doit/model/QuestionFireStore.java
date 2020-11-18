@@ -16,6 +16,7 @@ public class QuestionFireStore implements Serializable, LanguageConverter, Categ
     private QuestionLanguage en;
     private QuestionLanguage he;
     private List<AnswerInQuestion> answersInQuestion;
+    private long amountOfChoices;
 
     public QuestionFireStore() {
 
@@ -25,6 +26,7 @@ public class QuestionFireStore implements Serializable, LanguageConverter, Categ
         this.en = en;
         this.he = he;
         this.answersInQuestion = answersInQuestion;
+        this.amountOfChoices = 0;
     }
 
     public <T extends QuestionFireStore> T withId(String id) {
@@ -88,5 +90,13 @@ public class QuestionFireStore implements Serializable, LanguageConverter, Categ
 
     public void setAnswersInQuestion(List<AnswerInQuestion> answersInQuestion) {
         this.answersInQuestion = answersInQuestion;
+    }
+
+    public long getAmountOfChoices() {
+        return amountOfChoices;
+    }
+
+    public void setAmountOfChoices(long amountOfChoices) {
+        this.amountOfChoices = amountOfChoices;
     }
 }

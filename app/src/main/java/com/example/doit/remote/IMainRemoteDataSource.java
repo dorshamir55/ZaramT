@@ -18,4 +18,5 @@ public interface IMainRemoteDataSource {
     public void updateVotes(String id, String currentUserId, List<AnswerInPost> answersInPost, int votedPosition, Runnable onFinish);
     public void endingPostDate(String id, Runnable onFinish);
     public void changeUpdatedToFalse(String id);
+    public void incrementAnswerWins(List<String> winners);
 }

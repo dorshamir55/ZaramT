@@ -6,9 +6,10 @@ import java.io.Serializable;
 
 public class AnswerInQuestion implements Serializable {
     private String answerID;
+    private long amountOfWins;
 
     public AnswerInQuestion() {
-
+        this.amountOfWins = 0;
     }
 
 //    public <T extends AnswerInQuestion> T withId(String id) {
