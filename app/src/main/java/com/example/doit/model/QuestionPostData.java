@@ -156,7 +156,7 @@ public class QuestionPostData {
                 winners.clear();
                 winners.add(answerInPost.getAnswerID());
             }
-            if(max == answerInPost.getVotedUserIdList().size()){
+            else if(max == answerInPost.getVotedUserIdList().size()){
                 winners.add(answerInPost.getAnswerID());
             }
         }

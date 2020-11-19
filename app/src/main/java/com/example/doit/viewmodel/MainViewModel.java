@@ -74,7 +74,7 @@ public class MainViewModel extends AndroidViewModel implements IMainViewModel {
     }
 
     @Override
-    public void incrementAnswerWins(List<String> winners) {
-        mainRepository.incrementAnswerWins(winners);
+    public void incrementAnswerWins(String questionID, List<String> winners) {
+        mainRepository.incrementAnswerWins(questionID, winners);
     }
 }

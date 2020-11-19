@@ -186,22 +186,52 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
     }
 
     @Override
-    public void incrementAnswerWins(List<String> winners) {
-        for(String winnerID : winners){
-            FirebaseFirestore.getInstance().collection(QuestionFireStore.TABLE_NAME).document(winnerID)
-                    .update("amountOfWins", FieldValue.increment(1))
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-
+    public void incrementAnswerWins(String questionID, List<String> winners) {
+        Consumer<List<AnswerInQuestion>> consumer = new Consumer<List<AnswerInQuestion>>() {
+            @Override
+            public void apply(List<AnswerInQuestion> allAnswersInQuestion) {
+                for(String winnerID : winners){
+                    for(int i=0; i<allAnswersInQuestion.size(); i++){
+                        if(winnerID.equals(allAnswersInQuestion.get(i).getAnswerID())){
+                            AnswerInQuestion answerInQuestion = allAnswersInQuestion.get(i);
+                            answerInQuestion.setAmountOfWins(answerInQuestion.getAmountOfWins()+1);
+                            allAnswersInQuestion.set(i ,answerInQuestion);
                         }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
+                    }
+                }
+                db.collection(QuestionFireStore.TABLE_NAME).document(questionID)
+                            .update("answersInQuestion", allAnswersInQuestion)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
 
-                        }
-                    });
-        }
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                }
+                            });
+            }
+        };
+        fetchAllAnswersInQuestion(questionID, consumer);
+    }
+
+    private void fetchAllAnswersInQuestion(String questionID, Consumer<List<AnswerInQuestion>> consumerList) {
+
+        db.collection(QuestionFireStore.TABLE_NAME).document(questionID)
+                .get().addOnCompleteListener(task -> {
+                    List<AnswerInQuestion> data = null;
+                    if (task.isSuccessful()) {
+                        data = new ArrayList<>();
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        data.addAll((List<AnswerInQuestion>) documentSnapshot.get("answersInQuestion"));
+                    } else {
+                        task.getException().printStackTrace();
+                    }
+                    if(consumerList != null)
+                        consumerList.apply(data);
+                });
     }
 }

@@ -19,6 +19,6 @@ public interface IMainViewModel {
     public void getListOfAnswers(Consumer<List<AnswerFireStore>> consumerList, List<AnswerInQuestion> answerInQuestions);
     public void voteOnPost(String id, String currentUserId, List<AnswerInPost> answersInPost, int votedPosition);
     public void stopPosting(String id);
-    public void incrementAnswerWins(List<String> winners);
+    public void incrementAnswerWins(String questionID, List<String> winners);
 }
 

@@ -102,8 +102,8 @@ public class MainRepository implements IMainRepository{
     }
 
     @Override
-    public void incrementAnswerWins(List<String> winners) {
-        remoteDataSource.incrementAnswerWins(winners);
+    public void incrementAnswerWins(String questionID, List<String> winners) {
+        remoteDataSource.incrementAnswerWins(questionID, winners);
     }
 
     private void doAsynch(Runnable task) {

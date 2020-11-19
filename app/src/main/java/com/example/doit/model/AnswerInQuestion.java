@@ -24,4 +24,12 @@ public class AnswerInQuestion implements Serializable {
     public void setAnswerID(String answerID) {
         this.answerID = answerID;
     }
+
+    public long getAmountOfWins() {
+        return amountOfWins;
+    }
+
+    public void setAmountOfWins(long amountOfWins) {
+        this.amountOfWins = amountOfWins;
+    }
 }

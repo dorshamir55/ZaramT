@@ -19,5 +19,5 @@ public interface IMainRepository {
     public void getListOfAnswers(Consumer<List<AnswerFireStore>> consumerList, List<AnswerInQuestion> answerInQuestions);
     public void voteOnPost(String id, String currentUserId, List<AnswerInPost> answersInPost, int votedPosition, Runnable onFinish);
     public void stopPosting(String id, Runnable onFinish);
-    public void incrementAnswerWins(List<String> winners);
+    public void incrementAnswerWins(String questionID, List<String> winners);
 }
