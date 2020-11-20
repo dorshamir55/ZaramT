@@ -65,6 +65,7 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
     DatabaseReference ref = database.getReference("server/saving-data/fireblog");
     DatabaseReference timeRef = ref.child("time_left_posts");
     private double NO_VOTES = 0.0;
+    int i=1;
 
     @Nullable
     private List<QuestionPostData> listData;
@@ -121,7 +122,7 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
         holder.webView.getSettings().setJavaScriptEnabled(true);
         holder.webView.getSettings().setGeolocationEnabled(true);
         WebAppInterface webAppInterface = new WebAppInterface(activity);
-        webAppInterface.storeText("working", "123", listData.get(position));
+        webAppInterface.storeText("working", "123", position);
         holder.webView.addJavascriptInterface(webAppInterface, "Android");
 
         String postEnding = listData.get(position).getEndingPostDate().toString();
@@ -131,12 +132,12 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
         secondsText = activity.getResources().getString(R.string.seconds);
         closed = activity.getResources().getString(R.string.closed);
         if(listData.get(position).isPostTimeOver()){
-            String script = "<!DOCTYPE HTML><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"<style></style></head><body><p id=\"demo\" style=\"margin:0px; font-size:50%;\"></p><script>document.getElementById(\"demo\").innerHTML = \""+closed+"\" </script></body></html>";
+            String script = "<!DOCTYPE HTML><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"<style></style></head><body><p id=\"demo\" style=\"margin:0px; font-size:50%;\"></p><script>document.getElementById(\"demo\").innerHTML = \""+closed+"\";    Android.incrementAnswerWins(\""+listData.get(position)+"\"); </script></body></html>";
             holder.webView.loadData(script, "text/html", "UTF-8");
         }
         else {
             try {
-                String script = "<!DOCTYPE HTML><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"<style></style></head><body><p id=\"demo\" style=\"margin:0px; font-size:50%;\"></p><script>function saveFunction(text) {   Android.storeText(text,\"" + listData.get(position).getId() + "\",\"" + listData.get(position) + "\");   }</script><script> var countDownDate = new Date(\"" + postEnding + "\").getTime();var x = setInterval(function() {  var now = new Date().getTime();  var distance = countDownDate - now;  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));  var seconds = Math.floor((distance % (1000 * 60)) / 1000);  document.getElementById(\"demo\").innerHTML = hours + \" " + hoursText + " \"  + minutes + \" " + minutesText + " \" + seconds + \" " + secondsText + " \";  if (distance < 0) {    clearInterval(x);    document.getElementById(\"demo\").innerHTML = \"" + closed + "\";    saveFunction(\"" + closed + "\");  }}, 1000);</script></body></html>";
+                String script = "<!DOCTYPE HTML><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"<style></style></head><body><p id=\"demo\" style=\"margin:0px; font-size:50%;\"></p><script>function saveFunction(text) {   Android.storeText(text,\"" + listData.get(position).getId() + "\",\"" + position + "\");   }</script><script> var countDownDate = new Date(\"" + postEnding + "\").getTime();var x = setInterval(function() {  var now = new Date().getTime();  var distance = countDownDate - now;  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));  var seconds = Math.floor((distance % (1000 * 60)) / 1000);  document.getElementById(\"demo\").innerHTML = hours + \" " + hoursText + " \"  + minutes + \" " + minutesText + " \" + seconds + \" " + secondsText + " \";  if (distance < 0) {    clearInterval(x);    document.getElementById(\"demo\").innerHTML = \"" + closed + "\";    saveFunction(\"" + closed + "\");  }}, 1000);</script></body></html>";
                 holder.webView.loadData(script, "text/html", "UTF-8");
             }catch (Exception e){
                 e.printStackTrace();
@@ -365,7 +366,6 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
     public class WebAppInterface
     {
         Context mContext;
-        String data;
 
         /** Instantiate the interface and set the context */
         WebAppInterface(Context c)
@@ -374,20 +374,29 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
         }
 
         @JavascriptInterface
-        public void storeText(String text, String id, QuestionPostData questionPostData)
+        public void storeText(String text, String id, int position)
         {
             String closed = activity.getResources().getString(R.string.closed);
-            this.data=text;
-            if(data.equals(closed)){
+            if(text.equals(closed)){
                 //TODO: Post time is over...
                 IMainViewModel viewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(MainViewModel.class);
 
                 viewModel.stopPosting(id);
+//                Toast.makeText(activity, String.valueOf(i++), Toast.LENGTH_LONG).show();
 
-                List<String> winners = questionPostData.calculateWinningAnswerID();
-                viewModel.incrementAnswerWins(questionPostData.getQuestion().getQuestionID(), winners);
-//                Toast.makeText(activity, text, Toast.LENGTH_LONG).show();
+                List<String> winners = listData.get(position).calculateWinningAnswerID();
+                viewModel.incrementAnswerWins(listData.get(position).getQuestion().getQuestionID(), winners);
             }
+        }
+
+        @JavascriptInterface
+        public void incrementAnswerWins(QuestionPostData questionPostData){
+            //TODO: Post time is over...
+//            IMainViewModel viewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(MainViewModel.class);
+//
+//            List<String> winners = questionPostData.calculateWinningAnswerID();
+//            viewModel.incrementAnswerWins(questionPostData.getQuestion().getQuestionID(), winners);
+//             Toast.makeText(activity, text, Toast.LENGTH_LONG).show();
         }
     }
 }

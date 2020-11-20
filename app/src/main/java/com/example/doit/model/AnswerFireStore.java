@@ -53,11 +53,11 @@ public class AnswerFireStore implements Serializable, LanguageConverter {
     }
 
     @Exclude
-    public String getAnswerID() {
+    public String getId() {
         return id;
     }
     @Exclude
-    public void setAnswerID(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 

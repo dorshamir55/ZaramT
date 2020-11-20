@@ -78,7 +78,8 @@ public class UploadPostService extends Service
         List<AnswerFireStore> oldAnswersList = (List<AnswerFireStore>) intent.getSerializableExtra("answers");
         List<AnswerInPost> answersList = new ArrayList<>();
         for(AnswerFireStore answer : oldAnswersList){
-            answersList.add(new AnswerInPost(answer.getAnswerID(), answer.getEn(), answer.getHe(), new ArrayList<>()));
+            AnswerInPost answerInPost = new AnswerInPost(answer.getId(), answer.getEn(), answer.getHe(), new ArrayList<>());
+            answersList.add(answerInPost);
         }
 
         int hours = intent.getIntExtra("hours", 1);

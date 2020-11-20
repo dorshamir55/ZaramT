@@ -6,6 +6,7 @@ import java.util.List;
 
 //@Entity(tableName = "answer_in_post")
 public class AnswerInPost extends AnswerFireStore{
+    private String answerID;
     private List<String> votedUserIdList;
 
     public AnswerInPost() {
@@ -17,9 +18,18 @@ public class AnswerInPost extends AnswerFireStore{
         this.votedUserIdList = votedUserIdList;
     }
 
-    public AnswerInPost(String id, AnswerLanguage en, AnswerLanguage he, List<String> votedUserIdList) {
-        super(id, en, he);
+    public AnswerInPost(String answerID, AnswerLanguage en, AnswerLanguage he, List<String> votedUserIdList) {
+        super(en, he);
+        this.answerID = answerID;
         this.votedUserIdList = votedUserIdList;
+    }
+
+    public String getAnswerID() {
+        return answerID;
+    }
+
+    public void setAnswerID(String answerID) {
+        this.answerID = answerID;
     }
 
     public List<String> getVotedUserIdList() {

@@ -226,7 +226,7 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
                     if (task.isSuccessful()) {
                         data = new ArrayList<>();
                         DocumentSnapshot documentSnapshot = task.getResult();
-                        data.addAll((List<AnswerInQuestion>) documentSnapshot.get("answersInQuestion"));
+                        data.addAll(documentSnapshot.toObject(QuestionFireStore.class).getAnswersInQuestion());
                     } else {
                         task.getException().printStackTrace();
                     }
