@@ -154,7 +154,8 @@ public class MainActivity extends AppCompatActivity {
         authStateListener = firebaseAuth -> { // onAuthChanged..
             // if signed-out
             if(firebaseAuth.getCurrentUser() == null) {
-                startActivity(new Intent(MainActivity.this, SignInUpActivity.class));
+                //startActivity(new Intent(MainActivity.this, SignInUpActivity.class));
+                startActivity(new Intent(MainActivity.this, SignInActivity.class));
                 finish();
             }
         };

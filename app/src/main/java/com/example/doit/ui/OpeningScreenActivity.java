@@ -8,6 +8,8 @@ import android.os.Handler;
 
 import com.example.doit.R;
 import com.example.doit.model.LocalHelper;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class OpeningScreenActivity extends AppCompatActivity {
@@ -29,12 +31,24 @@ public class OpeningScreenActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
         handler.postDelayed(() -> {
-            if(auth.getCurrentUser() != null)
+
+            if(account != null)
                 startActivity(new Intent(OpeningScreenActivity.this, MainActivity.class));
             else
-                startActivity(new Intent(OpeningScreenActivity.this, SignInUpActivity.class));
+                startActivity(new Intent(OpeningScreenActivity.this, SignInActivity.class));
             finish();
-        }, 1500);
+        }, 1200);
+
+//        handler.postDelayed(() -> {
+//
+//            if(auth.getCurrentUser() != null)
+//                startActivity(new Intent(OpeningScreenActivity.this, MainActivity.class));
+//            else
+//                startActivity(new Intent(OpeningScreenActivity.this, SignInActivity.class));
+//            finish();
+//        }, 1200);
     }
 }

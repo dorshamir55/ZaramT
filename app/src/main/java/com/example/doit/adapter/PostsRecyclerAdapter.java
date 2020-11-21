@@ -392,10 +392,10 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
         @JavascriptInterface
         public void incrementAnswerWins(int position){
             //TODO: Post time is over...
-            IMainViewModel viewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(MainViewModel.class);
+//            IMainViewModel viewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(MainViewModel.class);
 //
-            List<String> winners = listData.get(position).calculateWinningAnswerID();
-            viewModel.incrementAnswerWins(listData.get(position).getQuestion().getQuestionID(), winners);
+//            List<String> winners = listData.get(position).calculateWinningAnswerID();
+//            viewModel.incrementAnswerWins(listData.get(position).getQuestion().getQuestionID(), winners);
 //             Toast.makeText(activity, text, Toast.LENGTH_LONG).show();
         }
     }
