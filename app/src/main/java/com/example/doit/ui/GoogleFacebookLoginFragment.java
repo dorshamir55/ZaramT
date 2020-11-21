@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.doit.R;
+import com.example.doit.model.UserData;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -30,6 +31,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.concurrent.Executor;
 
@@ -37,6 +39,7 @@ import static android.content.ContentValues.TAG;
 
 public class GoogleFacebookLoginFragment extends Fragment {
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
     private GoogleSignInClient mGoogleSignInClient;
 
     private Button facebookLogin;
@@ -48,6 +51,7 @@ public class GoogleFacebookLoginFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -136,7 +140,12 @@ public class GoogleFacebookLoginFragment extends Fragment {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            moveToMainActivity();
+
+                            String email = mAuth.getCurrentUser().getEmail();
+                            String nickname = mAuth.getCurrentUser().getDisplayName();
+                            UserData userData = new UserData(nickname, email).withId(mAuth.getCurrentUser().getUid());
+
+                            addUserToDB(userData);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -157,5 +166,20 @@ public class GoogleFacebookLoginFragment extends Fragment {
                 return;
             }
         }
+    }
+
+    private void addUserToDB(UserData userData) {
+
+        assert userData.getId() != null;
+
+        db.collection("users")
+                .document(userData.getId())
+                .set(userData)
+                .addOnSuccessListener(documentReference -> {
+                    moveToMainActivity();
+                })
+                .addOnFailureListener(exception -> {
+                    Toast.makeText(getContext(), "ERROR", Toast.LENGTH_SHORT).show();
+                });
     }
 }

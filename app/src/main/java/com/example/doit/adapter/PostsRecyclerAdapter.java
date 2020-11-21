@@ -156,7 +156,7 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
 //            }
 //        });
 
-        holder.nickname.setText(listData.get(position).getPostedUserId());
+        holder.nickname.setText(auth.getCurrentUser().getDisplayName());
         holder.question.setText(listData.get(position).getQuestion().getTextByLanguage(currentLanguage));
 
         if(listData.get(position).isPostTimeOver()){
