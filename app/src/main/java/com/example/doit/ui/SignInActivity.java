@@ -37,7 +37,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import static android.content.ContentValues.TAG;
 
 public class SignInActivity extends AppCompatActivity
-        implements GoogleFacebookLoginFragment.GoogleFacebookLoginFragmentClickListener{
+        implements GoogleFacebookLoginFragment.GoogleFacebookLoginFragmentClickListener,
+                FirstSignInFragment.FirstSignInFragmentClickListener{
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -57,7 +58,7 @@ public class SignInActivity extends AppCompatActivity
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.container2, new GoogleFacebookLoginFragment(), LoginFragment.TAG)
+                .add(R.id.container2, new GoogleFacebookLoginFragment(), GoogleFacebookLoginFragment.TAG)
                 .commit();
     }
 
@@ -92,11 +93,6 @@ public class SignInActivity extends AppCompatActivity
         Toast.makeText(this, getResources().getString(R.string.signup_failed), Toast.LENGTH_SHORT).show();
     }
 
-    private void moveToMainActivity() {
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
-    }
-
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
 
@@ -112,6 +108,7 @@ public class SignInActivity extends AppCompatActivity
                             String nickname = mAuth.getCurrentUser().getDisplayName();
                             UserData userData = new UserData(nickname, email).withId(mAuth.getCurrentUser().getUid());
                             addUserToDB(userData);
+//                            moveToFirstSignInFragment();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -152,7 +149,7 @@ public class SignInActivity extends AppCompatActivity
                             .document(userData.getId())
                             .set(userData)
                             .addOnSuccessListener(documentReference -> {
-                                moveToMainActivity();
+                                moveToFirstSignInFragment();
                             })
                             .addOnFailureListener(exception -> {
                                 Toast.makeText(getBaseContext(), "ERROR", Toast.LENGTH_SHORT).show();
@@ -171,5 +168,25 @@ public class SignInActivity extends AppCompatActivity
         mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private void moveToFirstSignInFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container2, new FirstSignInFragment(), FirstSignInFragment.TAG)
+                .commit();
+    }
+
+    private void moveToMainActivity() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    @Override
+    public void onSignIn(Runnable onFinish) {
+//        String email = mAuth.getCurrentUser().getEmail();
+//        String nickname = mAuth.getCurrentUser().getDisplayName();
+//        UserData userData = new UserData(nickname, email).withId(mAuth.getCurrentUser().getUid());
+//        addUserToDB(userData);
     }
 }

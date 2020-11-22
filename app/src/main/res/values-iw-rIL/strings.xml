@@ -67,4 +67,5 @@
     <string name="hours">שעות</string>
     <string name="seconds">שניות</string>
     <string name="closed">נסגר</string>
+    <string name="save">שמור</string>
 </resources>

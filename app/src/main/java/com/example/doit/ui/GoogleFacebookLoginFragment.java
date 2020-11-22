@@ -47,6 +47,7 @@ import static android.content.ContentValues.TAG;
 
 public class GoogleFacebookLoginFragment extends Fragment {
     private GoogleFacebookLoginFragmentClickListener listener;
+    public static final String TAG = "GOOGLE_FACEBOOK_LOGIN_FRG";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,12 @@ public class GoogleFacebookLoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 loadingBar.setVisibility(View.VISIBLE);
-                listener.onSignInGoogle(googleSignInOptions, () -> loadingBar.setVisibility(View.INVISIBLE));
+                doAsynch(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.onSignInGoogle(googleSignInOptions, () -> loadingBar.setVisibility(View.INVISIBLE));
+                    }
+                });
             }
         });
 
@@ -204,7 +210,7 @@ public class GoogleFacebookLoginFragment extends Fragment {
         }
     }
 
-//    private void addUserToDB(UserData userData) {
+    //    private void addUserToDB(UserData userData) {
 //
 //        assert userData.getId() != null;
 //
@@ -229,4 +235,7 @@ public class GoogleFacebookLoginFragment extends Fragment {
 //        };
 //        isExistInDB(userData.getEmail(), isExist);
 //    }
+    private void doAsynch(Runnable task) {
+        new Thread(task).start();
+    }
 }
