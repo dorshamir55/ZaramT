@@ -8,6 +8,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -29,10 +30,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.doit.R;
+import com.example.doit.model.Consumer;
 import com.example.doit.model.ContextWrapper;
 import com.example.doit.model.LocalHelper;
 import com.example.doit.model.QuestionPostData;
 import com.example.doit.model.UserData;
+import com.example.doit.viewmodel.IMainViewModel;
+import com.example.doit.viewmodel.MainViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +44,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -47,11 +52,13 @@ import java.util.Map;
 //import com.example.doit.service.MyFirebaseMessagingService;
 
 public class MainActivity extends AppCompatActivity {
+    private IMainViewModel viewModel = null;
     private AppBarConfiguration mAppBarConfiguration;
     private NavigationView navigationView;
     private FragmentManager manager;
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseAuth auth;
+    private UserData userData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 //        answers.add(new Answer("3", "Green"));
 //        answers.add(new Answer("4", "Yellow"));
 //        postQuestion(new QuestionPostData("22", question,  answers, Calendar.getInstance().getTime()));
-
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         manager = getSupportFragmentManager();
         manager.beginTransaction().add(R.id.nav_host_fragment, new HomeFragment()).commit();
 
@@ -151,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         auth = FirebaseAuth.getInstance();
+
         authStateListener = firebaseAuth -> { // onAuthChanged..
             // if signed-out
             if(firebaseAuth.getCurrentUser() == null) {
@@ -165,8 +173,21 @@ public class MainActivity extends AppCompatActivity {
         String welcome = getResources().getString(R.string.welcome);
         TextView welcomeTV = headerView.findViewById(R.id.welcome_nav_header);
         FirebaseUser currentUser = auth.getCurrentUser();
-        welcomeTV.setText(welcome+currentUser.getDisplayName());
-        welcomeTV.setMovementMethod(LinkMovementMethod.getInstance());
+        userData = new UserData();
+        Consumer<UserData> userConsumer = new Consumer<UserData>() {
+            @Override
+            public void apply(UserData currentUser) {
+                userData = currentUser;
+                welcomeTV.setText(welcome + userData.getNickName());
+                welcomeTV.setMovementMethod(LinkMovementMethod.getInstance());
+            }
+        };
+        viewModel.getCurrentUserData(currentUser.getUid(), userConsumer);
+//        welcomeTV.setText(welcome+currentUser.getDisplayName());
+        if(userData != null) {
+            welcomeTV.setText(welcome + userData.getNickName());
+            welcomeTV.setMovementMethod(LinkMovementMethod.getInstance());
+        }
 
         // Check if FCM token was re-generated but the user auth uid couldn't be granted..
         /*String newToken = PreferenceManager.getDefaultSharedPreferences(this)

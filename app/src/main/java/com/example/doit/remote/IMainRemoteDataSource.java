@@ -6,6 +6,7 @@ import com.example.doit.model.AnswerInQuestion;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.QuestionFireStore;
 import com.example.doit.model.QuestionPostData;
+import com.example.doit.model.UserData;
 
 import java.util.Date;
 import java.util.List;
@@ -19,4 +20,5 @@ public interface IMainRemoteDataSource {
     public void endingPostDate(String id, Runnable onFinish);
     public void changeUpdatedToFalse(String id);
     public void incrementAnswerWins(String questionID, List<String> winners);
+    public void getCurrentUserData(String uid, Consumer<UserData> userConsumer);
 }

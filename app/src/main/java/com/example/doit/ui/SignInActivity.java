@@ -128,7 +128,7 @@ public class SignInActivity extends AppCompatActivity
     }
 
     private void isExistInDB(String email, Consumer<Boolean> consumer) {
-        db.collection("users").get()
+        db.collection(UserData.TABLE_NAME).get()
                 .addOnCompleteListener(task -> {
                     boolean isExist = false;
                     if (task.isSuccessful()) {
@@ -154,7 +154,7 @@ public class SignInActivity extends AppCompatActivity
             @Override
             public void apply(Boolean isUserExist) {
                 if(!isUserExist){
-                    db.collection("users")
+                    db.collection(UserData.TABLE_NAME)
                             .document(userData.getId())
                             .set(userData)
                             .addOnSuccessListener(documentReference -> {
@@ -204,8 +204,8 @@ public class SignInActivity extends AppCompatActivity
     public void onImageAndNickname(String nickname, Runnable onFinish) {
         String id = mAuth.getCurrentUser().getUid();
         Map<String, Object> data = new HashMap<>();
-        data.put("nickName", nickname);
-        db.collection("users").document(id).set(data, SetOptions.merge())
+        data.put("nickname", nickname);
+        db.collection(UserData.TABLE_NAME).document(id).set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

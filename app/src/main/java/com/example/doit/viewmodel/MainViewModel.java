@@ -14,6 +14,7 @@ import com.example.doit.model.AnswerInQuestion;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.QuestionFireStore;
 import com.example.doit.model.QuestionPostData;
+import com.example.doit.model.UserData;
 import com.example.doit.repository.IMainRepository;
 import com.example.doit.repository.MainRepository;
 
@@ -76,5 +77,10 @@ public class MainViewModel extends AndroidViewModel implements IMainViewModel {
     @Override
     public void incrementAnswerWins(String questionID, List<String> winners) {
         mainRepository.incrementAnswerWins(questionID, winners);
+    }
+
+    @Override
+    public void getCurrentUserData(String uid, Consumer<UserData> userConsumer) {
+        mainRepository.getCurrentUserData(uid, userConsumer);
     }
 }

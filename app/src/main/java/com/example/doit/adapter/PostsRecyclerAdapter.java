@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.renderscript.Script;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,10 +32,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doit.R;
 import com.example.doit.model.AnswerInPost;
+import com.example.doit.model.Consumer;
 import com.example.doit.model.PercentFormatter;
 import com.example.doit.model.PieChartHelper;
 import com.example.doit.model.LocalHelper;
 import com.example.doit.model.QuestionPostData;
+import com.example.doit.model.UserData;
 import com.example.doit.viewmodel.IMainViewModel;
 import com.example.doit.viewmodel.MainViewModel;
 import com.github.mikephil.charting.charts.PieChart;
@@ -59,6 +62,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdapter.RecyclerViewHolder> {
+    private IMainViewModel viewModel = null;
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -77,6 +81,7 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
 
     public PostsRecyclerAdapter(Activity activity) {
         this.activity = activity;
+        this.viewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(MainViewModel.class);
         this.localHelper = new LocalHelper(activity);
         this.currentLanguage = localHelper.getLocale();
         this.auth = FirebaseAuth.getInstance();
@@ -156,7 +161,14 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
 //            }
 //        });
 
-        holder.nickname.setText(auth.getCurrentUser().getDisplayName());
+        Consumer<UserData> userConsumer = new Consumer<UserData>() {
+            @Override
+            public void apply(UserData postedUser) {
+                holder.nickname.setText( postedUser.getNickName());
+            }
+        };
+        viewModel.getCurrentUserData(listData.get(position).getPostedUserId(), userConsumer);
+
         holder.question.setText(listData.get(position).getQuestion().getTextByLanguage(currentLanguage));
 
         if(listData.get(position).isPostTimeOver()){
@@ -379,7 +391,7 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
             String closed = activity.getResources().getString(R.string.closed);
             if(text.equals(closed)){
                 //TODO: Post time is over...
-                IMainViewModel viewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(MainViewModel.class);
+//                IMainViewModel viewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(MainViewModel.class);
 
                 viewModel.stopPosting(id);
 //                Toast.makeText(activity, String.valueOf(i++), Toast.LENGTH_LONG).show();

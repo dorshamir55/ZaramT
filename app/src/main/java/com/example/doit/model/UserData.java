@@ -7,6 +7,8 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class UserData
 {
+    public static final String TABLE_NAME = "users";
+
     private String id;  // Auth uid + Firestore document id (Excluded)
     private String nickname;
     private String email;

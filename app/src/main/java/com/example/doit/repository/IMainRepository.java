@@ -8,6 +8,7 @@ import com.example.doit.model.AnswerInQuestion;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.QuestionFireStore;
 import com.example.doit.model.QuestionPostData;
+import com.example.doit.model.UserData;
 
 import java.util.List;
 
@@ -20,4 +21,5 @@ public interface IMainRepository {
     public void voteOnPost(String id, String currentUserId, List<AnswerInPost> answersInPost, int votedPosition, Runnable onFinish);
     public void stopPosting(String id, Runnable onFinish);
     public void incrementAnswerWins(String questionID, List<String> winners);
+    public void getCurrentUserData(String uid, Consumer<UserData> userConsumer);
 }

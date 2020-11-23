@@ -10,6 +10,7 @@ import com.example.doit.model.AnswerInQuestion;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.QuestionFireStore;
 import com.example.doit.model.QuestionPostData;
+import com.example.doit.model.UserData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -216,6 +217,23 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
             }
         };
         fetchAllAnswersInQuestion(questionID, consumer);
+    }
+
+    @Override
+    public void getCurrentUserData(String uid, Consumer<UserData> userConsumer) {
+        db.collection(UserData.TABLE_NAME).document(uid)
+                .get().addOnCompleteListener(task -> {
+                    UserData userData = null;
+                    if(task.isSuccessful()){
+                        userData = new UserData();
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        userData = documentSnapshot.toObject(UserData.class);
+                    } else {
+                        task.getException().printStackTrace();
+                    }
+                    if(userConsumer != null)
+                        userConsumer.apply(userData);
+        });
     }
 
     private void fetchAllAnswersInQuestion(String questionID, Consumer<List<AnswerInQuestion>> consumerList) {

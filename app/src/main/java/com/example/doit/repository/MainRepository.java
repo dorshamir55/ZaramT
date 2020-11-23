@@ -14,6 +14,7 @@ import com.example.doit.model.AnswerInQuestion;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.QuestionFireStore;
 import com.example.doit.model.QuestionPostData;
+import com.example.doit.model.UserData;
 import com.example.doit.remote.IMainRemoteDataSource;
 import com.example.doit.remote.MainRemoteDataSource;
 
@@ -104,6 +105,11 @@ public class MainRepository implements IMainRepository{
     @Override
     public void incrementAnswerWins(String questionID, List<String> winners) {
         remoteDataSource.incrementAnswerWins(questionID, winners);
+    }
+
+    @Override
+    public void getCurrentUserData(String uid, Consumer<UserData> userConsumer) {
+        remoteDataSource.getCurrentUserData(uid, userConsumer);
     }
 
     private void doAsynch(Runnable task) {
