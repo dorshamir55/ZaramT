@@ -10,14 +10,14 @@ public class UserData
     public static final String TABLE_NAME = "users";
 
     private String id;  // Auth uid + Firestore document id (Excluded)
-    private String nickname;
+    private String nickName;
     private String email;
 
     public UserData() {
     }
 
-    public UserData(String nickname, String email) {
-        this.nickname = nickname;
+    public UserData(String nickName, String email) {
+        this.nickName = nickName;
         this.email = email;
     }
 
@@ -27,11 +27,11 @@ public class UserData
     }
 
     public String getNickName() {
-        return nickname;
+        return nickName;
     }
 
-    public void setNickName(String name) {
-        this.nickname = nickname;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getEmail() {

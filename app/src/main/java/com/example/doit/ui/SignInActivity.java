@@ -194,17 +194,17 @@ public class SignInActivity extends AppCompatActivity
     @Override
     public void onSkip(Runnable onFinish) {
 //        String email = mAuth.getCurrentUser().getEmail();
-//        String nickname = mAuth.getCurrentUser().getDisplayName();
-//        UserData userData = new UserData(nickname, email).withId(mAuth.getCurrentUser().getUid());
+//        String nickName = mAuth.getCurrentUser().getDisplayName();
+//        UserData userData = new UserData(nickName, email).withId(mAuth.getCurrentUser().getUid());
 //        addUserToDB(userData);
         moveToMainActivity();
     }
 
     @Override
-    public void onImageAndNickname(String nickname, Runnable onFinish) {
+    public void onImageAndNickname(String nickName, Runnable onFinish) {
         String id = mAuth.getCurrentUser().getUid();
         Map<String, Object> data = new HashMap<>();
-        data.put("nickname", nickname);
+        data.put("nickName", nickName);
         db.collection(UserData.TABLE_NAME).document(id).set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

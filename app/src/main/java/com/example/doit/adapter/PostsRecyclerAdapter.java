@@ -164,7 +164,7 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
         Consumer<UserData> userConsumer = new Consumer<UserData>() {
             @Override
             public void apply(UserData postedUser) {
-                holder.nickname.setText( postedUser.getNickName());
+                holder.nickname.setText(postedUser.getNickName());
             }
         };
         viewModel.getCurrentUserData(listData.get(position).getPostedUserId(), userConsumer);
