@@ -109,7 +109,7 @@ public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecy
         protected FilterResults performFiltering(CharSequence constraint) {
             List<QuestionFireStore> filterList = new ArrayList<>();
             if (constraint == null || constraint.length() == 0) {
-                filterList.addAll(listData);
+                filterList.addAll(listDataFull);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
 

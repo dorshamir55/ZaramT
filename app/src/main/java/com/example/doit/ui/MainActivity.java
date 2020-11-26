@@ -99,9 +99,7 @@ public class MainActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         auth = FirebaseAuth.getInstance();
         manager = getSupportFragmentManager();
-//        manager.beginTransaction().add(R.id.nav_host_fragment, new HomeFragment()).commit();
-
-        replaceFragment (new HomeFragment());
+        manager.beginTransaction().add(R.id.nav_host_fragment, new HomeFragment()).commit();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);

@@ -165,6 +165,7 @@ public class AddPostFragment extends Fragment {
         searchItem = menu.findItem(R.id.action_search);
         searchItem.setVisible(true);
         searchView = (SearchView) searchItem.getActionView();
+        searchView.onActionViewExpanded();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
