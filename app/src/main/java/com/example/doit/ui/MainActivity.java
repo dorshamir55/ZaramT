@@ -28,17 +28,21 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.doit.R;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.ContextWrapper;
+import com.example.doit.model.Keyboard;
 import com.example.doit.model.LocalHelper;
 import com.example.doit.model.QuestionPostData;
 import com.example.doit.model.UserData;
 import com.example.doit.viewmodel.IMainViewModel;
 import com.example.doit.viewmodel.MainViewModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,6 +50,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.auth.User;
 
 import java.util.HashMap;
@@ -53,12 +58,14 @@ import java.util.Locale;
 import java.util.Map;
 //import com.example.doit.service.MyFirebaseMessagingService;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EditImageNicknameFragment.EditImageNicknameFragmentClickListener {
+    public static boolean isSignInNow = true;
     private IMainViewModel viewModel = null;
     private AppBarConfiguration mAppBarConfiguration;
     private NavigationView navigationView;
     private FragmentManager manager;
     private FirebaseAuth.AuthStateListener authStateListener;
+    private FirebaseFirestore db;
     private FirebaseAuth auth;
     public UserData userData;
     private DrawerLayout drawer;
@@ -97,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 //        postQuestion(new QuestionPostData("22", question,  answers, Calendar.getInstance().getTime()));
 
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         manager = getSupportFragmentManager();
         manager.beginTransaction().add(R.id.nav_host_fragment, new HomeFragment()).commit();
@@ -243,12 +251,14 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         if(authStateListener != null)
             auth.removeAuthStateListener(authStateListener);
+        isSignInNow = true;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         auth.addAuthStateListener(authStateListener);
+        isSignInNow = false;
     }
 
     @Override
@@ -271,5 +281,34 @@ public class MainActivity extends AppCompatActivity {
         searchItem.setVisible(false);
 
         return true;
+    }
+
+    @Override
+    public void onSkip(Runnable onFinish) {
+
+    }
+
+    @Override
+    public void onImageAndNickname(String nickName, String profileImage, Runnable onFinish) {
+        String id = auth.getCurrentUser().getUid();
+        Map<String, Object> data = new HashMap<>();
+        data.put("nickName", nickName);
+        data.put("profileImageName", profileImage);
+        db.collection(UserData.TABLE_NAME).document(id).set(data, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        if(onFinish != null)
+                            onFinish.run();
+                        manager.popBackStack();
+                        manager.beginTransaction().replace(R.id.nav_host_fragment, new MyProfileFragment()).commit();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

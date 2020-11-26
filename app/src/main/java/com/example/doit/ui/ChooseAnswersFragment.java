@@ -48,6 +48,7 @@ public class ChooseAnswersFragment extends Fragment {
     private IMainViewModel viewModel;
     private AnswersRecyclerAdapter adapter;
     private LocalHelper localHelper;
+    private FragmentManager manager;
 
     private List<AnswerInQuestion> answersIDList;
     private List<AnswerFireStore> checkedAnswersList;
@@ -71,6 +72,7 @@ public class ChooseAnswersFragment extends Fragment {
         adapter = new AnswersRecyclerAdapter(getActivity());
         localHelper = new LocalHelper(getActivity());
         this.currentLanguage = localHelper.getLocale();
+        manager = getParentFragmentManager();
     }
 
     @Override
@@ -190,7 +192,10 @@ public class ChooseAnswersFragment extends Fragment {
                 else
                     getActivity().startService(intent);
 
-                getParentFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
+                for(int i = 0; i < manager.getBackStackEntryCount(); ++i) {
+                    manager.popBackStack();
+                }
+                manager.beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
             }
         });
 

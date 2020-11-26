@@ -40,7 +40,7 @@ public class EditImageNicknameFragment extends Fragment {
     private FirebaseUser currentUser;
     public static final String TAG = "FIRST_SIGN_IN_FRG";
     public static final String PROFILE_IMAGES_FOLDER = "profile_pictures/";
-    private FirstSignInFragmentClickListener listener;
+    private EditImageNicknameFragmentClickListener listener;
     private ChoosePictureAccountAdapter adapter;
     private ChoosePictureAccountAdapter.MyPictureListener pictureListener;
     private UserData userData;
@@ -114,6 +114,9 @@ public class EditImageNicknameFragment extends Fragment {
                 listener.onSkip(() -> loadingBar.setVisibility(View.INVISIBLE));
             }
         });
+        if(!MainActivity.isSignInNow){
+            skipButton.setVisibility(View.GONE);
+        }
 
         saveButton = view.findViewById(R.id.save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -159,14 +162,14 @@ public class EditImageNicknameFragment extends Fragment {
         super.onAttach(context);
 
         try {
-            listener = (EditImageNicknameFragment.FirstSignInFragmentClickListener)context;
+            listener = (EditImageNicknameFragment.EditImageNicknameFragmentClickListener)context;
         } catch(ClassCastException ex) {
             throw new ClassCastException("NOTE! The activity must implement the fragment's listener" +
                     " interface!");
         }
     }
 
-    public static interface FirstSignInFragmentClickListener {
+    public static interface EditImageNicknameFragmentClickListener {
         public void onSkip(Runnable onFinish);
         public void onImageAndNickname(String nickname, String profileImage, Runnable onFinish);
     }

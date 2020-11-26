@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.net.Uri;
@@ -12,6 +13,8 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +41,7 @@ public class MyProfileFragment extends Fragment {
     private boolean isDownloaded = false;
     private CircleImageView profileImage;
     private TextView nickname;
+    private ImageView editIV;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_my_profile, container, false);
@@ -58,6 +62,18 @@ public class MyProfileFragment extends Fragment {
 
         profileImage = view.findViewById(R.id.profile_image_cell_my_profile);
         nickname = view.findViewById(R.id.nickname_cell_my_profile);
+        editIV = view.findViewById(R.id.edit_image_nickname_button);
+
+        editIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditImageNicknameFragment editImageNicknameFragment = new EditImageNicknameFragment();
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.nav_host_fragment, editImageNicknameFragment)
+                        .addToBackStack(editImageNicknameFragment.getClass().getName());
+                fragmentTransaction.commit();
+            }
+        });
 
         userData = new UserData();
         Consumer<UserData> userConsumer = new Consumer<UserData>() {

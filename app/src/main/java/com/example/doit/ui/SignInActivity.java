@@ -36,7 +36,7 @@ import static android.content.ContentValues.TAG;
 
 public class SignInActivity extends AppCompatActivity
         implements GoogleFacebookLoginFragment.GoogleFacebookLoginFragmentClickListener,
-                EditImageNicknameFragment.FirstSignInFragmentClickListener{
+                EditImageNicknameFragment.EditImageNicknameFragmentClickListener{
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;

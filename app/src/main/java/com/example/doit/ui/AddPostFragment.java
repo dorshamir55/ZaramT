@@ -28,6 +28,7 @@ import android.widget.Spinner;
 import com.example.doit.R;
 import com.example.doit.adapter.QuestionsRecyclerAdapter;
 import com.example.doit.model.Consumer;
+import com.example.doit.model.Keyboard;
 import com.example.doit.model.LocalHelper;
 import com.example.doit.model.QuestionFireStore;
 import com.example.doit.viewmodel.IMainViewModel;
@@ -121,8 +122,12 @@ public class AddPostFragment extends Fragment {
                 bundle.putSerializable("question", clickedQuestion);
                 chooseAnswerFragment.setArguments(bundle);
 
+                Keyboard.hideKeyboard(getActivity());
+
                 FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment, chooseAnswerFragment).commit();
+                fragmentTransaction.replace(R.id.nav_host_fragment, chooseAnswerFragment)
+                        .addToBackStack(chooseAnswerFragment.getClass().getName());
+                fragmentTransaction.commit();
 //                fragmentTransaction.addToBackStack(null);
 //                fragmentTransaction.commit();
 //                replaceFragment(new ChooseAnswersFragment(), getParentFragmentManager());
