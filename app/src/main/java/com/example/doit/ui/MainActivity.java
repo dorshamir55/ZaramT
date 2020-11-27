@@ -62,7 +62,7 @@ import java.util.Map;
 //import com.example.doit.service.MyFirebaseMessagingService;
 
 public class MainActivity extends AppCompatActivity implements EditImageNicknameFragment.EditImageNicknameFragmentClickListener,
-        HomeFragment.VotesFragmentClickListener, UploadPostService.UploadPostServiceClickListener {
+        HomeFragment.VotesFragmentClickListener {
     public static boolean isSignInNow = true;
     private IMainViewModel viewModel = null;
     private AppBarConfiguration mAppBarConfiguration;
@@ -322,14 +322,14 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
     }
 
     @Override
-    public void onUpdateAmountOfChosenQuestion(String questionID) {
-        viewModel.updateAmountOfChosenQuestionInQuestion(questionID);
+    public void onDecrementAmountOfChosenQuestionInQuestionPost(String questionID) {
+        viewModel.decrementAmountOfChosenQuestionInQuestionPost(questionID);
         //TODO
         //viewModel.updateAmountOfChosenQuestionInUser(questionID, userData);
     }
 
     @Override
-    public void onUpdateUserPostsList(String questionPostID) {
-        viewModel.updateUserPostsList(questionPostID, userData.getId(), userData.getPostedQuestionPostsIdList());
+    public void onDeleteQuestionPostIdFromUser(String questionPostID) {
+        viewModel.deleteQuestionPostIdFromUser(questionPostID, userData.getId(), userData.getPostedQuestionPostsIdList());
     }
 }

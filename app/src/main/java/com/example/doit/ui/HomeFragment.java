@@ -165,7 +165,8 @@ public class HomeFragment extends Fragment {
                 .setIcon(R.drawable.doit_icon)
                 .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
                     viewModel.deletePost(clickedPost);
-                    homeFragmentClickListener.onUpdateAmountOfChosenQuestion(clickedPost.getQuestion().getQuestionID());
+                    homeFragmentClickListener.onDecrementAmountOfChosenQuestionInQuestionPost(clickedPost.getQuestion().getQuestionID());
+                    homeFragmentClickListener.onDeleteQuestionPostIdFromUser(clickedPost.getId());
                     adapter.getData().remove(position);
                     adapter.notifyItemRemoved(position);
                 })
@@ -193,7 +194,8 @@ public class HomeFragment extends Fragment {
 
     public static interface VotesFragmentClickListener {
         public void onVote(String questionPostId, String currentUserId, List<AnswerInPost> answersList, int answerVoted);
-        public void onUpdateAmountOfChosenQuestion(String questionID);
+        public void onDecrementAmountOfChosenQuestionInQuestionPost(String questionID);
+        public void onDeleteQuestionPostIdFromUser(String questionPostID);
     }
 
     @Override

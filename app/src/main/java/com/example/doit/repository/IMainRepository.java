@@ -25,6 +25,6 @@ public interface IMainRepository {
     public void incrementAnswerWins(String questionID, List<String> winners);
     public void getCurrentUserData(String uid, Consumer<UserData> userConsumer);
     public void getAllAccountImages(Consumer<List<Uri>> uriConsumer);
-    public void updateAmountOfChosenQuestionInQuestion(String questionID);
-    public void updateUserPostsList(String questionPostID, String userID, List<String> postedQuestionPostsIdList);
+    public void decrementAmountOfChosenQuestionInQuestionPost(String questionID);
+    public void deleteQuestionPostIdFromUser(String questionPostID, String userID, List<String> postedQuestionPostsIdList);
 }

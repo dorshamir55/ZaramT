@@ -129,18 +129,31 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
         Map<String, Object> data = new HashMap<>();
         List<String> votedList = answersInPost.get(votedPosition).getVotedUserIdList();
         votedList.add(currentUserId);
-        votedQuestionPostsIdList.add(questionPostId);
         answersInPost.get(votedPosition).setVotedUserIdList(votedList);
         data.put("updateDate", FieldValue.serverTimestamp());
         data.put("voted", true);
         data.put("answers", answersInPost);
-        data.put("votedQuestionPostsIdList", votedQuestionPostsIdList);
         db.collection(QuestionPostData.TABLE_NAME).document(questionPostId).set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        if(onFinish != null)
-                            onFinish.run();
+                        votedQuestionPostsIdList.add(questionPostId);
+                        data.clear();
+                        data.put("votedQuestionPostsIdList", votedQuestionPostsIdList);
+                        db.collection(UserData.TABLE_NAME).document(currentUserId).set(data, SetOptions.merge())
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        if(onFinish != null)
+                                            onFinish.run();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+
+                                    }
+                                });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -232,7 +245,7 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
                     if(task.isSuccessful()){
                         userData = new UserData();
                         DocumentSnapshot documentSnapshot = task.getResult();
-                        userData = documentSnapshot.toObject(UserData.class);
+                        userData = documentSnapshot.toObject(UserData.class).withId(uid);
                     } else {
                         task.getException().printStackTrace();
                     }
@@ -268,7 +281,7 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
     }
 
     @Override
-    public void updateAmountOfChosenQuestionInQuestion(String questionID) {
+    public void decrementAmountOfChosenQuestionInQuestionPost(String questionID) {
         FirebaseFirestore.getInstance().collection(QuestionFireStore.TABLE_NAME).document(questionID)
                 .update("amountOfChoices", FieldValue.increment(-1))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -286,9 +299,9 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
     }
 
     @Override
-    public void updateUserPostsList(String questionPostID, String userID, List<String> postedQuestionPostsIdList) {
+    public void deleteQuestionPostIdFromUser(String questionPostID, String userID, List<String> postedQuestionPostsIdList) {
         Map<String, Object> data = new HashMap<>();
-        postedQuestionPostsIdList.add(questionPostID);
+        postedQuestionPostsIdList.remove(questionPostID);
         data.put("postedQuestionPostsIdList", postedQuestionPostsIdList);
         db.collection(UserData.TABLE_NAME).document(userID).set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

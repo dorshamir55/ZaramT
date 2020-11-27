@@ -119,13 +119,13 @@ public class MainRepository implements IMainRepository{
     }
 
     @Override
-    public void updateAmountOfChosenQuestionInQuestion(String questionID) {
-        remoteDataSource.updateAmountOfChosenQuestionInQuestion(questionID);
+    public void decrementAmountOfChosenQuestionInQuestionPost(String questionID) {
+        remoteDataSource.decrementAmountOfChosenQuestionInQuestionPost(questionID);
     }
 
     @Override
-    public void updateUserPostsList(String questionPostID, String userID, List<String> postedQuestionPostsIdList) {
-        remoteDataSource.updateUserPostsList(questionPostID, userID, postedQuestionPostsIdList);
+    public void deleteQuestionPostIdFromUser(String questionPostID, String userID, List<String> postedQuestionPostsIdList) {
+        remoteDataSource.deleteQuestionPostIdFromUser(questionPostID, userID, postedQuestionPostsIdList);
     }
 
     private void doAsynch(Runnable task) {

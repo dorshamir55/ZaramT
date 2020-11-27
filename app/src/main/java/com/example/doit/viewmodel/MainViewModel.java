@@ -91,12 +91,12 @@ public class MainViewModel extends AndroidViewModel implements IMainViewModel {
     }
 
     @Override
-    public void updateAmountOfChosenQuestionInQuestion(String questionID) {
-        mainRepository.updateAmountOfChosenQuestionInQuestion(questionID);
+    public void decrementAmountOfChosenQuestionInQuestionPost(String questionID) {
+        mainRepository.decrementAmountOfChosenQuestionInQuestionPost(questionID);
     }
 
     @Override
-    public void updateUserPostsList(String questionPostID, String userID, List<String> postedQuestionPostsIdList) {
-        mainRepository.updateUserPostsList(questionPostID, userID, postedQuestionPostsIdList);
+    public void deleteQuestionPostIdFromUser(String questionPostID, String userID, List<String> postedQuestionPostsIdList) {
+        mainRepository.deleteQuestionPostIdFromUser(questionPostID, userID, postedQuestionPostsIdList);
     }
 }

@@ -1,6 +1,8 @@
 package com.example.doit.model;
 
 
+import androidx.annotation.NonNull;
+
 import com.example.doit.ui.EditImageNicknameFragment;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
@@ -14,6 +16,7 @@ public class UserData implements Serializable {
     public static final String TABLE_NAME = "users";
     public static final String DEFAULT_IMAGE = "_none_profile_image.png";
 
+    @NonNull
     private String id;  // Auth uid + Firestore document id (Excluded)
     private String nickName;
     private String email;
@@ -41,6 +44,9 @@ public class UserData implements Serializable {
     public String getId() {
         return id;
     }
+
+    @Exclude
+    public void setId(String id) { this.id = id; }
 
     public String getNickName() {
         return nickName;
@@ -80,18 +86,6 @@ public class UserData implements Serializable {
 
     public void setPostedQuestionPostsIdList(List<String> postedQuestionPostsIdList) {
         this.postedQuestionPostsIdList = postedQuestionPostsIdList;
-    }
-
-    public int getAmountOfVotes(){
-        if(votedQuestionPostsIdList == null)
-            return 0;
-        return votedQuestionPostsIdList.size();
-    }
-
-    public int getAmountOfPosts(){
-        if(postedQuestionPostsIdList == null)
-            return 0;
-        return postedQuestionPostsIdList.size();
     }
 }
 

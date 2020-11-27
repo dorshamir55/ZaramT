@@ -39,6 +39,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
@@ -57,7 +58,7 @@ public class UploadPostService extends Service
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
     private QuestionPostData data;
-    private UploadPostServiceClickListener uploadPostServiceClickListener;
+    private List<String> postedQuestionPostsIdList;
 
     @Override
     public void onCreate() {
@@ -65,13 +66,6 @@ public class UploadPostService extends Service
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
-
-//        try {
-//            uploadPostServiceClickListener = (UploadPostService.UploadPostServiceClickListener)getApplicationContext();
-//        } catch(ClassCastException ex) {
-//            throw new ClassCastException("NOTE! The activity must implement the fragment's listener" +
-//                    " interface!");
-//        }
     }
 
     @Override
@@ -115,23 +109,56 @@ public class UploadPostService extends Service
                 .addOnSuccessListener(docRef -> {
                     LocalBroadcastManager.getInstance(getApplicationContext())
                             .sendBroadcast(new Intent("com.project.ACTION_RELOAD"));
+                    docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                    incrementQuestionChoice(questionPostData.getQuestion().getQuestionID());
-//                    uploadPostServiceClickListener.onUpdateUserPostsList(questionPostData.getId());
-//                    final FirebaseDatabase database = FirebaseDatabase.getInstance();
-//                    DatabaseReference ref = database.getReference("server/saving-data/fireblog");
-//                    DatabaseReference timeRef = ref.child("time_left_posts");
-//
-//                    Map<String, String> timeLeft = new HashMap<>();
-//                    timeLeft.put(docRef.getId(), "<!DOCTYPE HTML><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"<style></style></head><body><p id=\"demo\"></p><script>var countDownDate = new Date(\"Jan 5, 2021 15:37:25\").getTime();var x = setInterval(function() {  var now = new Date().getTime();  var distance = countDownDate - now;  var days = Math.floor(distance / (1000 * 60 * 60 * 24));  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));  var seconds = Math.floor((distance % (1000 * 60)) / 1000);  document.getElementById(\"demo\").innerHTML = days + \"d \" + hours + \"h \"  + minutes + \"m \" + seconds + \"s \";  if (distance < 0) {    clearInterval(x);    document.getElementById(\"demo\").innerHTML = \"EXPIRED\";  }}, 1000);</script></body></html>");
-//
-//                    timeRef.setValue(timeLeft);
+                            incrementQuestionChoice(questionPostData.getQuestion().getQuestionID());
+                            updateUserQuestionPostsIdList(documentSnapshot.getId(), questionPostData.getPostedUserId());
+                        }
+                    });
+//                    incrementQuestionChoice(questionPostData.getQuestion().getQuestionID());
+//                    updateUserQuestionPostsIdList(questionPostData.getId(), questionPostData.getPostedUserId());
+
                     stopSelf();
                 })
                 .addOnFailureListener(ex -> {
                     ex.printStackTrace();
                     showMessageAndFinish(getResources().getString(R.string.post_question_fail));
                 });
+    }
+
+    private void updateUserQuestionPostsIdList(String questionPostID, String userID) {
+        db.collection(UserData.TABLE_NAME).document(userID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                List<String> postedQuestionPostsIdList = documentSnapshot.toObject(UserData.class).getPostedQuestionPostsIdList();
+
+                Map<String, Object> data = new HashMap<>();
+                postedQuestionPostsIdList.add(questionPostID);
+                data.put("postedQuestionPostsIdList", postedQuestionPostsIdList);
+                db.collection(UserData.TABLE_NAME).document(userID).set(data, SetOptions.merge())
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                            }
+                        });
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 
     private void incrementQuestionChoice(String questionID) {
@@ -194,9 +221,4 @@ public class UploadPostService extends Service
     public IBinder onBind(Intent intent) {
         return null;
     }
-
-    public interface UploadPostServiceClickListener {
-        public void onUpdateUserPostsList(String questionPostID);
-    }
-
 }
