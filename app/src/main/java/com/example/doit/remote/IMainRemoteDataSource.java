@@ -18,7 +18,7 @@ public interface IMainRemoteDataSource {
     public void removePost(String id, Runnable onFinish);
     public void fetchAllQuestions(Consumer<List<QuestionFireStore>> consumerList);
     public void fetchAnswers(Consumer<List<AnswerFireStore>> consumerList, List<AnswerInQuestion> answerInQuestions);
-    public void updateVotes(String questionId, String currentUserId, List<AnswerInPost> answersInPost, List<String> postedQuestionsIdList, int votedPosition, Runnable onFinish);
+    public void updateVotes(String questionId, String currentUserId, List<AnswerInPost> answersInPost, List<String> votedQuestionPostsIdList, int votedPosition, Runnable onFinish);
     public void endingPostDate(String id, Runnable onFinish);
     public void changeUpdatedToFalse(String id);
     public void incrementAnswerWins(String questionID, List<String> winners);

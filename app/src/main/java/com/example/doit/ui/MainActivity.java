@@ -317,6 +317,6 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
 
     @Override
     public void onVote(String questionPosdId, String currentUserId, List<AnswerInPost> answersList, int answerVoted) {
-        viewModel.voteOnPost(questionPosdId, currentUserId, answersList, userData.getPostedQuestionsIdList(), answerVoted);
+        viewModel.voteOnPost(questionPosdId, currentUserId, answersList, userData.getVotedQuestionPostsIdList(), answerVoted);
     }
 }

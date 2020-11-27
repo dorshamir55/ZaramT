@@ -106,5 +106,6 @@
     <string name="skip">Skip</string>
     <string name="nickname_validation">Nickname can\'t be blank!</string>
     <string name="zarmti" translatable="false">Zaram T</string>
-    <string name="total_votes">Total votes:</string>
+    <string name="votes">Votes</string>
+    <string name="posts">"Posts "</string>
 </resources>

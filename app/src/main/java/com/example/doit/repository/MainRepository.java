@@ -94,8 +94,8 @@ public class MainRepository implements IMainRepository{
     }
 
     @Override
-    public void voteOnPost(String id ,String currentUserId, List<AnswerInPost> answersInPost, List<String> postedQuestionsIdList, int votedPosition, Runnable onFinish) {
-        remoteDataSource.updateVotes(id, currentUserId, answersInPost, postedQuestionsIdList, votedPosition, onFinish);
+    public void voteOnPost(String id ,String currentUserId, List<AnswerInPost> answersInPost, List<String> votedQuestionPostsIdList, int votedPosition, Runnable onFinish) {
+        remoteDataSource.updateVotes(id, currentUserId, answersInPost, votedQuestionPostsIdList, votedPosition, onFinish);
     }
 
     @Override

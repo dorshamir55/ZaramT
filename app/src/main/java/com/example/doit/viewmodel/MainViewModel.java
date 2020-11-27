@@ -60,8 +60,8 @@ public class MainViewModel extends AndroidViewModel implements IMainViewModel {
     }
 
     @Override
-    public void voteOnPost(String id, String currentUserId, List<AnswerInPost> answersInPost, List<String> postedQuestionsIdList, int votedPosition) {
-        mainRepository.voteOnPost(id, currentUserId, answersInPost, votedPosition, () -> {
+    public void voteOnPost(String id, String currentUserId, List<AnswerInPost> answersInPost, List<String> votedQuestionPostsIdList, int votedPosition) {
+        mainRepository.voteOnPost(id, currentUserId, answersInPost, votedQuestionPostsIdList, votedPosition, () -> {
             LocalBroadcastManager.getInstance(getApplication().getApplicationContext())
                     .sendBroadcast(new Intent("com.project.ACTION_RELOAD"));
         });

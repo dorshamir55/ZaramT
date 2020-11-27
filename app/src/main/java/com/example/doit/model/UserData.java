@@ -18,7 +18,8 @@ public class UserData implements Serializable {
     private String nickName;
     private String email;
     private String profileImageName;
-    private List<String> postedQuestionsIdList;
+    private List<String> votedQuestionPostsIdList;
+    private List<String> postedQuestionIdList;
 
     public UserData() {
     }
@@ -27,7 +28,8 @@ public class UserData implements Serializable {
         this.nickName = nickName;
         this.email = email;
         this.profileImageName = DEFAULT_IMAGE;
-        this.postedQuestionsIdList = new ArrayList<>();
+        this.votedQuestionPostsIdList = new ArrayList<>();
+        this.postedQuestionIdList = new ArrayList<>();
     }
 
     public UserData withId(String id) {
@@ -64,18 +66,32 @@ public class UserData implements Serializable {
         this.profileImageName = profileImageName;
     }
 
-    public List<String> getPostedQuestionsIdList() {
-        return postedQuestionsIdList;
+    public List<String> getVotedQuestionPostsIdList() {
+        return votedQuestionPostsIdList;
     }
 
-    public void setPostedQuestionsIdList(List<String> postedQuestionsIdList) {
-        this.postedQuestionsIdList = postedQuestionsIdList;
+    public void setVotedQuestionPostsIdList(List<String> votedQuestionPostsIdList) {
+        this.votedQuestionPostsIdList = votedQuestionPostsIdList;
+    }
+
+    public List<String> getPostedQuestionIdList() {
+        return postedQuestionIdList;
+    }
+
+    public void setPostedQuestionIdList(List<String> postedQuestionIdList) {
+        this.postedQuestionIdList = postedQuestionIdList;
     }
 
     public int getAmountOfVotes(){
-        if(postedQuestionsIdList == null)
+        if(votedQuestionPostsIdList == null)
             return 0;
-        return postedQuestionsIdList.size();
+        return votedQuestionPostsIdList.size();
+    }
+
+    public int getAmountOfPosts(){
+        if(postedQuestionIdList == null)
+            return 0;
+        return postedQuestionIdList.size();
     }
 }
 

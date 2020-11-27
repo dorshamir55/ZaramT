@@ -70,5 +70,6 @@
     <string name="nickname">כינוי</string>
     <string name="skip">דלג</string>
     <string name="nickname_validation">כינוי לא יכול להיות ריק!</string>
-    <string name="total_votes">"סה\"כ הצבעות: "</string>
+    <string name="votes">הצבעות</string>
+    <string name="posts">פוסטים</string>
 </resources>

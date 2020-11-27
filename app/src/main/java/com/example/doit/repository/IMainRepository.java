@@ -20,7 +20,7 @@ public interface IMainRepository {
     public void deletePost(QuestionPostData questionPostData, Runnable onFinish);
     public void getListOfQuestions(Consumer<List<QuestionFireStore>> consumerList);
     public void getListOfAnswers(Consumer<List<AnswerFireStore>> consumerList, List<AnswerInQuestion> answerInQuestions);
-    public void voteOnPost(String id, String currentUserId, List<AnswerInPost> answersInPost, List<String> postedQuestionsIdList, int votedPosition, Runnable onFinish);
+    public void voteOnPost(String id, String currentUserId, List<AnswerInPost> answersInPost, List<String> votedQuestionPostsIdList, int votedPosition, Runnable onFinish);
     public void stopPosting(String id, Runnable onFinish);
     public void incrementAnswerWins(String questionID, List<String> winners);
     public void getCurrentUserData(String uid, Consumer<UserData> userConsumer);

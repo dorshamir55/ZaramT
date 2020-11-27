@@ -2,21 +2,17 @@ package com.example.doit.ui;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -40,7 +36,7 @@ public class MyProfileFragment extends Fragment {
     private Uri imageUri;
     private boolean isDownloaded = false;
     private CircleImageView profileImage;
-    private TextView nickname, totalVotes;
+    private TextView nickname, votes, posts;
     private ImageView editIV;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,7 +58,8 @@ public class MyProfileFragment extends Fragment {
 
         profileImage = view.findViewById(R.id.profile_image_cell_my_profile);
         nickname = view.findViewById(R.id.nickname_cell_my_profile);
-        totalVotes = view.findViewById(R.id.total_votes_text_view);
+        votes = view.findViewById(R.id.votes_value_text_view);
+        posts = view.findViewById(R.id.posts_value_text_view);
         editIV = view.findViewById(R.id.edit_image_nickname_button);
 
         editIV.setOnClickListener(new View.OnClickListener() {
@@ -87,8 +84,8 @@ public class MyProfileFragment extends Fragment {
             public void apply(UserData currentUser) {
                 userData = currentUser;
                 nickname.setText(userData.getNickName());
-                String totalVotesString = getResources().getString(R.string.total_votes);
-                totalVotes.setText(totalVotesString + userData.getAmountOfVotes());
+                votes.setText(userData.getAmountOfVotes());
+                posts.setText(userData.getAmountOfPosts());
 
                 if(isDownloaded){
                     if(isAdded()) {

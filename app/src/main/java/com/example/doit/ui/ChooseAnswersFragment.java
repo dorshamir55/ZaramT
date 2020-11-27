@@ -189,6 +189,7 @@ public class ChooseAnswersFragment extends Fragment {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                     getActivity().startForegroundService(intent);
+
                 else
                     getActivity().startService(intent);
 
