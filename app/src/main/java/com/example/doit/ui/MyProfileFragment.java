@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -158,8 +159,10 @@ public class MyProfileFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.profileRecycler);
         recyclerView.setHasFixedSize(false);
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(adapter);
+        showMyPosts();
 
         adapter.setRecyclerListener(new PostsRecyclerAdapter.PostsRecyclerListener() {
             @Override
@@ -177,7 +180,9 @@ public class MyProfileFragment extends Fragment {
                 deleteQuestionPostListener.onDeleteQuestionPost(adapter, clickedPost, position);
             }
         });
+    }
 
+    public void showMyPosts(){
         new Handler().postDelayed(()-> {
             Consumer<List<QuestionPostData>> consumerList = new Consumer<List<QuestionPostData>>() {
                 @Override

@@ -5,20 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.MyProfileFragment"
-    android:layout_marginTop="10dp">
+    android:layout_marginTop="15dp">
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeContainerMyProfile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_margin="10dp">
+                android:descendantFocusability="blocksDescendants">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -59,8 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_margin="10dp"
-                    android:layout_marginTop="20dp">
+                    android:layout_margin="20dp">
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -106,11 +105,17 @@
                             android:text="@string/votes"/>
                     </LinearLayout>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:layout_gravity="bottom"
+                    android:background="@color/lightGrey"
+                    android:layout_marginBottom="20dp"/>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/profileRecycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
