@@ -3,8 +3,6 @@ package com.example.doit.ui;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -16,32 +14,23 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.doit.R;
 import com.example.doit.adapter.PostsRecyclerAdapter;
-import com.example.doit.model.AnswerInPost;
+import com.example.doit.model.DeleteQuestionPostListener;
 import com.example.doit.model.QuestionPostData;
 import com.example.doit.model.UserData;
+import com.example.doit.model.UserDataListener;
+import com.example.doit.model.VotesClickListener;
 import com.example.doit.viewmodel.IMainViewModel;
 import com.example.doit.viewmodel.MainViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HomeFragment extends Fragment {
     private FirebaseAuth auth;
@@ -50,7 +39,9 @@ public class HomeFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
     private PostsRecyclerAdapter adapter;// = new PostsRecyclerAdapter(getActivity());
     private BroadcastReceiver reloadAdsReceiver;
-    private VotesFragmentClickListener homeFragmentClickListener;
+    private VotesClickListener votesClickListener;
+    private DeleteQuestionPostListener deleteQuestionPostListener;
+    private UserDataListener userDataListener;
     private UserData userData;
 
     @Override
@@ -65,8 +56,10 @@ public class HomeFragment extends Fragment {
         reloadAdsReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if(viewModel != null)
+                if(viewModel != null) {
                     viewModel.loadAds(null);
+                    userDataListener.onUserDataChanged();
+                }
             }
         };
     }
@@ -110,7 +103,8 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onDeleteClick(int position, MenuItem item, QuestionPostData clickedPost) {
-                deletePost(position, clickedPost);
+//                deletePost(position, clickedPost);
+                deleteQuestionPostListener.onDeleteQuestionPost(adapter, clickedPost, position);
             }
         });
 
@@ -137,24 +131,7 @@ public class HomeFragment extends Fragment {
     private void vote(QuestionPostData clickedPost, int answerVoted){
         //clickedPost.getAnswers().get(answerPosition).setVotes(clickedPost.getAnswers().get(answerPosition).getVotes() + 1);
 //        viewModel.voteOnPost(clickedPost.getId(), currentUser.getUid(), clickedPost.getAnswers(), answerVoted);
-        homeFragmentClickListener.onVote(clickedPost.getId(), currentUser.getUid(), clickedPost.getAnswers(), answerVoted);
-    }
-
-    private void deletePost(int position, QuestionPostData clickedPost){
-        new AlertDialog.Builder(getContext())
-                .setTitle(R.string.delete_title)
-                .setMessage(R.string.delete_message)
-                .setIcon(R.drawable.doit_icon)
-                .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                    viewModel.deletePost(clickedPost);
-                    homeFragmentClickListener.onDecrementAmountOfChosenQuestionInQuestionPost(clickedPost.getQuestion().getQuestionID());
-                    homeFragmentClickListener.onDeleteQuestionPostIdFromUser(clickedPost.getId());
-                    adapter.getData().remove(position);
-                    adapter.notifyItemRemoved(position);
-                })
-                .setNegativeButton(getString(R.string.no), null)
-                .create()
-                .show();
+        votesClickListener.onVote(clickedPost.getId(), currentUser.getUid(), clickedPost.getAnswers(), answerVoted);
     }
 
     @Override
@@ -174,18 +151,14 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public static interface VotesFragmentClickListener {
-        public void onVote(String questionPostId, String currentUserId, List<AnswerInPost> answersList, int answerVoted);
-        public void onDecrementAmountOfChosenQuestionInQuestionPost(String questionID);
-        public void onDeleteQuestionPostIdFromUser(String questionPostID);
-    }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
         try {
-            homeFragmentClickListener = (HomeFragment.VotesFragmentClickListener)context;
+            votesClickListener = (VotesClickListener)context;
+            deleteQuestionPostListener = (DeleteQuestionPostListener)context;
+            userDataListener = (UserDataListener)context;
         } catch(ClassCastException ex) {
             throw new ClassCastException("NOTE! The activity must implement the fragment's listener" +
                     " interface!");

@@ -24,6 +24,7 @@ import java.util.List;
 public class MainViewModel extends AndroidViewModel implements IMainViewModel {
     private IMainRepository mainRepository;
     private LiveData<List<QuestionPostData>> questionPostLiveData;
+    private LiveData<List<QuestionPostData>> myQuestionPostLiveData;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -98,5 +99,10 @@ public class MainViewModel extends AndroidViewModel implements IMainViewModel {
     @Override
     public void deleteQuestionPostIdFromUser(String questionPostID, String userID, List<String> postedQuestionPostsIdList) {
         mainRepository.deleteQuestionPostIdFromUser(questionPostID, userID, postedQuestionPostsIdList);
+    }
+
+    @Override
+    public void searchMyPostsAndRun(Consumer<List<QuestionPostData>> consumerList, String userID) {
+        mainRepository.searchMyPostsAndRun( consumerList, userID);
     }
 }

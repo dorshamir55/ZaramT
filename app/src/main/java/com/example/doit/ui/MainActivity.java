@@ -11,36 +11,34 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.doit.R;
+import com.example.doit.adapter.PostsRecyclerAdapter;
 import com.example.doit.model.AnswerInPost;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.ContextWrapper;
-import com.example.doit.model.Keyboard;
+import com.example.doit.model.DeleteQuestionPostListener;
 import com.example.doit.model.LocalHelper;
 import com.example.doit.model.QuestionPostData;
 import com.example.doit.model.UserData;
-import com.example.doit.service.UploadPostService;
+import com.example.doit.model.UserDataListener;
+import com.example.doit.model.VotesClickListener;
 import com.example.doit.viewmodel.IMainViewModel;
 import com.example.doit.viewmodel.MainViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -49,11 +47,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.firestore.auth.User;
 
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +57,7 @@ import java.util.Map;
 //import com.example.doit.service.MyFirebaseMessagingService;
 
 public class MainActivity extends AppCompatActivity implements EditImageNicknameFragment.EditImageNicknameFragmentClickListener,
-        HomeFragment.VotesFragmentClickListener {
+        VotesClickListener, DeleteQuestionPostListener, UserDataListener {
     public static boolean isSignInNow = true;
     private IMainViewModel viewModel = null;
     private AppBarConfiguration mAppBarConfiguration;
@@ -71,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
+    private FirebaseUser currentUser;
     public UserData userData;
     private DrawerLayout drawer;
 
@@ -185,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
         View headerView = navigationView.getHeaderView(0);
         String welcome = getResources().getString(R.string.welcome);
         TextView welcomeTV = headerView.findViewById(R.id.welcome_nav_header);
-        FirebaseUser currentUser = auth.getCurrentUser();
+        currentUser = auth.getCurrentUser();
         userData = new UserData();
         Consumer<UserData> userConsumer = new Consumer<UserData>() {
             @Override
@@ -331,5 +327,34 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
     @Override
     public void onDeleteQuestionPostIdFromUser(String questionPostID) {
         viewModel.deleteQuestionPostIdFromUser(questionPostID, userData.getId(), userData.getPostedQuestionPostsIdList());
+    }
+
+    @Override
+    public void onDeleteQuestionPost(PostsRecyclerAdapter adapter, QuestionPostData questionPostData, int position) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.delete_title)
+                .setMessage(R.string.delete_message)
+                .setIcon(R.drawable.doit_icon)
+                .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
+                    viewModel.deletePost(questionPostData);
+                    viewModel.decrementAmountOfChosenQuestionInQuestionPost(questionPostData.getQuestion().getQuestionID());
+                    viewModel.deleteQuestionPostIdFromUser(questionPostData.getId(), userData.getId(), userData.getPostedQuestionPostsIdList());
+                    adapter.getData().remove(position);
+                    adapter.notifyItemRemoved(position);
+                })
+                .setNegativeButton(getString(R.string.no), null)
+                .create()
+                .show();
+    }
+
+    @Override
+    public void onUserDataChanged() {
+        Consumer<UserData> userConsumer = new Consumer<UserData>() {
+            @Override
+            public void apply(UserData currentUser) {
+                userData = currentUser;
+            }
+        };
+        viewModel.getCurrentUserData(currentUser.getUid(), userConsumer);
     }
 }

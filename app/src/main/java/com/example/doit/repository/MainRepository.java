@@ -128,6 +128,20 @@ public class MainRepository implements IMainRepository{
         remoteDataSource.deleteQuestionPostIdFromUser(questionPostID, userID, postedQuestionPostsIdList);
     }
 
+    @Override
+    public void searchMyPostsAndRun(Consumer<List<QuestionPostData>> consumerList, String userID) {
+        Handler handler = new Handler();
+        doAsynch(()->{
+            List<QuestionPostData> data = adDAO.getMyPostsLiveData(userID);
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    consumerList.apply(data);
+                }
+            });
+        });
+    }
+
     private void doAsynch(Runnable task) {
         new Thread(task).start();
     }

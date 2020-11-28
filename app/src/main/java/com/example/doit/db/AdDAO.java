@@ -28,7 +28,7 @@ public interface AdDAO {
     public void deleteAll(List<QuestionPostData> posts);
 
     @Query("SELECT * FROM "+QuestionPostData.TABLE_NAME+" WHERE postedUserId = :userID ORDER BY startDate")
-    public LiveData<List<QuestionPostData>> getMyPosts(String userID);
+    public List<QuestionPostData> getMyPostsLiveData(String userID);
 
     @Query("SELECT * FROM "+QuestionPostData.TABLE_NAME+" ORDER BY updateDate DESC")
     public LiveData<List<QuestionPostData>> getAllPosts();

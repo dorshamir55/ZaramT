@@ -27,5 +27,6 @@ public interface IMainViewModel {
     public void getAllAccountImages(Consumer<List<Uri>> uriConsumer);
     public void decrementAmountOfChosenQuestionInQuestionPost(String questionID);
     public void deleteQuestionPostIdFromUser(String questionPostID, String userID, List<String> postedQuestionPostsIdList);
+    public void searchMyPostsAndRun(Consumer<List<QuestionPostData>> consumerList, String userID);
 }
 
