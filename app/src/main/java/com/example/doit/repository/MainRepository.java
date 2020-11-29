@@ -94,6 +94,11 @@ public class MainRepository implements IMainRepository{
     }
 
     @Override
+    public void getAllUsers(Consumer<List<UserData>> consumerList){
+        remoteDataSource.fetchAllUsers(consumerList);
+    }
+
+    @Override
     public void voteOnPost(String id ,String currentUserId, List<AnswerInPost> answersInPost, List<String> votedQuestionPostsIdList, int votedPosition, Runnable onFinish) {
         remoteDataSource.updateVotes(id, currentUserId, answersInPost, votedQuestionPostsIdList, votedPosition, onFinish);
     }

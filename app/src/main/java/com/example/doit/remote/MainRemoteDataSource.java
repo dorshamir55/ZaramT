@@ -100,6 +100,25 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
     }
 
     @Override
+    public void fetchAllUsers(Consumer<List<UserData>> consumerList) {
+        Query query = db.collection(UserData.TABLE_NAME);
+        query.get()
+                .addOnCompleteListener(task -> {
+                    List<UserData> data = null;
+                    if (task.isSuccessful()) {
+                        data = new ArrayList<>();
+                        for (DocumentSnapshot document : task.getResult().getDocuments()) {
+                            data.add(document.toObject(UserData.class).withId(document.getId()));
+                        }
+                    } else {
+                        task.getException().printStackTrace();
+                    }
+                    if(consumerList != null)
+                        consumerList.apply(data);
+                });
+    }
+
+    @Override
     public void fetchAnswers(Consumer<List<AnswerFireStore>> consumerList, List<AnswerInQuestion> answerInQuestions) {
         Query query = db.collection(AnswerFireStore.TABLE_NAME);
         query.get()

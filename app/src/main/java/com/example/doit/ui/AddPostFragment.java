@@ -56,6 +56,8 @@ public class AddPostFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        viewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
         adapter = new QuestionsRecyclerAdapter(getActivity());
     }
 
@@ -94,7 +96,6 @@ public class AddPostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
         Log.d("TAG_ADD_POST", localHelper.getLocale());
         categoryS = view.findViewById(R.id.choose_category_spinner);
 

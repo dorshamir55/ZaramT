@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
 
                     case R.id.action_search:
 //                        switchToHomeFragment();
-
+                        replaceFragment(new SearchFragment());
                         break;
 
                     case R.id.action_add:
