@@ -187,16 +187,11 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
             @Override
             public void apply(UserData currentUser) {
                 userData = currentUser;
-                welcomeTV.setText(welcome + userData.getNickName());
+                welcomeTV.setText(userData.getNickName());
                 welcomeTV.setMovementMethod(LinkMovementMethod.getInstance());
             }
         };
         viewModel.getCurrentUserData(currentUser.getUid(), userConsumer);
-
-        if(userData != null) {
-            welcomeTV.setText(welcome + userData.getNickName());
-            welcomeTV.setMovementMethod(LinkMovementMethod.getInstance());
-        }
 
         // Check if FCM token was re-generated but the user auth uid couldn't be granted..
         /*String newToken = PreferenceManager.getDefaultSharedPreferences(this)

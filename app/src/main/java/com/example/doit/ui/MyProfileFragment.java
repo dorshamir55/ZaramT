@@ -21,8 +21,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -223,5 +227,11 @@ public class MyProfileFragment extends Fragment {
         if(getContext() != null) {
             LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(reloadUserReceiver);
         }
+    }
+
+    @Nullable
+    @Override
+    public View getView() {
+        return super.getView();
     }
 }
