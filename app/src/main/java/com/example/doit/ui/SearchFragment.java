@@ -1,5 +1,6 @@
 package com.example.doit.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import android.widget.SearchView;
 
 import com.example.doit.R;
 import com.example.doit.adapter.UserSearchRecyclerAdapter;
+import com.example.doit.model.BackButtonListener;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.QuestionFireStore;
 import com.example.doit.model.UserData;
@@ -29,6 +31,7 @@ import java.util.List;
 public class SearchFragment extends Fragment {
     private IMainViewModel viewModel = null;
     private UserSearchRecyclerAdapter adapter;
+    private BackButtonListener backButtonListener;
     private List<UserData> allUsersList;
     private SearchView searchView;
     private MenuItem searchItem;
@@ -63,11 +66,14 @@ public class SearchFragment extends Fragment {
         super.onPause();
 
         searchItem.setVisible(false);
+        backButtonListener.onBackButtonClickListener(false);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        backButtonListener.onBackButtonClickListener(true);
 
         Consumer<List<UserData>> consumerList = new Consumer<List<UserData>>() {
             @Override
@@ -100,5 +106,16 @@ public class SearchFragment extends Fragment {
                 return  false;
             }
         });
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try{
+            backButtonListener = (BackButtonListener)context;
+        } catch(ClassCastException ex) {
+            throw new ClassCastException("NOTE! The activity must implement the fragment's listener" +
+                    " interface!");
+        }
     }
 }

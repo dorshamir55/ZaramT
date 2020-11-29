@@ -1,5 +1,6 @@
 package com.example.doit.ui;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -7,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +27,7 @@ import android.widget.Spinner;
 
 import com.example.doit.R;
 import com.example.doit.adapter.QuestionsRecyclerAdapter;
+import com.example.doit.model.BackButtonListener;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.Keyboard;
 import com.example.doit.model.LocalHelper;
@@ -44,6 +45,7 @@ public class AddPostFragment extends Fragment {
     private IMainViewModel viewModel = null;
     private QuestionsRecyclerAdapter adapter;
     private LocalHelper localHelper;
+    private BackButtonListener backButtonListener;
 
     private Spinner categoryS;
     private ArrayAdapter categorySpinnerAdapter;
@@ -62,8 +64,7 @@ public class AddPostFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         localHelper = new LocalHelper(getActivity());
         currentLanguage = localHelper.getLocale();
         // Inflate the layout for this fragment
@@ -75,11 +76,14 @@ public class AddPostFragment extends Fragment {
         super.onPause();
 
         searchItem.setVisible(false);
+        backButtonListener.onBackButtonClickListener(false);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        backButtonListener.onBackButtonClickListener(true);
 
         Consumer<List<QuestionFireStore>> consumerList = new Consumer<List<QuestionFireStore>>() {
             @Override
@@ -185,5 +189,16 @@ public class AddPostFragment extends Fragment {
                 return  false;
             }
         });
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try{
+            backButtonListener = (BackButtonListener)context;
+        } catch(ClassCastException ex) {
+            throw new ClassCastException("NOTE! The activity must implement the fragment's listener" +
+                    " interface!");
+        }
     }
 }

@@ -16,6 +16,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -31,9 +32,11 @@ import android.widget.Toast;
 import com.example.doit.R;
 import com.example.doit.adapter.PostsRecyclerAdapter;
 import com.example.doit.model.AnswerInPost;
+import com.example.doit.model.BackButtonListener;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.ContextWrapper;
 import com.example.doit.model.DeleteQuestionPostListener;
+import com.example.doit.model.Keyboard;
 import com.example.doit.model.LocalHelper;
 import com.example.doit.model.QuestionPostData;
 import com.example.doit.model.UserData;
@@ -57,7 +60,7 @@ import java.util.Map;
 //import com.example.doit.service.MyFirebaseMessagingService;
 
 public class MainActivity extends AppCompatActivity implements EditImageNicknameFragment.EditImageNicknameFragmentClickListener,
-        VotesClickListener, DeleteQuestionPostListener, UserDataListener {
+        VotesClickListener, DeleteQuestionPostListener, UserDataListener, BackButtonListener {
     public static boolean isSignInNow = true;
     private IMainViewModel viewModel = null;
     private AppBarConfiguration mAppBarConfiguration;
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
     private FirebaseUser currentUser;
     public UserData userData;
     private DrawerLayout drawer;
+    private Toolbar toolbar;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -109,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
         manager = getSupportFragmentManager();
         manager.beginTransaction().add(R.id.nav_host_fragment, new HomeFragment()).commit();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -353,5 +357,26 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
         viewModel.getCurrentUserData(currentUser.getUid(), userConsumer);
 
         return userData;
+    }
+
+    @Override
+    public void onBackButtonClickListener(boolean flag) {
+        if(flag) {
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            setSupportActionBar(toolbar);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                    Keyboard.hideKeyboard(MainActivity.this);
+                }
+            });
+        }
+        else{
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+            getSupportActionBar().setDisplayShowHomeEnabled(false);
+            setSupportActionBar(toolbar);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.doit.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 import com.example.doit.R;
 import com.example.doit.adapter.AnswersRecyclerAdapter;
 import com.example.doit.model.AnswerFireStore;
+import com.example.doit.model.BackButtonListener;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.LocalHelper;
 import com.example.doit.model.AnswerInQuestion;
@@ -49,6 +51,7 @@ public class ChooseAnswersFragment extends Fragment {
     private AnswersRecyclerAdapter adapter;
     private LocalHelper localHelper;
     private FragmentManager manager;
+    private BackButtonListener backButtonListener;
 
     private List<AnswerInQuestion> answersIDList;
     private List<AnswerFireStore> checkedAnswersList;
@@ -222,5 +225,30 @@ public class ChooseAnswersFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        backButtonListener.onBackButtonClickListener(true);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        backButtonListener.onBackButtonClickListener(false);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try{
+            backButtonListener = (BackButtonListener)context;
+        } catch(ClassCastException ex) {
+            throw new ClassCastException("NOTE! The activity must implement the fragment's listener" +
+                    " interface!");
+        }
     }
 }
