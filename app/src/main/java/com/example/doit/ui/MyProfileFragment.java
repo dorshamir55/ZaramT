@@ -92,9 +92,16 @@ public class MyProfileFragment extends Fragment {
             @Override
             public void onReceive(Context context, Intent intent) {
                 viewModel.loadAds(() -> swipeContainer.setRefreshing(false));
-                userData = userDataListener.onUserDataChanged(userID);
-                votes.setText(String.valueOf(userData.getVotedQuestionPostsIdList().size()));
-                posts.setText(String.valueOf(userData.getPostedQuestionPostsIdList().size()));
+//                userData = userDataListener.onUserDataChanged(userID);
+                Consumer<UserData> userConsumer = new Consumer<UserData>() {
+                    @Override
+                    public void apply(UserData currentUser) {
+                        userData = currentUser;
+                        votes.setText(String.valueOf(userData.getVotedQuestionPostsIdList().size()));
+                        posts.setText(String.valueOf(userData.getPostedQuestionPostsIdList().size()));
+                    }
+                };
+                viewModel.getCurrentUserData(userID, userConsumer);
             }
         };
     }
@@ -247,7 +254,7 @@ public class MyProfileFragment extends Fragment {
 
         try {
             deleteQuestionPostListener = (DeleteQuestionPostListener)context;
-            userDataListener = (UserDataListener)context;
+//            userDataListener = (UserDataListener)context;
             backButtonListener = (BackButtonListener)context;
             votesClickListener = (VotesClickListener)context;
         } catch(ClassCastException ex) {

@@ -62,8 +62,9 @@ import java.util.Map;
 //import com.example.doit.service.MyFirebaseMessagingService;
 
 public class MainActivity extends AppCompatActivity implements EditImageNicknameListener, VotesClickListener,
-        DeleteQuestionPostListener, UserDataListener, BackButtonListener, UserProfileListener {
+        DeleteQuestionPostListener, /*UserDataListener, */BackButtonListener, UserProfileListener {
     public static boolean isSignInNow = true;
+    public int i = 0;
     private IMainViewModel viewModel = null;
     private AppBarConfiguration mAppBarConfiguration;
     private NavigationView navigationView;
@@ -215,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
         FragmentManager manager = getSupportFragmentManager();
         boolean fragmentPopped = manager.popBackStackImmediate (backStateName, 0);
         
-        if (!fragmentPopped) {// || fragmentPopped && fragment instanceof MyProfileFragment){ //fragment not in back stack, create it.
+        if (!fragmentPopped || fragmentPopped && fragment instanceof MyProfileFragment){ //fragment not in back stack, create it.
             FragmentTransaction ft = manager.beginTransaction();
             ft.replace(R.id.nav_host_fragment, fragment);
             ft.addToBackStack(backStateName);
@@ -344,18 +345,18 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
                 .show();
     }
 
-    @Override
-    public UserData onUserDataChanged(String userID) {
-        Consumer<UserData> userConsumer = new Consumer<UserData>() {
-            @Override
-            public void apply(UserData currentUser) {
-                userData = currentUser;
-            }
-        };
-        viewModel.getCurrentUserData(userID, userConsumer);
-
-        return userData;
-    }
+//    @Override
+//    public UserData onUserDataChanged(String userID) {
+//        Consumer<UserData> userConsumer = new Consumer<UserData>() {
+//            @Override
+//            public void apply(UserData currentUser) {
+//                userData = currentUser;
+//            }
+//        };
+//        viewModel.getCurrentUserData(userID, userConsumer);
+//
+//        return userData;
+//    }
 
     @Override
     public void onBackButtonClickListener(boolean flag) {
@@ -385,10 +386,10 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
 
     public void moveToProfile(String userID){
         MyProfileFragment myProfileFragment = new MyProfileFragment(userID);
-//        Bundle bundle = new Bundle();
-//        bundle.putString("userID", userID);
-//        bundle.putString("userID", userID);
-//        myProfileFragment.setArguments(bundle);
+        Bundle bundle = new Bundle();
+        bundle.putString("userID", userID);
+        bundle.putString("userID", userID);
+        myProfileFragment.setArguments(bundle);
         replaceFragment(myProfileFragment);
     }
 }

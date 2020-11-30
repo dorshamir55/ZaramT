@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 
 import com.example.doit.R;
 import com.example.doit.adapter.PostsRecyclerAdapter;
+import com.example.doit.model.Consumer;
 import com.example.doit.model.DeleteQuestionPostListener;
 import com.example.doit.model.QuestionPostData;
 import com.example.doit.model.UserData;
@@ -44,6 +45,7 @@ public class HomeFragment extends Fragment {
     private VotesClickListener votesClickListener;
     private DeleteQuestionPostListener deleteQuestionPostListener;
     private UserDataListener userDataListener;
+    private UserData userData;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +61,13 @@ public class HomeFragment extends Fragment {
             public void onReceive(Context context, Intent intent) {
                 if(viewModel != null) {
                     viewModel.loadAds(null);
-                    userDataListener.onUserDataChanged(currentUser.getUid());
+                    Consumer<UserData> userConsumer = new Consumer<UserData>() {
+                        @Override
+                        public void apply(UserData currentUser) {
+                            userData = currentUser;
+                        }
+                    };
+                    viewModel.getCurrentUserData(currentUser.getUid(), userConsumer);
                 }
             }
         };
@@ -165,7 +173,7 @@ public class HomeFragment extends Fragment {
             userProfileListener = (UserProfileListener) context;
             votesClickListener = (VotesClickListener)context;
             deleteQuestionPostListener = (DeleteQuestionPostListener)context;
-            userDataListener = (UserDataListener)context;
+//            userDataListener = (UserDataListener)context;
         } catch(ClassCastException ex) {
             throw new ClassCastException("NOTE! The activity must implement the fragment's listener" +
                     " interface!");
