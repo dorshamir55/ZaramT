@@ -429,7 +429,6 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
         {
             String closed = activity.getResources().getString(R.string.closed);
             if(text.equals(closed)){
-                //TODO: Post time is over...
 //                IMainViewModel viewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(MainViewModel.class);
 
                 viewModel.stopPosting(id);

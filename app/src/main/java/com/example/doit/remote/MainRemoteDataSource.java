@@ -1,6 +1,7 @@
 package com.example.doit.remote;
 
 import android.net.Uri;
+import android.text.method.LinkMovementMethod;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -336,6 +337,40 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
 
                     }
                 });
+    }
+
+    @Override
+    public void decrementVotesOfVoters(String questionPostID, List<AnswerInPost> answersInPost) {
+        for(AnswerInPost answerInPost : answersInPost){
+            for(String votedUserId : answerInPost.getVotedUserIdList()){
+
+                Consumer<UserData> userConsumer = new Consumer<UserData>() {
+                    @Override
+                    public void apply(UserData currentUser) {
+                        List<String> votedQuestionPostIdList = currentUser.getVotedQuestionPostsIdList();
+                        votedQuestionPostIdList.remove(questionPostID);
+
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("votedQuestionPostsIdList", votedQuestionPostIdList);
+                        db.collection(UserData.TABLE_NAME).document(votedUserId).set(data, SetOptions.merge())
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+
+                                    }
+                                });
+                    }
+                };
+                getCurrentUserData(votedUserId, userConsumer);
+
+            }
+        }
     }
 
     private void fetchAllAnswersInQuestion(String questionID, Consumer<List<AnswerInQuestion>> consumerList) {

@@ -27,4 +27,5 @@ public interface IMainRemoteDataSource {
     public void fetchAllAccountImages(Consumer<List<Uri>> uriConsumer);
     public void decrementAmountOfChosenQuestionInQuestionPost(String questionID);
     public void deleteQuestionPostIdFromUser(String questionPostID, String userID, List<String> postedQuestionPostsIdList, Runnable onFinish);
+    public void decrementVotesOfVoters(String questionPostID, List<AnswerInPost> answersInPost);
 }

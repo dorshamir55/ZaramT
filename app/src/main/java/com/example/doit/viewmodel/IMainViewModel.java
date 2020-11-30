@@ -29,5 +29,6 @@ public interface IMainViewModel {
     public void decrementAmountOfChosenQuestionInQuestionPost(String questionID);
     public void deleteQuestionPostIdFromUser(String questionPostID, String userID, List<String> postedQuestionPostsIdList);
     public void searchMyPostsAndRun(Consumer<List<QuestionPostData>> consumerList, String userID);
+    public void decrementVotesOfVoters(String questionPostID, List<AnswerInPost> answersInPost);
 }
 

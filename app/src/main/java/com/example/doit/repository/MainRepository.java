@@ -147,6 +147,11 @@ public class MainRepository implements IMainRepository{
         });
     }
 
+    @Override
+    public void decrementVotesOfVoters(String questionPostID, List<AnswerInPost> answersInPost) {
+        remoteDataSource.decrementVotesOfVoters(questionPostID, answersInPost);
+    }
+
     private void doAsynch(Runnable task) {
         new Thread(task).start();
     }

@@ -337,12 +337,17 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
                     viewModel.deletePost(questionPostData);
                     viewModel.decrementAmountOfChosenQuestionInQuestionPost(questionPostData.getQuestion().getQuestionID());
                     viewModel.deleteQuestionPostIdFromUser(questionPostData.getId(), userData.getId(), userData.getPostedQuestionPostsIdList());
+                    doAsynch(()-> viewModel.decrementVotesOfVoters(questionPostData.getId(), questionPostData.getAnswers()));
                     adapter.getData().remove(position);
                     adapter.notifyItemRemoved(position);
                 })
                 .setNegativeButton(getString(R.string.no), null)
                 .create()
                 .show();
+    }
+
+    private void doAsynch(Runnable task) {
+        new Thread(task).start();
     }
 
 //    @Override
@@ -386,10 +391,10 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
 
     public void moveToProfile(String userID){
         MyProfileFragment myProfileFragment = new MyProfileFragment(userID);
-        Bundle bundle = new Bundle();
-        bundle.putString("userID", userID);
-        bundle.putString("userID", userID);
-        myProfileFragment.setArguments(bundle);
+//        Bundle bundle = new Bundle();
+//        bundle.putString("userID", userID);
+//        bundle.putString("userID", userID);
+//        myProfileFragment.setArguments(bundle);
         replaceFragment(myProfileFragment);
     }
 }

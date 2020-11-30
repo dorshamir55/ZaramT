@@ -113,4 +113,9 @@ public class MainViewModel extends AndroidViewModel implements IMainViewModel {
     public void searchMyPostsAndRun(Consumer<List<QuestionPostData>> consumerList, String userID) {
         mainRepository.searchMyPostsAndRun( consumerList, userID);
     }
+
+    @Override
+    public void decrementVotesOfVoters(String questionPostID, List<AnswerInPost> answersInPost) {
+        mainRepository.decrementVotesOfVoters(questionPostID, answersInPost);
+    }
 }

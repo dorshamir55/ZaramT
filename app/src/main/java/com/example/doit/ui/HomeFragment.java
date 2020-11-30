@@ -61,13 +61,14 @@ public class HomeFragment extends Fragment {
             public void onReceive(Context context, Intent intent) {
                 if(viewModel != null) {
                     viewModel.loadAds(null);
-                    Consumer<UserData> userConsumer = new Consumer<UserData>() {
-                        @Override
-                        public void apply(UserData currentUser) {
-                            userData = currentUser;
-                        }
-                    };
-                    viewModel.getCurrentUserData(currentUser.getUid(), userConsumer);
+//                    userDataListener.onUserDataChanged(currentUser.getUid());
+//                    Consumer<UserData> userConsumer = new Consumer<UserData>() {
+//                        @Override
+//                        public void apply(UserData currentUser) {
+//                            userData = currentUser;
+//                        }
+//                    };
+//                    viewModel.getCurrentUserData(currentUser.getUid(), userConsumer);
                 }
             }
         };
@@ -155,6 +156,13 @@ public class HomeFragment extends Fragment {
             LocalBroadcastManager.getInstance(getContext()).registerReceiver(reloadAdsReceiver,
                     new IntentFilter("com.project.ACTION_RELOAD"));
         }
+        Consumer<UserData> userConsumer = new Consumer<UserData>() {
+            @Override
+            public void apply(UserData currentUser) {
+                userData = currentUser;
+            }
+        };
+        viewModel.getCurrentUserData(currentUser.getUid(), userConsumer);
     }
 
     @Override
