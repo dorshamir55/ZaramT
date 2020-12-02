@@ -32,6 +32,7 @@ import com.example.doit.R;
 import com.example.doit.adapter.AnswersRecyclerAdapter;
 import com.example.doit.model.AnswerFireStore;
 import com.example.doit.model.BackButtonListener;
+import com.example.doit.model.ChangeLabelListener;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.LocalHelper;
 import com.example.doit.model.AnswerInQuestion;
@@ -52,6 +53,7 @@ public class ChooseAnswersFragment extends Fragment {
     private LocalHelper localHelper;
     private FragmentManager manager;
     private BackButtonListener backButtonListener;
+    private ChangeLabelListener changeLabelListener;
 
     private List<AnswerInQuestion> answersIDList;
     private List<AnswerFireStore> checkedAnswersList;
@@ -230,6 +232,8 @@ public class ChooseAnswersFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+//        changeLabelListener.onChangeLabelVisibleListener();
+//        changeLabelListener.onChangeLabelTextListener(getResources().getString(R.string.upload_post));
 
         backButtonListener.onBackButtonClickListener(true);
     }
@@ -237,6 +241,7 @@ public class ChooseAnswersFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+//        changeLabelListener.onChangeLabelGoneListener();
 
         backButtonListener.onBackButtonClickListener(false);
     }
@@ -246,6 +251,7 @@ public class ChooseAnswersFragment extends Fragment {
         super.onAttach(context);
         try{
             backButtonListener = (BackButtonListener)context;
+            changeLabelListener = (ChangeLabelListener)context;
         } catch(ClassCastException ex) {
             throw new ClassCastException("NOTE! The activity must implement the fragment's listener" +
                     " interface!");

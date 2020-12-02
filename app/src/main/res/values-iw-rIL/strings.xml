@@ -72,4 +72,6 @@
     <string name="nickname_validation">כינוי לא יכול להיות ריק!</string>
     <string name="votes">הצבעות</string>
     <string name="posts">פוסטים</string>
+    <string name="edit">עריכה</string>
+    <string name="upload_post">העלה פוסט</string>
 </resources>

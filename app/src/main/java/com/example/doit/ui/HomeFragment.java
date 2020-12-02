@@ -2,7 +2,6 @@ package com.example.doit.ui;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -23,13 +22,14 @@ import android.view.ViewGroup;
 import com.example.doit.R;
 import com.example.doit.adapter.PostsRecyclerAdapter;
 import com.example.doit.model.AnswerInPost;
+import com.example.doit.model.ChangeLabelListener;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.DeleteQuestionPostListener;
 import com.example.doit.model.QuestionPostData;
 import com.example.doit.model.UserData;
 import com.example.doit.model.UserDataListener;
 import com.example.doit.model.UserProfileListener;
-import com.example.doit.model.VotersListener;
+import com.example.doit.model.VotersClickListener;
 import com.example.doit.model.VotesClickListener;
 import com.example.doit.viewmodel.IMainViewModel;
 import com.example.doit.viewmodel.MainViewModel;
@@ -48,7 +48,8 @@ public class HomeFragment extends Fragment {
     private UserProfileListener userProfileListener;
     private VotesClickListener votesClickListener;
     private DeleteQuestionPostListener deleteQuestionPostListener;
-    private VotersListener votersListener;
+    private VotersClickListener votersListener;
+    private ChangeLabelListener changeLabelListener;
     private UserDataListener userDataListener;
     private UserData userData;
 
@@ -162,6 +163,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        changeLabelListener.onChangeLabelGoneListener();
+
         if(getContext() != null) {
             LocalBroadcastManager.getInstance(getContext()).registerReceiver(reloadAdsReceiver,
                     new IntentFilter("com.project.ACTION_RELOAD"));
@@ -177,6 +180,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onPause() {
+
         super.onPause();
         if(getContext() != null) {
             LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(reloadAdsReceiver);
@@ -191,7 +195,8 @@ public class HomeFragment extends Fragment {
             userProfileListener = (UserProfileListener) context;
             votesClickListener = (VotesClickListener)context;
             deleteQuestionPostListener = (DeleteQuestionPostListener)context;
-            votersListener = (VotersListener)context;
+            votersListener = (VotersClickListener)context;
+            changeLabelListener = (ChangeLabelListener)context;
 //            userDataListener = (UserDataListener)context;
         } catch(ClassCastException ex) {
             throw new ClassCastException("NOTE! The activity must implement the fragment's listener" +

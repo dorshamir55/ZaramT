@@ -16,7 +16,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -33,6 +32,7 @@ import com.example.doit.R;
 import com.example.doit.adapter.PostsRecyclerAdapter;
 import com.example.doit.model.AnswerInPost;
 import com.example.doit.model.BackButtonListener;
+import com.example.doit.model.ChangeLabelListener;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.ContextWrapper;
 import com.example.doit.model.DeleteQuestionPostListener;
@@ -40,9 +40,8 @@ import com.example.doit.model.EditImageNicknameListener;
 import com.example.doit.model.LocalHelper;
 import com.example.doit.model.QuestionPostData;
 import com.example.doit.model.UserData;
-import com.example.doit.model.UserDataListener;
 import com.example.doit.model.UserProfileListener;
-import com.example.doit.model.VotersListener;
+import com.example.doit.model.VotersClickListener;
 import com.example.doit.model.VotesClickListener;
 import com.example.doit.viewmodel.IMainViewModel;
 import com.example.doit.viewmodel.MainViewModel;
@@ -62,7 +61,8 @@ import java.util.Map;
 //import com.example.doit.service.MyFirebaseMessagingService;
 
 public class MainActivity extends AppCompatActivity implements EditImageNicknameListener, VotesClickListener,
-        DeleteQuestionPostListener, /*UserDataListener, */BackButtonListener, UserProfileListener, VotersListener {
+        DeleteQuestionPostListener, /*UserDataListener, */BackButtonListener, UserProfileListener, VotersClickListener,
+        ChangeLabelListener {
     public static boolean isSignInNow = true;
     public int i = 0;
     private IMainViewModel viewModel = null;
@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
     public UserData userData;
     private DrawerLayout drawer;
     private Toolbar toolbar;
+    private TextView toolbarTitleTV;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -116,8 +117,9 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
         manager = getSupportFragmentManager();
         manager.beginTransaction().add(R.id.nav_host_fragment, new HomeFragment()).commit();
 
+        toolbarTitleTV = findViewById(R.id.toolbar_title_text_view);
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(Color.WHITE);
+//        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -400,5 +402,23 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
     @Override
     public void onVoterClickListener(List<AnswerInPost> answersInPost) {
         replaceFragment(new VotersFragment(answersInPost));
+    }
+
+    @Override
+    public void onChangeLabelVisibleListener() {
+        toolbar.setTitleTextColor(Color.BLACK);
+        toolbarTitleTV.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onChangeLabelGoneListener() {
+        toolbar.setTitleTextColor(Color.WHITE);
+        setTitle("");
+        toolbarTitleTV.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onChangeLabelTextListener(String title) {
+        setTitle(title);
     }
 }

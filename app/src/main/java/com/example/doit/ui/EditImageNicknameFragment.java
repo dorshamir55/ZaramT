@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.doit.R;
 import com.example.doit.adapter.ChoosePictureAccountAdapter;
 import com.example.doit.model.BackButtonListener;
+import com.example.doit.model.ChangeLabelListener;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.EditImageNicknameListener;
 import com.example.doit.model.QuestionFireStore;
@@ -44,7 +45,7 @@ public class EditImageNicknameFragment extends Fragment {
     public static final String TAG = "FIRST_SIGN_IN_FRG";
     public static final String PROFILE_IMAGES_FOLDER = "profile_pictures/";
     private EditImageNicknameListener editImageNicknameListener;
-    private BackButtonListener backButtonListener;
+    private ChangeLabelListener changeLabelListener;
     private ChoosePictureAccountAdapter adapter;
     private ChoosePictureAccountAdapter.MyPictureListener pictureListener;
     private UserData userData;
@@ -183,6 +184,7 @@ public class EditImageNicknameFragment extends Fragment {
 
         try {
             editImageNicknameListener = (EditImageNicknameListener)context;
+            changeLabelListener = (ChangeLabelListener)context;
 //            backButtonListener = (BackButtonListener)context;
         } catch(ClassCastException ex) {
             throw new ClassCastException("NOTE! The activity must implement the fragment's listener" +
@@ -193,14 +195,15 @@ public class EditImageNicknameFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        changeLabelListener.onChangeLabelVisibleListener();
+        changeLabelListener.onChangeLabelTextListener(getResources().getString(R.string.edit));
 //        backButtonListener.onBackButtonClickListener(true);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-
+        changeLabelListener.onChangeLabelGoneListener();
 //        backButtonListener.onBackButtonClickListener(false);
     }
 }

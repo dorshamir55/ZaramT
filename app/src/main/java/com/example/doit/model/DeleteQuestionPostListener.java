@@ -3,7 +3,7 @@ package com.example.doit.model;
 import com.example.doit.adapter.PostsRecyclerAdapter;
 
 public interface DeleteQuestionPostListener {
-    public void onDeleteQuestionPost(PostsRecyclerAdapter adapter, QuestionPostData questionPostData, int position);
-    public void onDecrementAmountOfChosenQuestionInQuestionPost(String questionID);
-    public void onDeleteQuestionPostIdFromUser(String questionPostID);
+    void onDeleteQuestionPost(PostsRecyclerAdapter adapter, QuestionPostData questionPostData, int position);
+    void onDecrementAmountOfChosenQuestionInQuestionPost(String questionID);
+    void onDeleteQuestionPostIdFromUser(String questionPostID);
 }

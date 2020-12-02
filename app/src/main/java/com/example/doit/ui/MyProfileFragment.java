@@ -21,12 +21,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -35,13 +30,13 @@ import com.example.doit.R;
 import com.example.doit.adapter.PostsRecyclerAdapter;
 import com.example.doit.model.AnswerInPost;
 import com.example.doit.model.BackButtonListener;
+import com.example.doit.model.ChangeLabelListener;
 import com.example.doit.model.Consumer;
 import com.example.doit.model.DeleteQuestionPostListener;
-import com.example.doit.model.QuestionFireStore;
 import com.example.doit.model.QuestionPostData;
 import com.example.doit.model.UserData;
 import com.example.doit.model.UserDataListener;
-import com.example.doit.model.VotersListener;
+import com.example.doit.model.VotersClickListener;
 import com.example.doit.model.VotesClickListener;
 import com.example.doit.viewmodel.IMainViewModel;
 import com.example.doit.viewmodel.MainViewModel;
@@ -64,7 +59,8 @@ public class MyProfileFragment extends Fragment {
     private UserDataListener userDataListener;
     private VotesClickListener votesClickListener;
     private BackButtonListener backButtonListener;
-    private VotersListener votersListener;
+    private VotersClickListener votersListener;
+    private ChangeLabelListener changeLabelListener;
     private SwipeRefreshLayout swipeContainer;
     private UserData userData;
     private Uri imageUri;
@@ -149,6 +145,7 @@ public class MyProfileFragment extends Fragment {
             @Override
             public void apply(UserData currentUser) {
                 userData = currentUser;
+                changeLabelListener.onChangeLabelTextListener(userData.getNickName());
                 nickname.setText(userData.getNickName());
                 votes.setText(String.valueOf(userData.getVotedQuestionPostsIdList().size()));
                 posts.setText(String.valueOf(userData.getPostedQuestionPostsIdList().size()));
@@ -189,6 +186,7 @@ public class MyProfileFragment extends Fragment {
                 @Override
                 public void apply(UserData currentUser) {
                     userData = currentUser;
+                    changeLabelListener.onChangeLabelTextListener(userData.getNickName());
                     votes.setText(String.valueOf(userData.getVotedQuestionPostsIdList().size()));
                     posts.setText(String.valueOf(userData.getPostedQuestionPostsIdList().size()));
                 }
@@ -278,7 +276,8 @@ public class MyProfileFragment extends Fragment {
 //            userDataListener = (UserDataListener)context;
             backButtonListener = (BackButtonListener)context;
             votesClickListener = (VotesClickListener)context;
-            votersListener = (VotersListener)context;
+            votersListener = (VotersClickListener)context;
+            changeLabelListener = (ChangeLabelListener)context;
         } catch(ClassCastException ex) {
             throw new ClassCastException("NOTE! The activity must implement the fragment's listener" +
                     " interface!");
@@ -288,6 +287,8 @@ public class MyProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        changeLabelListener.onChangeLabelVisibleListener();
+
         if(getContext() != null) {
             LocalBroadcastManager.getInstance(getContext()).registerReceiver(reloadUserReceiver,
                     new IntentFilter("com.project.ACTION_RELOAD_USER"));
@@ -301,6 +302,8 @@ public class MyProfileFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        changeLabelListener.onChangeLabelGoneListener();
+
         if(getContext() != null) {
             LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(reloadUserReceiver);
         }

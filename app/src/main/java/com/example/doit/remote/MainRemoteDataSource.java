@@ -125,19 +125,16 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
         List<UserData> users = new ArrayList<>();
         for(AnswerInPost answerInPost : answersInPost){
             for(String votedUserId : answerInPost.getVotedUserIdList()){
-                db.collection(UserData.TABLE_NAME).document(votedUserId)
-                        .get().addOnCompleteListener(task -> {
-                    UserData userData = null;
-                    if(task.isSuccessful()){
-                        DocumentSnapshot documentSnapshot = task.getResult();
-                        userData = documentSnapshot.toObject(UserData.class).withId(votedUserId);
+                Consumer<UserData> userConsumer = new Consumer<UserData>() {
+                    @Override
+                    public void apply(UserData currentUser) {
+                        UserData userData = currentUser;
                         users.add(userData);
                         if(consumerList != null)
                             consumerList.apply(users);
-                    } else {
-                        task.getException().printStackTrace();
                     }
-                });
+                };
+                getCurrentUserData(votedUserId, userConsumer);
             }
         }
     }
