@@ -27,10 +27,10 @@ public interface AdDAO {
     @Delete
     public void deleteAll(List<QuestionPostData> posts);
 
-    @Query("SELECT * FROM "+QuestionPostData.TABLE_NAME+" WHERE postedUserId = :userID ORDER BY startDate")
+    @Query("SELECT * FROM "+QuestionPostData.TABLE_NAME+" WHERE postedUserId = :userID ORDER BY startDate DESC")
     public LiveData<List<QuestionPostData>> getMyPosts(String userID);
 
-    @Query("SELECT * FROM "+QuestionPostData.TABLE_NAME+" ORDER BY updateDate DESC")
+    @Query("SELECT * FROM "+QuestionPostData.TABLE_NAME+" ORDER BY startDate DESC")
     public LiveData<List<QuestionPostData>> getAllPosts();
 
     @Query("SELECT max(updateDate) FROM "+QuestionPostData.TABLE_NAME)
