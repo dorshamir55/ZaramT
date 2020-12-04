@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
                         break;
 
                     case R.id.action_statistics:
-
+                        replaceFragment(new StatisticsMenuFragment());
                         break;
 
                     case R.id.action_profile:

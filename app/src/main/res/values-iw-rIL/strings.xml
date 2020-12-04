@@ -75,4 +75,5 @@
     <string name="edit">עריכה</string>
     <string name="upload_post">העלה פוסט</string>
     <string name="voters">מצביעים</string>
+    <string name="top_question">5 שאלות מובילות</string>
 </resources>

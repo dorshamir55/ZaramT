@@ -1,6 +1,7 @@
 package com.example.doit.remote;
 
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.text.method.LinkMovementMethod;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -99,6 +101,28 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
                     if(consumerList != null)
                         consumerList.apply(data);
                 });
+    }
+
+    public void fetchTopQuestions(Consumer<List<QuestionFireStore>> consumerList, int topQuestion) {
+        Consumer<List<QuestionFireStore>> consumer = new Consumer<List<QuestionFireStore>>() {
+            @Override
+            public void apply(List<QuestionFireStore> questionsList) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    questionsList.sort(Comparator.comparing(QuestionFireStore::getAmountOfChoices));
+                    int amountOfQuestionsInRange = topQuestion;
+                    long maxOfChoicesOfLastQuestion;
+                    maxOfChoicesOfLastQuestion = questionsList.get(amountOfQuestionsInRange).getAmountOfChoices();
+                    while(maxOfChoicesOfLastQuestion == questionsList.get(amountOfQuestionsInRange - 1).getAmountOfChoices() && amountOfQuestionsInRange < questionsList.size()){
+                        amountOfQuestionsInRange++;
+                    }
+
+                    List<QuestionFireStore> topQuestionsList = questionsList.subList(0, amountOfQuestionsInRange);
+                    consumerList.apply(topQuestionsList);
+                }
+            }
+        };
+
+        fetchAllQuestions(consumer);
     }
 
     @Override

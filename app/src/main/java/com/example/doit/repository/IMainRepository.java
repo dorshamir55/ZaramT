@@ -20,6 +20,7 @@ public interface IMainRepository {
     public LiveData<List<QuestionPostData>> getMyPostsLiveData(String userID);
     public void deletePost(QuestionPostData questionPostData, Runnable onFinish);
     public void getListOfQuestions(Consumer<List<QuestionFireStore>> consumerList);
+    public void getTopQuestions(Consumer<List<QuestionFireStore>> consumerList, int topQuestion);
     public void getListOfAnswers(Consumer<List<AnswerFireStore>> consumerList, List<AnswerInQuestion> answerInQuestions);
     public void getAllUsers(Consumer<List<UserData>> consumerList);
     public void getUsersByIds(List<AnswerInPost> answersInPost, Consumer<List<UserData>> consumerList);

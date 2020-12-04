@@ -20,6 +20,7 @@ public interface IMainViewModel {
     public void loadAds(Runnable onFinish);
     public void deletePost(QuestionPostData questionPostData);
     public void getListOfQuestions(Consumer<List<QuestionFireStore>> consumerList);
+    public void getTopQuestions(Consumer<List<QuestionFireStore>> consumerList, int topQuestion);
     public void getListOfAnswers(Consumer<List<AnswerFireStore>> consumerList, List<AnswerInQuestion> answerInQuestions);
     public void getAllUsers(Consumer<List<UserData>> consumerList);
     public void getUsersByIds(List<AnswerInPost> answersInPost, Consumer<List<UserData>> consumerList);

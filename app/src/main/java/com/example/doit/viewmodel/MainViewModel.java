@@ -60,6 +60,11 @@ public class MainViewModel extends AndroidViewModel implements IMainViewModel {
     }
 
     @Override
+    public void getTopQuestions(Consumer<List<QuestionFireStore>> consumerList, int topQuestion) {
+        mainRepository.getTopQuestions(consumerList, topQuestion);
+    }
+
+    @Override
     public void getListOfAnswers(Consumer<List<AnswerFireStore>> consumerList, List<AnswerInQuestion> answerInQuestions) {
         mainRepository.getListOfAnswers(consumerList, answerInQuestions);
     }

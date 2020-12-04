@@ -111,6 +111,8 @@
     <string name="edit">Edit</string>
     <string name="upload_post">Upload post</string>
     <string name="voters">Voters</string>
+    <string name="top_question">Top 5 questions</string>
+    <!-- TODO: Remove or change this placeholder text -->
     <!-- TODO: Remove or change this placeholder text -->
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

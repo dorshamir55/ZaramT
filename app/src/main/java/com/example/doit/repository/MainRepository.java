@@ -94,6 +94,11 @@ public class MainRepository implements IMainRepository{
     }
 
     @Override
+    public void getTopQuestions(Consumer<List<QuestionFireStore>> consumerList, int topQuestion) {
+        remoteDataSource.fetchTopQuestions(consumerList, topQuestion);
+    }
+
+    @Override
     public void getListOfAnswers(Consumer<List<AnswerFireStore>> consumerList, List<AnswerInQuestion> answerInQuestions) {
         remoteDataSource.fetchAnswers(consumerList, answerInQuestions);
     }
