@@ -83,7 +83,7 @@ public class StatisticsMenuFragment extends Fragment {
                 statistic1.setCompetitors(competitors);
             }
         };
-        viewModel.getTopQuestions(listConsumer, 5);
+        viewModel.getTopQuestions(listConsumer, 1);
 
         statistics.add(statistic1);
     }
