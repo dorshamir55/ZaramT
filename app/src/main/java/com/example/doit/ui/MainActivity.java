@@ -300,8 +300,18 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
                     public void onSuccess(Void aVoid) {
                         if(onFinish != null)
                             onFinish.run();
-                        manager.popBackStack();
-                        manager.beginTransaction().replace(R.id.nav_host_fragment, new MyProfileFragment(id)).commit();
+//                        manager.popBackStack();
+                        for(int i = 0; i < manager.getBackStackEntryCount(); ++i) {
+                            manager.popBackStack();
+                        }
+
+                        FragmentTransaction ft = manager.beginTransaction();
+                        ft.add(R.id.nav_host_fragment, new HomeFragment());
+                        ft.addToBackStack(HomeFragment.class.getName());
+                        ft.replace(R.id.nav_host_fragment, new MyProfileFragment(id));
+                        ft.commit();
+
+//                        replaceFragment(new MyProfileFragment(id));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -320,8 +330,6 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
     @Override
     public void onDecrementAmountOfChosenQuestionInQuestionPost(String questionID) {
         viewModel.decrementAmountOfChosenQuestionInQuestionPost(questionID);
-        //TODO
-        //viewModel.updateAmountOfChosenQuestionInUser(questionID, userData);
     }
 
     @Override
