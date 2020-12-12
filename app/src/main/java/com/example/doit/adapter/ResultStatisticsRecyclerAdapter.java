@@ -66,9 +66,11 @@ public class ResultStatisticsRecyclerAdapter extends RecyclerView.Adapter<Result
         holder.text.setText(listData.get(position).getTitleElement());
         holder.value.setText(listData.get(position).getValue());
 
+        Uri imageUri = Uri.parse(listData.get(position).getStringImageUri());
+
         Glide
                 .with(activity)
-                .load(listData.get(position).getImageUri())
+                .load(imageUri)
                 .apply(new RequestOptions())
                 .into(holder.image);
 

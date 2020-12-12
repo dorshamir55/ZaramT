@@ -79,8 +79,9 @@ public class StatisticsMenuFragment extends Fragment {
                     else if(degree == 3) {
                         imagePath = String.valueOf(R.drawable.bronze_medal);
                     }
-                    Uri imageUri = Uri.parse("android.resource://com.example.doit/" + imagePath);
-                    StatisticElement statisticElement = new StatisticElement(questionFireStore.getTextByLanguage(currentLanguage), String.valueOf(questionFireStore.getAmountOfChoices()), imageUri, degree);
+                    String stringImageUri = "android.resource://com.example.doit/" + imagePath;
+//                    Uri imageUri = Uri.parse("android.resource://com.example.doit/" + imagePath);
+                    StatisticElement statisticElement = new StatisticElement(questionFireStore.getTextByLanguage(currentLanguage), String.valueOf(questionFireStore.getAmountOfChoices()), stringImageUri, degree);
                     competitors.add(statisticElement);
                 }
                 statistic1.setCompetitors(competitors);

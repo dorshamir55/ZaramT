@@ -3,16 +3,18 @@ package com.example.doit.model;
 import android.net.Uri;
 import android.widget.ImageView;
 
-public class StatisticElement {
+import java.io.Serializable;
+
+public class StatisticElement implements Serializable {
     String titleElement;
     String value;
-    Uri imageUri;
+    String stringImageUri;
     int position;
 
-    public StatisticElement(String titleElement, String value, Uri imageUri, int position) {
+    public StatisticElement(String titleElement, String value, String stringImageUri, int position) {
         this.titleElement = titleElement;
         this.value = value;
-        this.imageUri = imageUri;
+        this.stringImageUri = stringImageUri;
         this.position = position;
     }
 
@@ -32,12 +34,12 @@ public class StatisticElement {
         this.value = value;
     }
 
-    public Uri getImageUri() {
-        return imageUri;
+    public String getStringImageUri() {
+        return stringImageUri;
     }
 
-    public void setImageUri(Uri imageUri) {
-        this.imageUri = imageUri;
+    public void setStringImageUri(String imageUri) {
+        this.stringImageUri = stringImageUri;
     }
 
     public int getPosition() {
