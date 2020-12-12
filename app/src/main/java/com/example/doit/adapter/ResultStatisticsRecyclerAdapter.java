@@ -62,6 +62,7 @@ public class ResultStatisticsRecyclerAdapter extends RecyclerView.Adapter<Result
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         assert listData != null;
 
+        holder.position.setText(String.valueOf(listData.get(position).getPosition()));
         holder.text.setText(listData.get(position).getTitleElement());
         holder.value.setText(listData.get(position).getValue());
 
@@ -81,12 +82,14 @@ public class ResultStatisticsRecyclerAdapter extends RecyclerView.Adapter<Result
 
     class RecyclerViewHolder extends RecyclerView.ViewHolder
     {
+        private TextView position;
         private TextView text;
         private TextView value;
         private ImageView image;
 
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
+            position = itemView.findViewById(R.id.position_cell);
             text = itemView.findViewById(R.id.text_cell);
             value = itemView.findViewById(R.id.value_cell);
             image = itemView.findViewById(R.id.image_cell);

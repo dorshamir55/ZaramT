@@ -7,11 +7,13 @@ public class StatisticElement {
     String titleElement;
     String value;
     Uri imageUri;
+    int position;
 
-    public StatisticElement(String titleElement, String value, Uri imageUri) {
+    public StatisticElement(String titleElement, String value, Uri imageUri, int position) {
         this.titleElement = titleElement;
         this.value = value;
         this.imageUri = imageUri;
+        this.position = position;
     }
 
     public String getTitleElement() {
@@ -36,5 +38,13 @@ public class StatisticElement {
 
     public void setImageUri(Uri imageUri) {
         this.imageUri = imageUri;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 }

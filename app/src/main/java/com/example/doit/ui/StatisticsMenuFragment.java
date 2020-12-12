@@ -43,6 +43,7 @@ public class StatisticsMenuFragment extends Fragment {
     private BackButtonListener backButtonListener;
     private LocalHelper localHelper;
     private String currentLanguage;
+    private int topQuestion = 5;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,8 @@ public class StatisticsMenuFragment extends Fragment {
         this.localHelper = new LocalHelper(getActivity());
         this.currentLanguage = localHelper.getLocale();
         statistics = new ArrayList<>();
-        Statistic statistic1 = new Statistic(getResources().getString(R.string.top_question));
+        String topQuestionTitle = getResources().getString(R.string.top_question);
+        Statistic statistic1 = new Statistic(topQuestionTitle);
 
         Consumer<List<QuestionFireStore>> listConsumer = new Consumer<List<QuestionFireStore>>() {
             List<StatisticElement> competitors = null;
@@ -78,13 +80,13 @@ public class StatisticsMenuFragment extends Fragment {
                         imagePath = String.valueOf(R.drawable.bronze_medal);
                     }
                     Uri imageUri = Uri.parse("android.resource://com.example.doit/" + imagePath);
-                    StatisticElement statisticElement = new StatisticElement(questionFireStore.getTextByLanguage(currentLanguage), String.valueOf(questionFireStore.getAmountOfChoices()), imageUri);
+                    StatisticElement statisticElement = new StatisticElement(questionFireStore.getTextByLanguage(currentLanguage), String.valueOf(questionFireStore.getAmountOfChoices()), imageUri, degree);
                     competitors.add(statisticElement);
                 }
                 statistic1.setCompetitors(competitors);
             }
         };
-        viewModel.getTopQuestions(listConsumer, 3);
+        viewModel.getTopQuestions(listConsumer, topQuestion);
 
         statistics.add(statistic1);
     }

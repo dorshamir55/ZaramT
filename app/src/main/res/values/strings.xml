@@ -112,5 +112,5 @@
     <string name="upload_post">Upload post</string>
     <string name="voters">Voters</string>
     <string name="top_question">Questions - Top 5</string>
-    <string name="msg_token_fmt">hellooooo</string>
+    <string name="top">Top</string>
 </resources>

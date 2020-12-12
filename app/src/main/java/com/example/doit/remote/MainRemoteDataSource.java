@@ -112,25 +112,27 @@ public class MainRemoteDataSource implements IMainRemoteDataSource {
                     List<QuestionFireStore> topQuestionsList;
                     questionsList.sort(Comparator.comparing(QuestionFireStore::getAmountOfChoices));
                     Collections.reverse(questionsList);
-                    int amountOfQuestionsInRange=0, topQuestionToDisplay = topQuestion;
-                    long maxOfChoicesOfLastQuestion;
+                    int amountOfQuestionsInRange = 1, topQuestionToDisplay = topQuestion;
+                    long differentChoicesOfLastQuestion = 1;
                     if(topQuestion >= questionsList.size()) {
-                        maxOfChoicesOfLastQuestion = questionsList.get(questionsList.size() - 1).getAmountOfChoices();
                         topQuestionsList = questionsList;
                     }
-                    else {
-                        maxOfChoicesOfLastQuestion = questionsList.get(topQuestionToDisplay).getAmountOfChoices();
-                        while(maxOfChoicesOfLastQuestion == questionsList.get(topQuestionToDisplay - 1).getAmountOfChoices() && topQuestionToDisplay < questionsList.size()) {
-                            topQuestionToDisplay++;
-                        }
-                        int questionListLength = questionsList.size();
-                        for(int i=0; i<questionListLength-1; i++)
+                    else
+                    {
+                        while(amountOfQuestionsInRange < questionsList.size() && differentChoicesOfLastQuestion < topQuestion)
                         {
-                            if(topQuestionToDisplay == 0)
-                                break;
-                            if(questionsList.get(i).getAmountOfChoices() == questionsList.get(i+1).getAmountOfChoices())
-                                topQuestionToDisplay--;
+                            if(questionsList.get(amountOfQuestionsInRange-1).getAmountOfChoices() > questionsList.get(amountOfQuestionsInRange).getAmountOfChoices())
+                                differentChoicesOfLastQuestion++;
                             amountOfQuestionsInRange++;
+                        }
+
+                        if(differentChoicesOfLastQuestion >= topQuestion && amountOfQuestionsInRange < questionsList.size()) {
+                            while (questionsList.get(amountOfQuestionsInRange-1).getAmountOfChoices() == questionsList.get(amountOfQuestionsInRange).getAmountOfChoices())
+                            {
+                                amountOfQuestionsInRange++;
+                                if(amountOfQuestionsInRange >= questionsList.size())
+                                    break;
+                            }
                         }
 
                         topQuestionsList = questionsList.subList(0, amountOfQuestionsInRange);

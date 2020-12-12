@@ -48,8 +48,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService
      */
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
-        NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        manager.notify(11, createNotification());
+//        NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+//        manager.notify(11, createNotification());
         Log.d("FCM", remoteMessage.getData().toString());
     }
 
