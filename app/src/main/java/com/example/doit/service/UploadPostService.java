@@ -239,7 +239,7 @@ public class UploadPostService extends Service
 
         notificationBuilder.setAutoCancel(false)
                 .setDefaults(Notification.DEFAULT_ALL)
-                .setSmallIcon(R.drawable.doit_icon)
+                .setSmallIcon(R.drawable.ic_app)
                 .setContentTitle(getResources().getString(R.string.posting_title))
                 .setContentText(getResources().getString(R.string.posting_message))
                 .setContentIntent(pi);

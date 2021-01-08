@@ -81,7 +81,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:textSize="16sp"
-                            android:textColor="@color/toolbarColorLight"
+                            android:textColor="@color/toolbarColorLight2"
                             android:text="@string/posts"/>
                     </LinearLayout>
                     <LinearLayout
@@ -104,7 +104,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:textSize="16sp"
-                            android:textColor="@color/toolbarColorLight"
+                            android:textColor="@color/toolbarColorLight2"
                             android:text="@string/votes"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -112,7 +112,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="3dp"
                     android:layout_gravity="bottom"
-                    android:background="@color/toolbarColor"
+                    android:background="@color/toolbarColorLight"
                     android:layout_marginBottom="20dp"/>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/profileRecycler"

@@ -265,9 +265,9 @@ public class PostsRecyclerAdapter extends RecyclerView.Adapter<PostsRecyclerAdap
 
         PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
         int[] pieColors = new int[4];
-        pieColors[0] = activity.getResources().getColor(R.color.toolbarColor2);
-        pieColors[1] = activity.getResources().getColor(R.color.toolbarColor);
-        pieColors[2] = activity.getResources().getColor(R.color.toolbarColorLight);
+        pieColors[0] = activity.getResources().getColor(R.color.toolbarColor);
+        pieColors[1] = activity.getResources().getColor(R.color.toolbarColorLight);
+        pieColors[2] = activity.getResources().getColor(R.color.toolbarColorLight2);
         pieColors[3] = activity.getResources().getColor(R.color.toolbarColorVeryLight);
 //        pieDataSet.setColors(ColorTemplate.createColors(pieColors));
         pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);

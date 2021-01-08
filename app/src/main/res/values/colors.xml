@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="toolbarColor">#7986CB</color>
-    <color name="toolbarColor2">#9FA8DA</color>
+    <color name="toolbarColorLight2">#9FA8DA</color>
     <color name="toolbarColorLight">#C5CAE9</color>
     <color name="toolbarColorVeryLight">#E8EAF6</color>
     <color name="lightGrey">#808080</color>

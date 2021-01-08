@@ -373,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
         new AlertDialog.Builder(this)
                 .setTitle(R.string.delete_title)
                 .setMessage(R.string.delete_message)
-                .setIcon(R.drawable.doit_icon)
+                .setIcon(R.drawable.ic_app)
                 .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
                     viewModel.deletePost(questionPostData);
                     viewModel.decrementAmountOfChosenQuestionInQuestionPost(questionPostData.getQuestion().getQuestionID());
