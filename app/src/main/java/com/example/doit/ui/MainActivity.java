@@ -444,7 +444,7 @@ public class MainActivity extends AppCompatActivity implements EditImageNickname
 
     @Override
     public void onChangeLabelVisibleListener() {
-        toolbar.setTitleTextColor(Color.BLACK);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.toolbarColor));
         toolbarTitleTV.setVisibility(View.GONE);
     }
 

@@ -117,12 +117,12 @@ public class ChooseAnswersFragment extends Fragment {
         List<Integer> zeroArray = new ArrayList<>(1);
         zeroArray.add(0);
 
-        ArrayAdapter hoursSpinnerAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, hoursList);
+        ArrayAdapter hoursSpinnerAdapter = new ArrayAdapter(getActivity(), R.layout.custom_spinner_item, hoursList);
         hoursSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         hoursS.setAdapter(hoursSpinnerAdapter);
 
-        ArrayAdapter minutesOnlyZeroAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, zeroArray);
-        ArrayAdapter minutesSpinnerAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, minutesList);
+        ArrayAdapter minutesOnlyZeroAdapter = new ArrayAdapter(getActivity(), R.layout.custom_spinner_item, zeroArray);
+        ArrayAdapter minutesSpinnerAdapter = new ArrayAdapter(getActivity(), R.layout.custom_spinner_item, minutesList);
         minutesSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         minutesS.setAdapter(minutesSpinnerAdapter);
 

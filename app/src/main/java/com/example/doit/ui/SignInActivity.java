@@ -235,7 +235,7 @@ public class SignInActivity extends AppCompatActivity
 
     @Override
     public void onChangeLabelVisibleListener() {
-        toolbar.setTitleTextColor(Color.BLACK);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.toolbarColor));
         toolbarTitleTV.setVisibility(View.GONE);
     }
 

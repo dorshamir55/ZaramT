@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">DoIt</string>
     <string name="menu_settings">הגדרות</string>
     <string name="menu_home">בית</string>
     <string name="menu_privacy_and_security">פרטיות ואבטחה</string>
@@ -25,7 +24,7 @@
     <string name="delete_title">למחוק?</string>
     <string name="vote">" הצבע"</string>
     <string name="home">בית</string>
-    <string name="search">חיפוש</string>
+    <string name="search_question">חיפוש שאלה</string>
     <string name="add">הוסף</string>
     <string name="statistics">סטטיסטיקה</string>
     <string name="profile">פרופיל</string>
@@ -78,4 +77,6 @@
     <string name="top_question">שאלות - 5 הגדולים</string>
     <string name="top_users_in_posts">משתמשים מובילים - בפוסטים</string>
     <string name="top_users_in_votes">משתמשים מובילים - בהצבעות</string>
+    <string name="search_user">חיפוש משתמש</string>
+    <string name="search">חיפוש</string>
 </resources>

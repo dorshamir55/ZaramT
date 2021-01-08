@@ -34,7 +34,7 @@
                     android:fontFamily="@font/bubblegum_sans"
                     android:text="Question"
                     android:gravity="start"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/toolbarColor"
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -60,7 +60,7 @@
             android:layout_gravity="bottom"
             android:layout_marginTop="3dp"
             android:layout_marginVertical="2dp"
-            android:background="@color/lightGrey"/>
+            android:background="@color/toolbarColor"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -90,7 +90,7 @@
                     android:gravity="start"
                     android:layout_gravity="center"
                     android:text=""
-                    android:textColor="#ab2030"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="13sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -114,7 +114,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.4dp"
-            android:background="@color/lightGrey"/>
+            android:background="@color/toolbarColor"/>
         <LinearLayout
             android:id="@+id/answers_and_vote_layout"
             android:layout_width="match_parent"
@@ -131,25 +131,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="answer 1"
+                    android:textColor="@color/toolbarColor"
                     android:checked="true"/>
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/answer2_cell_post"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="answer 2"/>
+                    android:text="answer 2"
+                    android:textColor="@color/toolbarColor"/>
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/answer3_cell_post"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="answer 3"/>
+                    android:text="answer 3"
+                    android:textColor="@color/toolbarColor"/>
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/answer4_cell_post"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="answer 4"/>
+                    android:text="answer 4"
+                    android:textColor="@color/toolbarColor"/>
             </RadioGroup>
             <Button
                 android:id="@+id/vote_cell_post"
@@ -158,6 +162,7 @@
                 android:layout_weight="2"
                 android:background="@drawable/button_style"
                 android:text="@string/vote"
+                android:textColor="@color/toolbarColor"
                 android:layout_gravity="bottom|end"/>
         </LinearLayout>
         <TextView
@@ -166,6 +171,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/no_votes"
+            android:textColor="@color/toolbarColorLight"
             android:textSize="30sp"
             android:layout_margin="10dp"
             android:visibility="gone"/>
@@ -197,7 +203,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:textSize="14sp"
-                android:textColor="@android:color/black"
+                android:textColor="@color/toolbarColorLight"
                 android:textStyle="bold"
                 android:visibility="gone"/>
         </LinearLayout>
@@ -206,6 +212,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_gravity="bottom"
-        android:background="@color/lightGrey"/>
+        android:background="@color/toolbarColor"/>
 
 </androidx.cardview.widget.CardView>

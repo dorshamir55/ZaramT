@@ -6,12 +6,13 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@android:color/transparent">
+    android:background="@drawable/button_style">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardUseCompatPadding="true"
+        android:backgroundTint="@color/toolbarColor"
         android:elevation="8dp"
         app:cardCornerRadius="10dp">
 
@@ -20,7 +21,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:layout_gravity="center"/>
+            android:fontFamily="@font/bubblegum_sans"
+            android:textColor="@color/toolbarColorVeryLight"
+            android:layout_gravity="center"
+            android:gravity="center"/>
 
     </androidx.cardview.widget.CardView>
 

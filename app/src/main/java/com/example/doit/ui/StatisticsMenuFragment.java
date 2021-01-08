@@ -45,8 +45,8 @@ public class StatisticsMenuFragment extends Fragment {
     private LocalHelper localHelper;
     private String currentLanguage;
     private int topQuestion = 5;
-    private int topUsersPosts = 2;
-    private int topUsersVotes = 2;
+    private int topUsersPosts = 5;
+    private int topUsersVotes = 5;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

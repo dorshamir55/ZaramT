@@ -23,7 +23,7 @@
             android:layout_margin="5dp"
             android:fontFamily="@font/bubblegum_sans"
             android:text="Question"
-            android:textColor="@android:color/black"
+            android:textColor="@color/toolbarColor"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -32,6 +32,6 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_gravity="bottom"
-        android:background="@color/toolbarColor"/>
+        android:background="@color/toolbarColorLight"/>
 
 </androidx.cardview.widget.CardView>

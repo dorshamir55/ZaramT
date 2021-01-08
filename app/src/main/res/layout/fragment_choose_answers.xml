@@ -21,7 +21,7 @@
             android:fontFamily="@font/bubblegum_sans"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="@color/toolbarColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -52,8 +52,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
+            android:fontFamily="@font/bubblegum_sans"
             android:text="@string/choose_timer"
-            android:textColor="@android:color/black"/>
+            android:textColor="@color/toolbarColor"/>
     </FrameLayout>
 
     <FrameLayout
@@ -91,7 +92,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/toolbarColor"
+                    android:fontFamily="@font/bubblegum_sans"
                     android:text="@string/hours"/>
             </LinearLayout>
             <LinearLayout
@@ -116,7 +118,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/toolbarColor"
+                    android:fontFamily="@font/bubblegum_sans"
                     android:text="@string/minutes"/>
             </LinearLayout>
         </LinearLayout>
@@ -127,8 +130,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/upload"
+        android:fontFamily="@font/bubblegum_sans"
         android:background="@drawable/button_style"
         android:layout_marginBottom="10dp"
+        android:textColor="@color/toolbarColorVeryLight"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

@@ -110,7 +110,7 @@ public class AddPostFragment extends Fragment {
         String chooseCategory = getResources().getString(R.string.choose_category);
         categoryList.add(0, chooseCategory);
 
-        categorySpinnerAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, categoryList);
+        categorySpinnerAdapter = new ArrayAdapter(getActivity(), R.layout.custom_spinner_item, categoryList);
         categorySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categoryS.setAdapter(categorySpinnerAdapter);
 
@@ -177,6 +177,7 @@ public class AddPostFragment extends Fragment {
         searchItem.setVisible(true);
         searchView = (SearchView) searchItem.getActionView();
         searchView.onActionViewExpanded();
+        searchView.setQueryHint(getResources().getString(R.string.search_question));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

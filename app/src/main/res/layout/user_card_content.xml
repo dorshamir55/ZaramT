@@ -29,7 +29,7 @@
             android:layout_gravity="center"
             android:fontFamily="@font/bubblegum_sans"
             android:text="User"
-            android:textColor="@android:color/black"
+            android:textColor="@color/toolbarColor"
             android:textSize="16sp"
             android:textStyle="bold" />
     </LinearLayout>

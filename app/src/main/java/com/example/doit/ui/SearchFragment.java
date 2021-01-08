@@ -103,6 +103,7 @@ public class SearchFragment extends Fragment {
         searchItem.setVisible(true);
         searchView = (SearchView) searchItem.getActionView();
         searchView.onActionViewExpanded();
+        searchView.setQueryHint(getResources().getString(R.string.search_user));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
