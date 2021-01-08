@@ -23,7 +23,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="6"
+                android:layout_weight="10"
                 android:orientation="horizontal"
                 android:gravity="start">
                 <TextView
@@ -35,7 +35,7 @@
                     android:text="Question"
                     android:gravity="start"
                     android:textColor="@color/toolbarColor"
-                    android:textSize="20sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
             </LinearLayout>
             <LinearLayout
@@ -162,7 +162,7 @@
                 android:layout_weight="2"
                 android:background="@drawable/button_style"
                 android:text="@string/vote"
-                android:textColor="@color/toolbarColor"
+                android:textColor="@color/toolbarColorVeryLight"
                 android:layout_gravity="bottom|end"/>
         </LinearLayout>
         <TextView

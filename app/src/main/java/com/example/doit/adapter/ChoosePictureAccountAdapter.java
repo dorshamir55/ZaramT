@@ -122,7 +122,7 @@ public class ChoosePictureAccountAdapter extends RecyclerView.Adapter<ChoosePict
 //            holder.squareLayout.setBackgroundColor(context.getColor(R.color.transparent));
 //        }
         if(items.get(position).getName().equals(currentImageSelectedName)){
-            holder.squareLayout.setBackgroundColor(context.getColor(R.color.hulo_light_blue));
+            holder.squareLayout.setBackgroundColor(context.getColor(R.color.toolbarColor));
 //            currentImageSelectedName = items.get(position).getName();
             lastSelectedPosition = position;
         }
