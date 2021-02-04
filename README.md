@@ -8,7 +8,7 @@ Included: Volley, Sensors, RecyclerView, Fragments, Services, Alarm manager, Not
 
 ## Screenshots:
 ![Opening screen](https://github.com/Dorshamir55/DoIt/raw/master/ScreenShots/Opening_screen.jpg)
-»![Gmail login](https://github.com/Dorshamir55/DoIt/raw/master/ScreenShots/Gmail_login.jpg)
+ » ![Gmail login](https://github.com/Dorshamir55/DoIt/raw/master/ScreenShots/Gmail_login.jpg)
 --
 ![Home](https://github.com/Dorshamir55/DoIt/raw/master/ScreenShots/Home.jpg)
 ![Home2](https://github.com/Dorshamir55/DoIt/raw/master/ScreenShots/Home2.jpg)
