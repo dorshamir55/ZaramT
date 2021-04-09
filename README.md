@@ -1,6 +1,6 @@
 # ZaramT - Android app
 
-Developed using Java in an Android studio.
+Developed using Java in Android studio.
 
 Do you have a dilemma? Come share and flow!
 The app allows sharing daily dilemmas.
